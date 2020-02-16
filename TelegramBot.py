@@ -56,9 +56,9 @@ def start():
     while 1:
         bot.get_updates(offset)
         last_update = bot.last_update()
-        last_update_id = last_update['update_id']
         if last_update is None:
             continue
+        last_update_id = last_update['update_id']
         if lastupdate != bot.get_message_id(bot.last_update()):
             lastupdate = bot.get_message_id(bot.last_update())
             r = random.randint(1,14)
@@ -104,9 +104,9 @@ offset = None
 while 1:
     bot.get_updates(offset)
     last_update = bot.last_update()
-    last_update_id = last_update['update_id']
     if last_update is None:
             continue
+    last_update_id = last_update['update_id']
     if bot.get_message(bot.last_update()) == "Бодька":
         bot.send_mess(bot.get_chat_id(bot.last_update()),"Де Шпецюк блять")
         start()
