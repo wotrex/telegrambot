@@ -5,7 +5,7 @@ import random
 class BogdanBot():
 
     def __init__(self):
-        self.u = "https://api.telegram.org/bot1081045084:AAHpRmSel3SgRpHPtSaWCQCG7vWe6l-RGeE/getUpdates"
+        self.u = "https://api.telegram.org/bot1061329648:AAFzLR4YTveVjLFSZb6cGcy5ze2TZRw8fbU/getUpdates"
 
     def get_updates(self,offset=None, timeout=30):
         params = {'timeout': timeout, 'offset': offset}
@@ -15,8 +15,14 @@ class BogdanBot():
 
     def last_update(self):  
         results = self.get_updates()['result']
-        total_updates = len(results) - 1
-        return results[total_updates]
+        if len(results) > 0:
+            last_update = results[-1]
+        else:
+            last_update = None
+
+        return last_update 
+##        total_updates = len(results) - 1
+##        return results[total_updates]
     
     def get_chat_id(self,update):  
         chat_id = update['message']['chat']['id']
@@ -32,11 +38,11 @@ class BogdanBot():
 
     def send_mess(self, chat, text):  
         params = {'chat_id': chat, 'text': text}
-        response = requests.post("https://api.telegram.org/bot1081045084:AAHpRmSel3SgRpHPtSaWCQCG7vWe6l-RGeE/" + 'sendMessage', data=params)
+        response = requests.post("https://api.telegram.org/bot1061329648:AAFzLR4YTveVjLFSZb6cGcy5ze2TZRw8fbU/" + 'sendMessage', params)
         return response
     def send_voice(self, chat, voice):  
         params = {'chat_id': chat, 'voice': voice}
-        response = requests.post("https://api.telegram.org/bot1081045084:AAHpRmSel3SgRpHPtSaWCQCG7vWe6l-RGeE/" + 'sendVoice', data=params)
+        response = requests.post("https://api.telegram.org/bot1061329648:AAFzLR4YTveVjLFSZb6cGcy5ze2TZRw8fbU/" + 'sendVoice', params)
         return response
     def get_message(self,update):
         if 'text' in update['message']:
@@ -44,13 +50,15 @@ class BogdanBot():
             return chat_id
 
 bot = BogdanBot()
-offset = None
 def start():
+    offset = None
     lastupdate = bot.get_message_id(bot.last_update())
     while 1:
-        bot.get_updates()
+        bot.get_updates(offset)
         last_update = bot.last_update()
         last_update_id = last_update['update_id']
+        if last_update is None:
+            continue
         if lastupdate != bot.get_message_id(bot.last_update()):
             lastupdate = bot.get_message_id(bot.last_update())
             r = random.randint(1,14)
@@ -92,7 +100,14 @@ def start():
             break
         offset = last_update_id + 1
 start()
-while 1:        
+offset = None
+while 1:
+    bot.get_updates(offset)
+    last_update = bot.last_update()
+    last_update_id = last_update['update_id']
+    if last_update is None:
+            continue
     if bot.get_message(bot.last_update()) == "Бодька":
         bot.send_mess(bot.get_chat_id(bot.last_update()),"Де Шпецюк блять")
         start()
+    offset = last_update_id + 1
