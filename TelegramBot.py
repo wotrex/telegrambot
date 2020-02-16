@@ -30,7 +30,7 @@ class BogdanBot():
     
     def get_chat_sp(self,update):  
         chat_id = update['message']['chat']['id']
-        if update['message']['from']['username'] == "wotrex" and update['message']['chat']['type'] == "group" :
+        if update['message']['from']['username'] == "shputya" and update['message']['chat']['type'] == "group" :
             return chat_id
     def get_message_id(self,update):  
         chat_id = update['message']['message_id']
@@ -69,20 +69,20 @@ def start():
             if r == 3:
                 bot.send_mess(bot.get_chat_sp(bot.last_update()),"Шпетюк блять")
             if r == 4:
-                bot.send_mess(bot.get_chat_sp(bot.last_update()),"@wotrex, продам тебе циганам")
+                bot.send_mess(bot.get_chat_sp(bot.last_update()),"@shputya, продам тебе циганам")
             if r == 5:
                 bot.send_mess(bot.get_chat_sp(bot.last_update()),"Шпетюк гавно своє їсть")
             if r == 6:
-                bot.send_mess(bot.get_chat_sp(bot.last_update()),"@wotrex, в рот собі насри")
+                bot.send_mess(bot.get_chat_sp(bot.last_update()),"@shputya, в рот собі насри")
             if r == 7:
-                bot.send_mess(bot.get_chat_sp(bot.last_update()),"@wotrex, ти обісраний")
+                bot.send_mess(bot.get_chat_sp(bot.last_update()),"@shputya, ти обісраний")
             if r == 8:
                 bot.send_mess(bot.get_chat_sp(bot.last_update()),"Хай шпетюк отсосе")
             if r == 9:
                 bot.send_mess(bot.get_chat_sp(bot.last_update()),"Шпецюк")
                 bot.send_mess(bot.get_chat_sp(bot.last_update()),"Ти блатний як двері")
             if r == 10:
-                bot.send_mess(bot.get_chat_sp(bot.last_update()),"@wotrex, а уїбать")
+                bot.send_mess(bot.get_chat_sp(bot.last_update()),"@shputya, а уїбать")
             if r == 11:
                 bot.send_voice(bot.get_chat_sp(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/4/42/Voice1.ogg")
             if r == 12:
