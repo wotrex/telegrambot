@@ -30,7 +30,7 @@ class BogdanBot():
     
     def get_chat_sp(self,update):  
         chat_id = update['message']['chat']['id']
-        if update['message']['from']['username'] == "shputya" and update['message']['chat']['type'] == "group" :
+        if update['message']['from']['id'] == "395942614" and update['message']['chat']['type'] == "group" :
             return chat_id
     def get_message_id(self,update):  
         chat_id = update['message']['message_id']
