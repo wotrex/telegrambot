@@ -30,12 +30,9 @@ class BogdanBot():
     
     def get_chat_sp(self,update):  
         chat_id = update['message']['chat']['id']
-        if update['message']['from']['id'] == "395942614" and update['message']['chat']['type'] == "group" :
+        if update['message']['from']['id'] == 395942614 and (update['message']['chat']['type'] == "group" or update['message']['chat']['type'] == "supergroup") :
             return chat_id
-    def get_message_id(self,update):  
-        chat_id = update['message']['message_id']
-        return chat_id
-
+        
     def send_mess(self, chat, text):  
         params = {'chat_id': chat, 'text': text}
         response = requests.post("https://api.telegram.org/bot1061329648:AAFzLR4YTveVjLFSZb6cGcy5ze2TZRw8fbU/" + 'sendMessage', params)
@@ -52,45 +49,42 @@ class BogdanBot():
 bot = BogdanBot()
 def start():
     offset = None
-    lastupdate = bot.get_message_id(bot.last_update())
     while 1:
         bot.get_updates(offset)
         last_update = bot.last_update()
         if last_update is None:
             continue
         last_update_id = last_update['update_id']
-        if lastupdate != bot.get_message_id(bot.last_update()):
-            lastupdate = bot.get_message_id(bot.last_update())
-            r = random.randint(1,14)
-            if r == 1:
-                bot.send_mess(bot.get_chat_sp(bot.last_update()),"Шпецюк поїш гамна")
-            if r == 2:
-                bot.send_mess(bot.get_chat_sp(bot.last_update()),"Я єбав тебе в рот, Шпетюк")
-            if r == 3:
-                bot.send_mess(bot.get_chat_sp(bot.last_update()),"Шпетюк блять")
-            if r == 4:
-                bot.send_mess(bot.get_chat_sp(bot.last_update()),"@shputya, продам тебе циганам")
-            if r == 5:
-                bot.send_mess(bot.get_chat_sp(bot.last_update()),"Шпетюк гавно своє їсть")
-            if r == 6:
-                bot.send_mess(bot.get_chat_sp(bot.last_update()),"@shputya, в рот собі насри")
-            if r == 7:
-                bot.send_mess(bot.get_chat_sp(bot.last_update()),"@shputya, ти обісраний")
-            if r == 8:
-                bot.send_mess(bot.get_chat_sp(bot.last_update()),"Хай шпетюк отсосе")
-            if r == 9:
-                bot.send_mess(bot.get_chat_sp(bot.last_update()),"Шпецюк")
-                bot.send_mess(bot.get_chat_sp(bot.last_update()),"Ти блатний як двері")
-            if r == 10:
-                bot.send_mess(bot.get_chat_sp(bot.last_update()),"@shputya, а уїбать")
-            if r == 11:
-                bot.send_voice(bot.get_chat_sp(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/4/42/Voice1.ogg")
-            if r == 12:
-                bot.send_voice(bot.get_chat_sp(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/c/cb/Voice2.ogg")
-            if r == 13:
-                bot.send_voice(bot.get_chat_sp(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/2/2e/Voice3.ogg")
-            if r == 14:
-                bot.send_voice(bot.get_chat_sp(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/b/b0/Voice4.ogg")
+        r = random.randint(1,14)
+        if r == 1:
+            bot.send_mess(bot.get_chat_sp(bot.last_update()),"Шпецюк поїш гамна")
+        if r == 2:
+            bot.send_mess(bot.get_chat_sp(bot.last_update()),"Я єбав тебе в рот, Шпетюк")
+        if r == 3:
+            bot.send_mess(bot.get_chat_sp(bot.last_update()),"Шпетюк блять")
+        if r == 4:
+            bot.send_mess(bot.get_chat_sp(bot.last_update()),"@shputya, продам тебе циганам")
+        if r == 5:
+            bot.send_mess(bot.get_chat_sp(bot.last_update()),"Шпетюк гавно своє їсть")
+        if r == 6:
+            bot.send_mess(bot.get_chat_sp(bot.last_update()),"@shputya, в рот собі насри")
+        if r == 7:
+            bot.send_mess(bot.get_chat_sp(bot.last_update()),"@shputya, ти обісраний")
+        if r == 8:
+            bot.send_mess(bot.get_chat_sp(bot.last_update()),"Хай шпетюк отсосе")
+        if r == 9:
+            bot.send_mess(bot.get_chat_sp(bot.last_update()),"Шпецюк")
+            bot.send_mess(bot.get_chat_sp(bot.last_update()),"Ти блатний як двері")
+        if r == 10:
+            bot.send_mess(bot.get_chat_sp(bot.last_update()),"@shputya, а уїбать")
+        if r == 11:
+            bot.send_voice(bot.get_chat_sp(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/4/42/Voice1.ogg")
+        if r == 12:
+            bot.send_voice(bot.get_chat_sp(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/c/cb/Voice2.ogg")
+        if r == 13:
+            bot.send_voice(bot.get_chat_sp(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/2/2e/Voice3.ogg")
+        if r == 14:
+            bot.send_voice(bot.get_chat_sp(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/b/b0/Voice4.ogg")
         rand = random.randint(1,2000)
         if rand == 100:
             bot.send_mess(bot.get_chat_id(bot.last_update()),"Ми не підтримуємо булінг")
