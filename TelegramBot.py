@@ -53,6 +53,8 @@ class BogdanBot():
 
 bot = BogdanBot()
 players = []
+rate = np.empty((20,1), dtype="object")
+rate2 = np.empty((20,4), dtype="object")
 def game_start() :
     offset = None
     bot.send_mess(bot.get_chat_id(bot.last_update()),"Почалася гра МЕР МЄНТИ І РАЗБОЙНІКИ. Правила гри: МЕР повинен трахнути МЄНТІВ, МЄНТИ повинні трахнути РОЗБІЙНИКІВ, РОЗБІЙНИКИ повинні трахнути МЕРА. Кожен повинен зберегти своє очко. Хто зберіг своє очко - той виграв. Все відбувається рандомно. Ви можете тіки подивитись результати. Щоб прийняти участь в грі відправте: + . Щоб почати гру(коли наберуться учасники) відправте: Старт або Start. Щоб закінчити гру: Стоп або Stop")
@@ -64,6 +66,19 @@ def game_start() :
         last_update_id = last_update['update_id']
         if bot.get_message(bot.last_update()) == "+":
             a = 0
+            b = 0
+            for r in range(len(rate)):
+                if rate[r][0] == bot.get_username(bot.last_update()):
+                    b = "Є"
+            if b != "Є":
+                for u in range(len(rate)):
+                    if rate[u][0] == None:
+                        rate[u][0] = bot.get_username(bot.last_update())
+                        rate2[u][0] = u
+                        rate2[u][1] = 0
+                        rate2[u][2] = 0
+                        rate2[u][3] = 0
+                        break
             for p in players:
                 if p == bot.get_username(bot.last_update()):
                     a = "Є"
@@ -77,6 +92,11 @@ def game_start() :
             bot.send_mess(bot.get_chat_id(bot.last_update()), "Список гравців:")
             for p in players:
                 bot.send_mess(bot.get_chat_id(bot.last_update()), "@" + p)
+        if bot.get_message(bot.last_update()) == "Рейтинг":
+            bot.send_mess(bot.get_chat_id(bot.last_update()), "Рейтинг гравців:")
+            for p in range(len(rate)):
+                if rate[p] != None and rate2[p][1] != None and rate2[p][2] != None and rate2[p][3] != None:
+                    bot.send_mess(bot.get_chat_id(bot.last_update()), "@" + rate[p][0] + " : " + "Виграв ігор - " + str(rate2[p][1]) + ". Кількість знищених ворожих анусів - " + str(rate2[p][2]) + ". Кількість разів коли втратив анальну дєвствєнность - " + str(rate2[p][3])  )
 
         if bot.get_message(bot.last_update()) == "Старт" or bot.get_message(bot.last_update()) == "Start":
            # bot.send_mess(bot.get_chat_id(bot.last_update()), "Гра ще не написана)")
@@ -150,8 +170,26 @@ def game():
                         if players3[i][1] == "Мєнт":
                             die = random.randint(1,2)
                             if die == 1:
-                                bot.send_mess(bot.get_chat_id(bot.last_update()), "Мер @" + players[p] + " знищив очко мєнта @" + players[i])
+                                rep = random.randint(1,4)
+                                if rep == 1:
+                                    bot.send_mess(bot.get_chat_id(bot.last_update()), "Мер @" + players[p] + " знищив очко мєнта @" + players[i])
+                                if rep == 2:
+                                    bot.send_mess(bot.get_chat_id(bot.last_update()), "Мер @" + players[p] + " розтарабанив очко мєнта @" + players[i])
+                                if rep == 3:
+                                    bot.send_mess(bot.get_chat_id(bot.last_update()), "Мєнт @" + players[i] + " кінчив в штани коли його їбав мер @" + players[p])
+                                if rep == 4:
+                                    bot.send_mess(bot.get_chat_id(bot.last_update()), "Мєнта @" + players[i] + " спіткала анальна кара мера @" + players[p])    
                                 players3[i][2] = "Died"
+                                if player[p] in rate:
+                                    for h in range(len(rate)):
+                                        if rate[h][0] == player[p]:
+                                            rate2[h][2] = rate2[h][2] + 1
+                                            break
+                                if player[i] in rate:
+                                    for h in range(len(rate)):
+                                        if rate[h][0] == player[i]:
+                                            rate2[h][3] = rate2[h][3] + 1
+                                            break
                             else:
                                 a = True
                         if players3[i][1] == "Разбойнік":
@@ -164,22 +202,65 @@ def game():
                         if players3[i][1] == "Разбойнік":
                             die = random.randint(1,2)
                             if die == 1:
-                                bot.send_mess(bot.get_chat_id(bot.last_update()), "Мєнт @" + players[p] + " знищив очко разбойніка @" + players[i])
+                                rep = random.randint(1,4)
+                                if rep == 1:
+                                    bot.send_mess(bot.get_chat_id(bot.last_update()), "Мєнт @" + players[p] + " знищив очко разбойніка @" + players[i])
+                                if rep == 2:
+                                    bot.send_mess(bot.get_chat_id(bot.last_update()), "Мєнт @" + players[p] + " розтарабанив очко разбойніка @" + players[i])
+                                if rep == 3:
+                                    bot.send_mess(bot.get_chat_id(bot.last_update()), "Разбойнік @" + players[i] + " кінчив в штани коли його їбав мєнт @" + players[p])
+                                if rep == 4:
+                                    bot.send_mess(bot.get_chat_id(bot.last_update()), "Разбойніка @" + players[i] + " спіткала анальна кара мєнта @" + players[p])
                                 players3[i][2] = "Died"
+                                if player[p] in rate:
+                                    for h in range(len(rate)):
+                                        if rate[h][0] == player[p]:
+                                            rate2[h][2] = rate2[h][2] + 1
+                                            break
+                                if player[i] in rate:
+                                    for h in range(len(rate)):
+                                        if rate[h][0] == player[i]:
+                                            rate2[h][3] = rate2[h][3] + 1
+                                            break
                             else:
                                 a = True
                     if players3[p][1] == "Разбойнік":
                         if players3[i][1] == "Мер":
                             die = random.randint(1,2)
                             if die == 1:
-                                bot.send_mess(bot.get_chat_id(bot.last_update()), "Разбойнік @" + players[p] + " розтарабанив очко мера @" + players[i])
+                                rep = random.randint(1,4)
+                                if rep == 1:
+                                    bot.send_mess(bot.get_chat_id(bot.last_update()), "Разбойнік @" + players[p] + " знищив очко мера @" + players[i])
+                                if rep == 2:
+                                    bot.send_mess(bot.get_chat_id(bot.last_update()), "Разбойнік @" + players[p] + " розтарабанив очко мера @" + players[i])
+                                if rep == 3:
+                                    bot.send_mess(bot.get_chat_id(bot.last_update()), "Мер @" + players[i] + " кінчив в штани коли його їбав разбойнік @" + players[p])
+                                if rep == 4:
+                                    bot.send_mess(bot.get_chat_id(bot.last_update()), "Мера @" + players[i] + " спіткала анальна кара разбойніка @" + players[p])
                                 players3[i][2] = "Died"
+                                if player[p] in rate:
+                                    for h in range(len(rate)):
+                                        if rate[h][0] == player[p]:
+                                            rate2[h][2] = rate2[h][2] + 1
+                                            break
+                                if player[i] in rate:
+                                    for h in range(len(rate)):
+                                        if rate[h][0] == player[i]:
+                                            rate2[h][3] = rate2[h][3] + 1
+                                            break
                             else:
                                 a = True
                         if players3[i][1] == "Мєнт":
                             a = True
                         if players3[i][1] == "Разбойнік":
                             a = True
+    for p in range(len(players)):
+        if player[p] in rate:
+            for h in range(len(rate)):
+                if rate[h][0] == player[p]:
+                    rate2[h][1] = rate2[h][1] + 1
+                    break
+                
     for p in range(len(players)):
         if players3[p][2] != "Died":
             bot.send_mess(bot.get_chat_id(bot.last_update()), players3[p][1] + " @" + players[p] + " зберіг своє очко та виграв" )
@@ -194,7 +275,7 @@ def start():
         if last_update is None:
             continue
         last_update_id = last_update['update_id']
-        r = random.randint(1,22)
+        r = random.randint(1,23)
         rb = random.randint(1,3)
         if rb == 1:
             bot.send_mess(bot.get_chat_bog(bot.last_update()),"+")
@@ -248,8 +329,10 @@ def start():
         if r == 22:
             bot.send_mess(bot.get_chat_sp(bot.last_update()),"Ти кріпак засраний")
             bot.send_mess(bot.get_chat_sp(bot.last_update()),"Іди сіно кидай")
+        if r == 23:
+            bot.send_mess(bot.get_chat_sp(bot.last_update()),"@shputya ти загноение  підзалупного міра")
 
-        rand = random.randint(1,2000)
+        rand = random.randint(1,1000)
         if rand == 100:
             bot.send_mess(bot.get_chat_id(bot.last_update()),"Ми не підтримуємо булінг")
         if bot.get_message(bot.last_update()) == "Богдан, завали єбало" or bot.get_message(bot.last_update()) == "Соси" or bot.get_message(bot.last_update()) == "Закрий єбало" or bot.get_message(bot.last_update()) == "Завали єбало" or bot.get_message(bot.last_update()) == "Богдан,закрий єбало" or bot.get_message(bot.last_update()) == "єбало офф" or bot.get_message(bot.last_update()) == "єбало off " or bot.get_message(bot.last_update()) == "Пішов нахуй Богдан" or bot.get_message(bot.last_update()) == "Пішов нахуй" or  bot.get_message(bot.last_update()) == "Пашол нахуй Богдан" or bot.get_message(bot.last_update()) == "Пашол нахуй" or bot.get_message(bot.last_update()) == "Бодя іди нах" or bot.get_message(bot.last_update()) == "іди нах" or bot.get_message(bot.last_update()) == "Бодя іди нахуй" or bot.get_message(bot.last_update()) == "Іди нахуй" or bot.get_message(bot.last_update()) == "Богдан іди нахуй" or bot.get_message(bot.last_update()) == "Богдан пішов нахуй" or bot.get_message(bot.last_update()) == "Богдан пашол нахуй" or bot.get_message(bot.last_update()) == "Shut up" or bot.get_message(bot.last_update()) == "Сосни" or bot.get_message(bot.last_update()) == "Пососи" or bot.get_message(bot.last_update()) == "Пососи ок?" or bot.get_message(bot.last_update()) == "Пососеш ок?" :
