@@ -180,14 +180,14 @@ def game():
                                 if rep == 4:
                                     bot.send_mess(bot.get_chat_id(bot.last_update()), "Мєнта @" + players[i] + " спіткала анальна кара мера @" + players[p])    
                                 players3[i][2] = "Died"
-                                if player[p] in rate:
+                                if players[p] in rate:
                                     for h in range(len(rate)):
-                                        if rate[h][0] == player[p]:
+                                        if rate[h][0] == players[p]:
                                             rate2[h][2] = rate2[h][2] + 1
                                             break
-                                if player[i] in rate:
+                                if players[i] in rate:
                                     for h in range(len(rate)):
-                                        if rate[h][0] == player[i]:
+                                        if rate[h][0] == players[i]:
                                             rate2[h][3] = rate2[h][3] + 1
                                             break
                             else:
@@ -212,14 +212,14 @@ def game():
                                 if rep == 4:
                                     bot.send_mess(bot.get_chat_id(bot.last_update()), "Разбойніка @" + players[i] + " спіткала анальна кара мєнта @" + players[p])
                                 players3[i][2] = "Died"
-                                if player[p] in rate:
+                                if players[p] in rate:
                                     for h in range(len(rate)):
-                                        if rate[h][0] == player[p]:
+                                        if rate[h][0] == players[p]:
                                             rate2[h][2] = rate2[h][2] + 1
                                             break
-                                if player[i] in rate:
+                                if players[i] in rate:
                                     for h in range(len(rate)):
-                                        if rate[h][0] == player[i]:
+                                        if rate[h][0] == players[i]:
                                             rate2[h][3] = rate2[h][3] + 1
                                             break
                             else:
@@ -238,14 +238,14 @@ def game():
                                 if rep == 4:
                                     bot.send_mess(bot.get_chat_id(bot.last_update()), "Мера @" + players[i] + " спіткала анальна кара разбойніка @" + players[p])
                                 players3[i][2] = "Died"
-                                if player[p] in rate:
+                                if players[p] in rate:
                                     for h in range(len(rate)):
-                                        if rate[h][0] == player[p]:
+                                        if rate[h][0] == players[p]:
                                             rate2[h][2] = rate2[h][2] + 1
                                             break
-                                if player[i] in rate:
+                                if players[i] in rate:
                                     for h in range(len(rate)):
-                                        if rate[h][0] == player[i]:
+                                        if rate[h][0] == players[i]:
                                             rate2[h][3] = rate2[h][3] + 1
                                             break
                             else:
@@ -255,9 +255,9 @@ def game():
                         if players3[i][1] == "Разбойнік":
                             a = True
     for p in range(len(players)):
-        if player[p] in rate:
+        if players[p] in rate:
             for h in range(len(rate)):
-                if rate[h][0] == player[p]:
+                if rate[h][0] == players[p]:
                     rate2[h][1] = rate2[h][1] + 1
                     break
                 
