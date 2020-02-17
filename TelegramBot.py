@@ -99,19 +99,23 @@ def game_start() :
                     bot.send_mess(bot.get_chat_id(bot.last_update()), "@" + rate[p][0] + " : " + "Виграв ігор - " + str(rate2[p][1]) + ". Кількість знищених ворожих анусів - " + str(rate2[p][2]) + ". Кількість разів коли втратив анальну дєвствєнность - " + str(rate2[p][3])  )
 
         if bot.get_message(bot.last_update()) == "Топ":
-            bot.send_mess(bot.get_chat_id(bot.last_update()), "Топ побідітєлєй:")
-            c1 = 0
-            j1 = 0
-            c2 = 0
-            j1 = 0
-            c3 = 0
-            j1 = 0
+            bot.send_mess(bot.get_chat_id(bot.last_update()), "Топ 3 побідітєлєй:")
+            c = [0,0,0]
+            j = []
             for p in range(len(rate))
-                if rate[p] != None and rate2[p][1] != None and rate2[p][2] != None and rate2[p][3] != None and rate2[p][1] > c1:
-                    c1 = rate[p][1]
-                    
-            bot.send_mess(bot.get_chat_id(bot.last_update()), "@"  )
-
+                if rate[p] != None and rate2[p][1] != None and rate2[p][2] != None and rate2[p][3] != None and rate2[p][1] > c[0]:
+                    c[0] = rate2[p][1]
+                    j[0] = rate[p][0]
+                else:
+                    if rate2[p][1] > c[1]:
+                        c[1] = rate2[p][1]
+                        j[1] = rate[p][0]
+                    else:
+                        if rate2[p][1] > c[2]:
+                            c[2] = rate2[p][1]
+                            j[2] = rate[p][0]
+            for f in range(3):
+                bot.send_mess(bot.get_chat_id(bot.last_update()), str(f+1)". @" + str(j[f]) + " виграв " + str(c[f]) + " раз.)
         if bot.get_message(bot.last_update()) == "Старт" or bot.get_message(bot.last_update()) == "Start":
            # bot.send_mess(bot.get_chat_id(bot.last_update()), "Гра ще не написана)")
            if len(players) >= 2:
