@@ -92,8 +92,8 @@ def game_start() :
             bot.send_mess(bot.get_chat_id(bot.last_update()), "Список гравців:")
             for p in players:
                 bot.send_mess(bot.get_chat_id(bot.last_update()), "@" + p)
-        if bot.get_message(bot.last_update()) == "Рейтинг":
-            bot.send_mess(bot.get_chat_id(bot.last_update()), "Рейтинг гравців:")
+        if bot.get_message(bot.last_update()) == "Статистика":
+            bot.send_mess(bot.get_chat_id(bot.last_update()), "Статистика гравців:")
             for p in range(len(rate)):
                 if rate[p] != None and rate2[p][1] != None and rate2[p][2] != None and rate2[p][3] != None:
                     bot.send_mess(bot.get_chat_id(bot.last_update()), "@" + rate[p][0] + " : " + "Виграв ігор - " + str(rate2[p][1]) + ". Кількість знищених ворожих анусів - " + str(rate2[p][2]) + ". Кількість разів коли втратив анальну дєвствєнность - " + str(rate2[p][3])  )
