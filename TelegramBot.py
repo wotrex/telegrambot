@@ -115,7 +115,7 @@ def game_start() :
                             c[2] = rate2[p][1]
                             j[2] = rate[p][0]
             for f in range(3):
-                bot.send_mess(bot.get_chat_id(bot.last_update()), str(f+1)". @" + str(j[f]) + " виграв " + str(c[f]) + " раз.)
+                bot.send_mess(bot.get_chat_id(bot.last_update()), str(f+1) + ". @" + str(j[f]) + " виграв " + str(c[f]) + " раз.")
         if bot.get_message(bot.last_update()) == "Старт" or bot.get_message(bot.last_update()) == "Start":
            # bot.send_mess(bot.get_chat_id(bot.last_update()), "Гра ще не написана)")
            if len(players) >= 2:
