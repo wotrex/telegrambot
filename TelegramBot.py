@@ -100,11 +100,14 @@ def game_start() :
 
         if bot.get_message(bot.last_update()) == "Старт" or bot.get_message(bot.last_update()) == "Start":
            # bot.send_mess(bot.get_chat_id(bot.last_update()), "Гра ще не написана)")
-           if len(players) >= 2:
-               game()
-               break
-           else:
-               bot.send_mess(bot.get_chat_id(bot.last_update()), "Мало гравців(Мінімум 2)")
+          # if len(players) >= 2:
+           game()
+           break
+          #     game()
+           #    break
+         #  else:
+         #      bot.send_mess(bot.get_chat_id(bot.last_update()), "Мало гравців(Мінімум 2)")
+
 
         if bot.get_message(bot.last_update()) == "Стоп" or bot.get_message(bot.last_update()) == "Stop":
             bot.send_mess(bot.get_chat_id(bot.last_update()), "Гру відмінено")
