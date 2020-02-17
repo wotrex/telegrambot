@@ -102,7 +102,7 @@ def game_start() :
             bot.send_mess(bot.get_chat_id(bot.last_update()), "Топ 3 побідітєлєй:")
             c = [0,0,0]
             j = []
-            for p in range(len(rate))
+            for p in range(len(rate)):
                 if rate[p] != None and rate2[p][1] != None and rate2[p][2] != None and rate2[p][3] != None and rate2[p][1] > c[0]:
                     c[0] = rate2[p][1]
                     j[0] = rate[p][0]
