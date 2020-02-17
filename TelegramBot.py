@@ -278,6 +278,8 @@ def start():
         last_update_id = last_update['update_id']
         r = random.randint(1,23)
         rb = random.randint(1,3)
+        if bot.get_message(bot.last_update()) == "Игра" or bot.get_message(bot.last_update()) == "Ігра" or bot.get_message(bot.last_update()) == "Game":
+            game_start()
         if rb == 1:
             bot.send_mess(bot.get_chat_bog(bot.last_update()),"+")
         if rb == 2:
@@ -340,8 +342,6 @@ def start():
             bot.send_mess(bot.get_chat_id(bot.last_update()),"Ок")
             offset = None
             break
-        if bot.get_message(bot.last_update()) == "Игра" or bot.get_message(bot.last_update()) == "Ігра" or bot.get_message(bot.last_update()) == "Game":
-            game_start()
         offset = last_update_id + 1
 start()
 offset = None
