@@ -221,8 +221,9 @@ def game():
         if players3[0][1] == players3[1][1]:
             storonu()
         
-    for k in range(len(players)):      
-        bot.send_mess(bot.get_chat_id(bot.last_update()), "@" + players3[k][0] + " - " + players3[k][1])
+    for k in range(len(players)):
+        if players3[k][0] != None and players3[k][1] != None:
+            bot.send_mess(bot.get_chat_id(bot.last_update()), "@" + players3[k][0] + " - " + players3[k][1])
     def raund():
         for p in range(len(players)):
             if players3[p][2] != "Died":
