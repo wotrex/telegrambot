@@ -337,22 +337,24 @@ def game():
                                     if life == 4:
                                         bot.send_mess(bot.get_chat_id(bot.last_update()), "Мер @" + players[i] + " в останній момент використав 'стан' і втік від разбойніка @" + players[p])
     raund()
-    if "Died" in players3:
-        for p in range(len(players)):
-            if players[p] in rate:
-                if players3[p][2] != "Died":
-                    for h in range(len(rate)):
-                        if rate[h][0] == players[p]:
-                            rate2[h][1] = rate2[h][1] + 1
-                            break
+    while 1:
+        if "Died" in players3:
+            for p in range(len(players)):
+                if players[p] in rate:
+                    if players3[p][2] != "Died":
+                        for h in range(len(rate)):
+                            if rate[h][0] == players[p]:
+                                rate2[h][1] = rate2[h][1] + 1
+                                break
                     
-        for p in range(len(players)):
-            if players3[p][2] != "Died":
-                bot.send_mess(bot.get_chat_id(bot.last_update()), players3[p][1] + " @" + players[p] + " зберіг своє очко та виграв" )
-        players.clear()
-        return
-    else:
-        raund()
+            for p in range(len(players)):
+                if players3[p][2] != "Died":
+                    bot.send_mess(bot.get_chat_id(bot.last_update()), players3[p][1] + " @" + players[p] + " зберіг своє очко та виграв" )
+            players.clear()
+            break
+            return
+        else:
+            raund()
       
 def start():
     offset = None
