@@ -220,7 +220,11 @@ def game():
     if len(players) == 2:
         if players3[0][1] == players3[1][1]:
             storonu()
-        
+
+    if len(players) == 3:
+        if players3[0][1] == players3[1][1] or players3[0][1] == players3[2][1] or players3[1][1] == players3[2][1]:
+            storonu()
+
     for k in range(len(players)):
         if players3[k][0] != None and players3[k][1] != None:
             bot.send_mess(bot.get_chat_id(bot.last_update()), "@" + players3[k][0] + " - " + players3[k][1])
