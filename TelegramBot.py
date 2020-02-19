@@ -23,21 +23,21 @@ class BogdanBot():
 
         return last_update 
     
-    def get_chat_id(self,update):  
-        chat_id = update['message']['chat']['id']
-        return chat_id
+    def get_chat_id(self,update):
+        if 'message' in update:
+            chat_id = update['message']['chat']['id']
+            return chat_id
+        if 'edited_message' in update:
+            chat_id = update['message']['chat']['id']
+            return chat_id
     
-    def get_chat_sp(self,update):  
-        chat_id = update['message']['chat']['id']
-        if update['message']['from']['id'] == 395942614 and (update['message']['chat']['type'] == "group" or update['message']['chat']['type'] == "supergroup") :
-            return chat_id
-    def get_chat_bog(self,update):  
-        chat_id = update['message']['chat']['id']
-        if update['message']['from']['username'] == 'zagin177' and (update['message']['chat']['type'] == "group" or update['message']['chat']['type'] == "supergroup") :
-            return chat_id
     def send_mess(self, chat, text):  
         params = {'chat_id': chat, 'text': text}
         response = requests.post("https://api.telegram.org/bot1061329648:AAFzLR4YTveVjLFSZb6cGcy5ze2TZRw8fbU/" + 'sendMessage', params)
+        return response
+    def resend_mess(self, chat, text, reply):  
+        params = {'chat_id': chat, 'text': text, 'reply_to_message_id': reply}
+        response = requests.post("https://api.telegram.org/bot1074489281:AAGtlJU5Aw1MuEljMucVl40HjlqxgZfauK0/" + 'sendMessage', params)
         return response
     def send_mes(self, chat, text):  
         response = requests.post("https://api.telegram.org/bot1061329648:AAFzLR4YTveVjLFSZb6cGcy5ze2TZRw8fbU/sendMessage?chat_id={}&text={}".format(chat, text))
@@ -47,17 +47,76 @@ class BogdanBot():
         response = requests.post("https://api.telegram.org/bot1061329648:AAFzLR4YTveVjLFSZb6cGcy5ze2TZRw8fbU/" + 'sendVoice', params)
         return response
     def get_message(self,update):
-        if 'text' in update['message']:
-            chat_id = update['message']['text']
+        if 'message' in update:
+            if 'text' in update['message']:
+                chat_id = update['message']['text']
+                return chat_id
+            else:
+                no = "non"
+                return no
+        if 'edited_message' in update:
+            if 'text' in update['edited_message']:
+                chat_id = update['edited_message']['text']
+                return chat_id
+            else:
+                no = "non"
+                return no
+    def get_message_id(self,update):
+        if 'message' in update:
+            chat_id = update['message']['message_id']
             return chat_id
-    def get_username(self, update):  
-        chat_id = update['message']['from']['username']
-        return chat_id
+        if 'edited_message' in update:
+            chat_id = update['edited_message']['message_id']
+            return chat_id
+    def get_username(self, update):
+         if 'message' in update:
+             if 'username' in update['message']['from']:
+                chat_id = update['message']['from']['username']
+                return chat_id
+             else:
+                 firstn = update['message']['from']['first_name']
+                 return firstn
+         if 'edited_message' in update:
+             if 'username' in ['edited_message']['from']:
+                chat_id = update['edited_message']['from']['username']
+                return chat_id
+             else:
+                 firstn = update['message']['from']['first_name']
+                 return firstn
+    def get_firstname(self, update):
+         if 'message' in update:
+             if 'first_name' in update['message']['from']:
+                chat_id = update['message']['from']['first_name']
+                return chat_id
+         if 'edited_message' in update:
+             if 'first_name' in ['edited_message']['from']:
+                chat_id = update['edited_message']['from']['first_name']
+                return chat_id
+    def forward_mess(self, chat, from_chat, mess):  
+        params = {'chat_id': chat, 'from_chat_id': from_chat, 'message_id': mess}
+        response = requests.post("https://api.telegram.org/bot1061329648:AAFzLR4YTveVjLFSZb6cGcy5ze2TZRw8fbU/" + 'forwardMessage', params)
+        return response    
+        
 
 bot = BogdanBot()
 players = []
 rate = np.empty((20,1), dtype="object")
 rate2 = np.empty((20,4), dtype="object")
+def countElement(massive2d, text, countrow, countcolumn):
+    countRW = 0
+    countCL = 0
+    countext = 0
+    for i in range(countrow * countcolumn):
+        if countCL == countcolumn:
+            countCL = 0
+            countRW = countRW + 1
+        if massive2d[countRW][countCL] == text:
+            countext = countext + 1
+            countCL = countCL + 1
+        else:
+            countCL = countCL + 1
+    return countext
+            
 def game_start() :
     offset = None
     bot.send_mes(bot.get_chat_id(bot.last_update()), 'Почалася%20гра%20"Мер,%20Мєнти%20та%20Разбойніки".%0A%0AПравила%20гри:%0AМЕР%20повинен%20трахнути%20МЄНТІВ,%20МЄНТИ%20повинні%20трахнути%20РОЗБІЙНИКІВ,%20РОЗБІЙНИКИ%20повинні%20трахнути%20МЕРА.%20Кожен%20повинен%20зберегти%20своє%20очко.%20Хто%20зберіг%20своє%20очко%20-%20той%20виграв.%20Все%20відбувається%20рандомно.%20Ви%20можете%20тіки%20подивитись%20результати.%0A%0AЩоб%20прийняти%20участь%20в%20грі%20відправте:%20{}%20.%0A%0AЩоб%20почати%20гру(коли%20наберуться%20учасники)%20відправте:%20"Старт"%20або%20"Start".%0A%0AЩоб%20закінчити%20гру:%20"Стоп"%20або%20"Stop".%0A%0A"list"%20-%20подивиться%20список%20учасників%0A%0A"Статистика"%20-%20подивиться%20статискику%0A%0A"Топ"%20-%20подивиться%20топ3.'.format('"Плюс"'))
@@ -85,6 +144,7 @@ def game_start() :
                         rate2[u][2] = 0
                         rate2[u][3] = 0
                         break
+                    
         lict = "List list лист Лист список Список ліст Ліст"
         if bot.get_message(bot.last_update()) in lict:
             pl = None
@@ -176,54 +236,71 @@ def game():
         players3[p][0] = players[p]
     def storonu():
         rand = random.randint(1,3)
-        countP = 0
-        countR = 0
         countM = 0
         for p in range(len(players)):
+            rand = random.randint(1,3)
             if rand == 1:
-    ##            bot.send_mess(bot.get_chat_id(bot.last_update()), "@" + p + " обрав Мєнта")
-                if countP < (countR + 1) or countR == countP:
+                if countElement(players3,"Мєнт", 20, 3) <= countElement(players3,"Разбойнік", 20, 3):
                     players3[p][1] = "Мєнт"
-                    countP = countP + 1
-                    rand = random.randint(1,3)
                 else:
                     players3[p][1] = "Разбойнік"
-                    countR = countR + 1
-                    rand = random.randint(1,3)
             if rand == 2:
-    ##            bot.send_mess(bot.get_chat_id(bot.last_update()), "@" + p + " обрав Розбійника")
-                if countR < (countP + 1) or countR == countP:
+                if countElement(players3,"Мєнт", 20, 3) >= countElement(players3,"Разбойнік", 20, 3):
                     players3[p][1] = "Разбойнік"
-                    countR = countR + 1
-                    rand = random.randint(1,3)
                 else:
                     players3[p][1] = "Мєнт"
-                    countP = countP + 1
-                    rand = random.randint(1,3)
             if rand == 3:
-    ##            bot.send_mess(bot.get_chat_id(bot.last_update()), "@" + p + " обрав Мера")
                 if countM == 0:
                     players3[p][1] = "Мер"
                     countM = countM + 1
-                    rand = random.randint(1,3)
                 else:
                     rand2= random.randint(1,2)
-                    if rand == 1:
-                        players3[p][1] = "Мєнт"
-                        countP = countP + 1
-                        rand = random.randint(1,3)
-                    if rand == 2:
-                        players3[p][1] = "Разбойнік"
-                        countR = countR + 1
-                        rand = random.randint(1,3)
+                    if rand2 == 1:
+                        if countElement(players3,"Мєнт", 20, 3) <= countElement(players3,"Разбойнік", 20, 3):
+                            players3[p][1] = "Мєнт"
+                        else:
+                            players3[p][1] = "Разбойнік"
+                    if rand2 == 2:
+                        if countElement(players3,"Мєнт", 20, 3) >= countElement(players3,"Разбойнік", 20, 3):
+                            players3[p][1] = "Разбойнік"
+                        else:
+                            players3[p][1] = "Мєнт"
     storonu()
-    if len(players) == 2:
-        if players3[0][1] == players3[1][1]:
-            storonu()
-
-    if len(players) == 3:
-        if players3[0][1] == players3[1][1] or players3[0][1] == players3[2][1] or players3[1][1] == players3[2][1]:
-            storonu()
+    bb = False
+    cc = False
+    while 1 :
+        if len(players) != 2:
+            if len(players)%2 != 0:
+                if countElement(players3,"Мєнт", 20, 3) != countElement(players3,"Разбойнік", 20, 3):
+                    storonu()
+                    cc = False
+                else:
+                    bb = True
+                
+                if "Мер" in players3:
+                    cc = True
+                else:
+                    storonu()
+                    bb = False
+                if bb == True and cc == True:
+                   break
+            else:
+                if countElement(players3,"Мєнт", 20, 3) - 2 == countElement(players3,"Разбойнік", 20, 3) or countElement(players3,"Мєнт", 20, 3) == countElement(players3,"Разбойнік", 20, 3) - 2 :                
+                    storonu()
+                    cc = False
+                else:
+                    bb = True
+                
+                if "Мер" in players3:
+                    cc = True
+                else:
+                    storonu()
+                    bb = False
+                if bb == True and cc == True:
+                   break
+                
+        else:
+            break
 
     for k in range(len(players)):
         if players3[k][0] != None and players3[k][1] != None:
@@ -234,8 +311,6 @@ def game():
                 for i in range(len(players)):
                     if i != p and players3[i][2] != "Died":
                         if players3[p][1] == "Мер":
-                            if players3[i][1] == "Мер":
-                                a = True
                             if players3[i][1] == "Мєнт":
                                 bot.send_mess(bot.get_chat_id(bot.last_update()), "Мер @" + players[p] + " помітив мєнта @" + players[i])
                                 die = random.randint(1,2)
@@ -263,7 +338,7 @@ def game():
                                 else:
                                     life = random.randint(1,4)
                                     if life == 1:
-                                        bot.send_mess(bot.get_chat_id(bot.last_update()), "Мер @" + players[p] + " промазав своїм пенісом і мєнт @" + players[i] + "зірвався та втік")
+                                        bot.send_mess(bot.get_chat_id(bot.last_update()), "Мер @" + players[p] + " промазав своїм пенісом і мєнт @" + players[i] + " зірвався та втік")
                                     if life == 2:
                                         bot.send_mess(bot.get_chat_id(bot.last_update()), "Мєнту @" + players[i] + " вдалося уникнути пеніса мера @" + players[p])
                                     if life == 3:
@@ -298,7 +373,7 @@ def game():
                                 else:
                                     life = random.randint(1,4)
                                     if life == 1:
-                                        bot.send_mess(bot.get_chat_id(bot.last_update()), "Мєнт @" + players[p] + " промазав своїм пенісом і разбойнік @" + players[i] + "зірвався та втік")
+                                        bot.send_mess(bot.get_chat_id(bot.last_update()), "Мєнт @" + players[p] + " промазав своїм пенісом і разбойнік @" + players[i] + " зірвався та втік")
                                     if life == 2:
                                         bot.send_mess(bot.get_chat_id(bot.last_update()), "Разбойніку @" + players[i] + " вдалося уникнути пеніса мєнта @" + players[p])
                                     if life == 3:
@@ -333,7 +408,7 @@ def game():
                                 else:
                                     life = random.randint(1,4)
                                     if life == 1:
-                                        bot.send_mess(bot.get_chat_id(bot.last_update()), "Разбойнік @" + players[p] + " промазав своїм пенісом і мер @" + players[i] + "зірвався та втік")
+                                        bot.send_mess(bot.get_chat_id(bot.last_update()), "Разбойнік @" + players[p] + " промазав своїм пенісом і мер @" + players[i] + " зірвався та втік")
                                     if life == 2:
                                         bot.send_mess(bot.get_chat_id(bot.last_update()), "Меру @" + players[i] + " вдалося уникнути пеніса разбойніка @" + players[p])
                                     if life == 3:
@@ -341,8 +416,20 @@ def game():
                                     if life == 4:
                                         bot.send_mess(bot.get_chat_id(bot.last_update()), "Мер @" + players[i] + " в останній момент використав 'стан' і втік від разбойніка @" + players[p])
     raund()
+    life = 1
     while 1:
-        if "Died" in players3:
+        if len(players) > 5:
+            for r in range(len(players)):
+                for c in range(3):
+                    if players3[r][c] == "Мер":
+                        if players3[r][c+1] == "Died":
+                            r = random.randint(1,2)
+                            if life == 1:
+                                if r == 1:
+                                    players3[r][c+1] = None
+                                    bot.send_mess(bot.get_chat_id(bot.last_update()), "Мер @" + players[r] + " платить за восcтановлєніє свого очка і повертається до гри")
+                                    life = 0
+        if countElement(players3,"Died", 20, 3) >= (len(players) / 2) :
             for p in range(len(players)):
                 if players[p] in rate:
                     if players3[p][2] != "Died":
@@ -373,64 +460,88 @@ def start():
         igra = "Гра Ігра Игра Game Грать Плей Играть Іграть play гра ігра игра game грать плей играть іграть play"
         if bot.get_message(bot.last_update()) in igra:
             game_start()
-        if rb == 1:
-            bot.send_mess(bot.get_chat_bog(bot.last_update()),"+")
-        if rb == 2:
-            bot.send_mess(bot.get_chat_bog(bot.last_update()),"Согласен")
-        if rb == 3:
-            bot.send_mess(bot.get_chat_bog(bot.last_update()),"Поддержую")
-        if r == 1:
-            bot.send_mess(bot.get_chat_sp(bot.last_update()),"Шпецюк поїш гамна")
-        if r == 2:
-            bot.send_mess(bot.get_chat_sp(bot.last_update()),"Я єбав тебе в рот, Шпетюк")
-        if r == 3:
-            bot.send_mess(bot.get_chat_sp(bot.last_update()),"Шпетюк блять")
-        if r == 4:
-            bot.send_mess(bot.get_chat_sp(bot.last_update()),"@shputya, продам тебе циганам")
-        if r == 5:
-            bot.send_mess(bot.get_chat_sp(bot.last_update()),"Шпетюк гавно своє їсть")
-        if r == 6:
-            bot.send_mess(bot.get_chat_sp(bot.last_update()),"@shputya, в рот собі насри")
-        if r == 7:
-            bot.send_mess(bot.get_chat_sp(bot.last_update()),"@shputya, ти обісраний")
-        if r == 8:
-            bot.send_mess(bot.get_chat_sp(bot.last_update()),"Хай шпетюк отсосе")
-        if r == 9:
-            bot.send_mess(bot.get_chat_sp(bot.last_update()),"Шпецюк")
-            bot.send_mess(bot.get_chat_sp(bot.last_update()),"Ти блатний як двері")
-        if r == 10:
-            bot.send_mess(bot.get_chat_sp(bot.last_update()),"@shputya, а уїбать")
-        if r == 11:
-            bot.send_voice(bot.get_chat_sp(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/4/42/Voice1.ogg")
-        if r == 12:
-            bot.send_voice(bot.get_chat_sp(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/c/cb/Voice2.ogg")
-        if r == 13:
-            bot.send_voice(bot.get_chat_sp(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/2/2e/Voice3.ogg")
-        if r == 14:
-            bot.send_voice(bot.get_chat_sp(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/b/b0/Voice4.ogg")
-        if r == 15:
-            bot.send_mess(bot.get_chat_sp(bot.last_update()),"@shputya, ти овощ")
-        if r == 16:
-            bot.send_mess(bot.get_chat_sp(bot.last_update()),"Шпитя ти тупий")
-        if r == 17:
-            bot.send_mess(bot.get_chat_sp(bot.last_update()),"Ти дебіл шпитя")
-        if r == 18:
-            bot.send_voice(bot.get_chat_sp(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/b/bf/Voice5.ogg")
-        if r == 19:
-            bot.send_mess(bot.get_chat_sp(bot.last_update()),"Завали їбало")
-        if r == 20:
-            bot.send_mess(bot.get_chat_sp(bot.last_update()),"Пашол нахуй Шпитюк")
-        if r == 21:
-            bot.send_mess(bot.get_chat_sp(bot.last_update()),"Ти підарастіческа хуйня їбана")
-        if r == 22:
-            bot.send_mess(bot.get_chat_sp(bot.last_update()),"Ти кріпак засраний")
-            bot.send_mess(bot.get_chat_sp(bot.last_update()),"Іди сіно кидай")
-        if r == 23:
-            bot.send_mess(bot.get_chat_sp(bot.last_update()),"@shputya ти загноение  підзалупного міра")
+        if rb == 1 and bot.get_username(bot.last_update()) == "zagin177":
+            
+            bot.resend_mess(bot.get_chat_id(bot.last_update()),"+", bot.get_message_id(bot.last_update()))
+        if rb == 2 and bot.get_username(bot.last_update()) == "zagin177":
+            
+            bot.resend_mess(bot.get_chat_id(bot.last_update()),"Согласен", bot.get_message_id(bot.last_update()))
+        if rb == 3 and bot.get_username(bot.last_update()) == "zagin177":
+            
+            bot.resend_mess(bot.get_chat_id(bot.last_update()),"Поддержую", bot.get_message_id(bot.last_update()))
+        if r == 1 and bot.get_username(bot.last_update()) == "shputya":
+            
+            bot.resend_mess(bot.get_chat_id(bot.last_update()),"Шпецюк поїш гамна", bot.get_message_id(bot.last_update()))
+        if r == 2 and bot.get_username(bot.last_update()) == "shputya":
+            
+            bot.resend_mess(bot.get_chat_id(bot.last_update()),"Я єбав тебе в рот, Шпетюк", bot.get_message_id(bot.last_update()))
+        if r == 3 and bot.get_username(bot.last_update()) == "shputya":
+            
+            bot.resend_mess(bot.get_chat_id(bot.last_update()),"Шпетюк блять", bot.get_message_id(bot.last_update()))
+        if r == 4 and bot.get_username(bot.last_update()) == "shputya":
+            
+            bot.resend_mess(bot.get_chat_id(bot.last_update()),"продам тебе циганам", bot.get_message_id(bot.last_update()))
+        if r == 5 and bot.get_username(bot.last_update()) == "shputya":
+            
+            bot.resend_mess(bot.get_chat_id(bot.last_update()),"Шпетюк гавно своє їсть", bot.get_message_id(bot.last_update()))
+        if r == 6 and bot.get_username(bot.last_update()) == "shputya":
+            
+            bot.resend_mess(bot.get_chat_id(bot.last_update()),"в рот собі насри", bot.get_message_id(bot.last_update()))
+        if r == 7 and bot.get_username(bot.last_update()) == "shputya":
+            
+            bot.resend_mess(bot.get_chat_id(bot.last_update()),"ти обісраний", bot.get_message_id(bot.last_update()))
+        if r == 8 and bot.get_username(bot.last_update()) == "shputya":
+            
+            bot.resend_mess(bot.get_chat_id(bot.last_update()),"Хай шпетюк отсосе", bot.get_message_id(bot.last_update()))
+        if r == 9 and bot.get_username(bot.last_update()) == "shputya":
+            
+            bot.resend_mess(bot.get_chat_id(bot.last_update()),"Шпецюк", bot.get_message_id(bot.last_update()))
+            bot.send_mess(bot.get_chat_id(bot.last_update()),"Ти блатний як двері")
+        if r == 10 and bot.get_username(bot.last_update()) == "shputya":
+            
+            bot.resend_mess(bot.get_chat_id(bot.last_update()),"а уїбать", bot.get_message_id(bot.last_update()))
+        if r == 11 and bot.get_username(bot.last_update()) == "shputya":
+            bot.forward_mess(bot.get_chat_id(bot.last_update()), bot.get_chat_id(bot.last_update()), bot.get_message_id(bot.last_update()))
+            bot.send_voice(bot.get_chat_id(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/4/42/Voice1.ogg")
+        if r == 12 and bot.get_username(bot.last_update()) == "shputya":
+            bot.forward_mess(bot.get_chat_id(bot.last_update()), bot.get_chat_id(bot.last_update()), bot.get_message_id(bot.last_update()))
+            bot.send_voice(bot.get_chat_id(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/c/cb/Voice2.ogg")
+        if r == 13 and bot.get_username(bot.last_update()) == "shputya":
+            bot.forward_mess(bot.get_chat_id(bot.last_update()), bot.get_chat_id(bot.last_update()), bot.get_message_id(bot.last_update()))
+            bot.send_voice(bot.get_chat_id(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/2/2e/Voice3.ogg")
+        if r == 14 and bot.get_username(bot.last_update()) == "shputya":
+            bot.forward_mess(bot.get_chat_id(bot.last_update()), bot.get_chat_id(bot.last_update()), bot.get_message_id(bot.last_update()))
+            bot.send_voice(bot.get_chat_id(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/b/b0/Voice4.ogg")
+        if r == 15 and bot.get_username(bot.last_update()) == "shputya":
+            
+            bot.resend_mess(bot.get_chat_id(bot.last_update()),"ти овощ", bot.get_message_id(bot.last_update()))
+        if r == 16 and bot.get_username(bot.last_update()) == "shputya":
+            
+            bot.resend_mess(bot.get_chat_id(bot.last_update()),"Шпитя ти тупий", bot.get_message_id(bot.last_update()))
+        if r == 17 and bot.get_username(bot.last_update()) == "shputya":
+            
+            bot.resend_mess(bot.get_chat_id(bot.last_update()),"Ти дебіл шпитя", bot.get_message_id(bot.last_update()))
+        if r == 18 and bot.get_username(bot.last_update()) == "shputya":
+            bot.forward_mess(bot.get_chat_id(bot.last_update()), bot.get_chat_id(bot.last_update()), bot.get_message_id(bot.last_update()))
+            bot.resend_voice(bot.get_chat_id(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/b/bf/Voice5.ogg")
+        if r == 19 and bot.get_username(bot.last_update()) == "shputya":
+            
+            bot.resend_mess(bot.get_chat_id(bot.last_update()),"Завали їбало", bot.get_message_id(bot.last_update()))
+        if r == 20 and bot.get_username(bot.last_update()) == "shputya":
+            
+            bot.resend_mess(bot.get_chat_id(bot.last_update()),"Пашол нахуй Шпитюк", bot.get_message_id(bot.last_update()))
+        if r == 21 and bot.get_username(bot.last_update()) == "shputya":
+            
+            bot.resend_mess(bot.get_chat_id(bot.last_update()),"Ти підарастіческа хуйня їбана", bot.get_message_id(bot.last_update()))
+        if r == 22 and bot.get_username(bot.last_update()) == "shputya":
+            
+            bot.resend_mess(bot.get_chat_id(bot.last_update()),"Ти кріпак засраний", bot.get_message_id(bot.last_update()))
+            bot.send_mess(bot.get_chat_id(bot.last_update()),"Іди сіно кидай")
+        if r == 23 and bot.get_username(bot.last_update()) == "shputya":
+            
+            bot.resend_mess(bot.get_chat_id(bot.last_update()),"ти загноение  підзалупного міра", bot.get_message_id(bot.last_update()))
 
-        rand = random.randint(1,500)
-        if rand == 100:
-            bot.send_mess(bot.get_chat_id(bot.last_update()),"Ми не підтримуємо булінг")
+
         off = "Богдан, завали єбало Соси cоси Закрий єбало Завали єбало Богдан, закрий єбало Богдан, єбало офф Єбало офф off Пішов Богдан, нахуй ашол Богдан, нахуй пішов нахуй Пашол нахуй Іди нах Богдан, іди нах Іди нахуй Богдан, іди нахуй Богдан, сосни Сосни Богдан, пососи Пососи" 
         if bot.get_message(bot.last_update()) in off:
             bot.send_mess(bot.get_chat_id(bot.last_update()),"Ок")
