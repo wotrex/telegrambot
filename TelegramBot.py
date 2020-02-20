@@ -140,7 +140,7 @@ def countElement(massive2d, text, countrow, countcolumn):
         else:
             countCL = countCL + 1
     return countext
-bot.send_mess(bot.get_chat_id(bot.last_update()),
+
 def game():
     rand = random.randint(1,3)
     players3 = np.empty((20,5), dtype="object")
