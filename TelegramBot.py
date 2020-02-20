@@ -326,7 +326,7 @@ def game():
                             if life == 4:
                                 bot.send_mess(bot.get_chat_id(bot.last_update()), "Мєнт @" + players[i] + " в останній момент використав 'стан' і втік від мера @" + players[p])
                             if life == 5:
-                                bot.send_mess(bot.get_chat_id(bot.last_update()), "Мєнт @" + players[i] + " в останній момент насрав в штани і мер @" + players[p + " змушений був відступити"])
+                                bot.send_mess(bot.get_chat_id(bot.last_update()), "Мєнт @" + players[i] + " в останній момент насрав в штани і мер @" + players[p] + " змушений був відступити")
                 if players3[p][1] == "Мєнт":
                     if players3[i][1] == "Разбойнік":
                         bot.send_mess(bot.get_chat_id(bot.last_update()), "Мєнт @" + players[p] + " помітив разбойніка @" + players[i])
@@ -376,7 +376,7 @@ def game():
                             if life == 4:
                                 bot.send_mess(bot.get_chat_id(bot.last_update()), "Разбойнік @" + players[i] + " в останній момент використав 'стан' і втік від мєнта @" + players[p])
                             if life == 5:
-                                bot.send_mess(bot.get_chat_id(bot.last_update()), "Разбойнік @" + players[i] + " в останній момент насрав в штани і мєнт @" + players[p + " змушений був відступити"])
+                                bot.send_mess(bot.get_chat_id(bot.last_update()), "Разбойнік @" + players[i] + " в останній момент насрав в штани і мєнт @" + players[p] + " змушений був відступити")
                 if players3[p][1] == "Разбойнік":
                     if players3[i][1] == "Мер":
                         bot.send_mess(bot.get_chat_id(bot.last_update()), "Разбойнік @" + players[p] + " помітив мера @" + players[i])
@@ -425,7 +425,7 @@ def game():
                             if life == 4:
                                 bot.send_mess(bot.get_chat_id(bot.last_update()), "Мер @" + players[i] + " в останній момент використав 'стан' і втік від разбойніка @" + players[p])
                             if life == 5:
-                                bot.send_mess(bot.get_chat_id(bot.last_update()), "Мер @" + players[i] + " в останній момент насрав в штани і разбойнік @" + players[p + " змушений був відступити"])
+                                bot.send_mess(bot.get_chat_id(bot.last_update()), "Мер @" + players[i] + " в останній момент насрав в штани і разбойнік @" + players[p] + " змушений був відступити")
             if len(players) > 5:
                 for r in range(len(players)):
                     for c in range(3):
