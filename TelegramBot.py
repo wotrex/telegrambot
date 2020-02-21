@@ -700,7 +700,7 @@ while 1:
                 else:
                     for u in range(len(rate)):
                         if rate[u][2] == bot.get_id(bot.last_update()):
-                            rate[u][0] == bot.get_username(bot.last_update())
+                            rate[u][0] = bot.get_username(bot.last_update())
             else:
                 for u in range(len(rate)):
                     if rate[u][0] == None:
