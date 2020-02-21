@@ -712,7 +712,10 @@ while 1:
                         rate2[u][2] = 0
                         rate2[u][3] = 0
                         break
-                    
+            for l in range(len(rate)):
+                if rate[l][0] == bot.get_username(bot.last_update())
+                    rate[l][1] = bot.get_chat_id(bot.last_update())
+                    break
         if bot.get_message(bot.last_update()) in lict:
             pl = None
             for s in range(len(players)):
