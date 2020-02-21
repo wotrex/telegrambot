@@ -541,7 +541,7 @@ def game():
                     
             for p in range(len(players)):
                 if players3[p][2] != "Died":
-                    bot.send_mess(chadid, players3[p][1] + players[p] + " зберіг своє очко та виграв" )
+                    bot.send_mess(chadid, players3[p][1] + " " + players[p] + " зберіг своє очко та виграв" )
             players.clear()
             basa_add()
             break
