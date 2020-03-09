@@ -634,7 +634,7 @@ while 1:
             if r == 14 :
                 bot.send_voice(bot.get_chat_id(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/b/b0/Voice4.ogg", bot.get_message_id(bot.last_update()))
             if r == 15 :
-                bot.resend_mess(bot.get_chat_id(bot.last_update()),"@wotrex, ти овощ", bot.get_message_id(bot.last_update()))
+                bot.resend_mess(bot.get_chat_id(bot.last_update()),"Шпитя ти овощ", bot.get_message_id(bot.last_update()))
             if r == 16 :
                 bot.resend_mess(bot.get_chat_id(bot.last_update()),"Шпитя ти тупий", bot.get_message_id(bot.last_update()))
             if r == 17 :
