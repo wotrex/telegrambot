@@ -565,8 +565,6 @@ def topplayer(r):
                         j[2] = rate[p][0]
         if rate[p][0] == None:
             break
-    print(c)
-    print(j)
 offset = None
 chats = []
 time = 0
@@ -738,7 +736,6 @@ while 1:
             for li in range(len(rate)):
                 if rate[li][0] == bot.get_username(last_update):
                     rate[li][1] = bot.get_chat_id(last_update)
-                    print(rate)
                     break
         if bot.get_message(last_update) == "/list" or bot.get_message(last_update) == "/list@BogdanKarmanBot":
             pl = None
