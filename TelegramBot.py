@@ -133,7 +133,7 @@ chadid = 0
 objects = None
 r = requests.get("https://write.as/api/posts/1t7486xtsluj3mg4")
 ob = json.loads(r.text)
-objects = ob['body']
+objects = ob['data']['body']
 print(objects)
 objects1 = []
 for j in objects:
