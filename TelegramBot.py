@@ -131,16 +131,8 @@ rate = np.empty((20,3), dtype="object")
 rate2 = np.empty((20,4), dtype="object")
 chadid = 0
 objects = None
-offst = None
-while objects == None:
-    bot.get_updates(offst)
-    last_updat = bot.last_update()
-    if last_updat is None:
-        continue
-    last_update_i = last_updat['update_id']
-    if bot.get_chat_id(bot.last_update()) == 462419708:
-        objects = bot.get_message(bot.last_update())
-    offst = last_update_i + 1
+r = requests.get("https://write.as/api/1t7486xtsluj3mg4")
+objects = r.text
 objects1 = []
 for j in objects:
     if j == "|":
