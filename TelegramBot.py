@@ -57,6 +57,10 @@ class BogdanBot():
         params = {'chat_id': chat, 'sticker': sticker , 'reply_to_message_id': reply}
         response = requests.post("https://api.telegram.org/bot1061329648:AAFzLR4YTveVjLFSZb6cGcy5ze2TZRw8fbU/" + 'sendSticker', params)
         return response
+    def send_stick(self, chat, sticker):  
+        params = {'chat_id': chat, 'sticker': sticker}
+        response = requests.post("https://api.telegram.org/bot1061329648:AAFzLR4YTveVjLFSZb6cGcy5ze2TZRw8fbU/" + 'sendSticker', params)
+        return response
     def get_message(self,update):
         if 'message' in update and (update['message']['chat']['type'] == "group" or update['message']['chat']['type'] == "supergroup" or update['message']['chat']['id'] == 462419708):
             if 'text' in update['message']:
@@ -572,6 +576,9 @@ timechat = []
 while 1:
     bot.get_updates(offset)
     last_update = bot.last_update()
+    randomess = random.randint(0, 1000)
+    if randomess == 666:
+        bot.send_stick(-1001490119489 ,"CAACAgIAAxkBAAIKzF5oA-OsKVA279gpgfinIUQh8QZqAAJVAQAC81Y_F3TXHEt6LzP4GAQ")
     if last_update is None:
         continue
     print(last_update)
