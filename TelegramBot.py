@@ -131,7 +131,7 @@ rate = np.empty((20,3), dtype="object")
 rate2 = np.empty((20,4), dtype="object")
 chadid = 0
 objects = None
-r = requests.get("https://write.as/api/1t7486xtsluj3mg4")
+r = requests.get("https://write.as/api/posts/1t7486xtsluj3mg4")
 objects = r.text
 objects1 = []
 for j in objects:
