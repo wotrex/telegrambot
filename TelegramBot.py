@@ -132,7 +132,9 @@ rate2 = np.empty((20,4), dtype="object")
 chadid = 0
 objects = None
 r = requests.get("https://write.as/api/posts/1t7486xtsluj3mg4")
-objects = r.text
+ob = json.loads(r.text)
+objects = ob['body']
+print(objects)
 objects1 = []
 for j in objects:
     if j == "|":
