@@ -725,9 +725,8 @@ while 1:
                     pl = pl + '%0A'+ players[s]
             bot.send_mes(bot.get_chat_id(bot.last_update()), "Список%20гравців:{}".format(pl))
         if bot.get_message(bot.last_update()) in statis:
-            bot.send_mess(bot.get_chat_id(bot.last_update()), "Статистика гравців:")
             for p in range(len(rate)):
-                if rate[p][0] != None and rate[p][1] == bot.get_chat_id(bot.last_update()) :
+                if rate[p][0] != None and rate[p][1] == bot.get_chat_id(bot.last_update()) and rate[p][0] == bot.get_username(bot.last_update()):
                     r1=str(rate[p][0])
                     r2=rate2[p][1]
                     r3=rate2[p][2]
