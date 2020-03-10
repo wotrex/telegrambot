@@ -4,7 +4,6 @@ import random
 import numpy as np
 import threading 
 class BogdanBot():
-
     def __init__(self):
         self.u = "https://api.telegram.org/bot1061329648:AAFzLR4YTveVjLFSZb6cGcy5ze2TZRw8fbU/getUpdates"
 
@@ -96,7 +95,7 @@ class BogdanBot():
                  firstn = update['message']['from']['first_name']
                  return firstn
          if 'edited_message' in update:
-             if 'username' in ['edited_message']['from']:
+             if 'username' in update['edited_message']['from']:
                 chat_id = update['edited_message']['from']['username']
                 name = '@'+ chat_id
                 return name
@@ -118,7 +117,7 @@ class BogdanBot():
                 chat_id = update['message']['from']['id']
                 return chat_id
          if 'edited_message' in update:
-             if 'id' in ['edited_message']['from']:
+             if 'id' in update['edited_message']['from']:
                 chat_id = update['edited_message']['from']['id']
                 return chat_id
     def forward_mess(self, chat, from_chat, mess):  
@@ -126,77 +125,73 @@ class BogdanBot():
         response = requests.post("https://api.telegram.org/bot1061329648:AAFzLR4YTveVjLFSZb6cGcy5ze2TZRw8fbU/" + 'forwardMessage', params)
         return response
 bot = BogdanBot()
-players = []
 rate = np.empty((20,3), dtype="object")
 rate2 = np.empty((20,4), dtype="object")
-chadid = 0
-objects = None
-r = requests.get("https://write.as/api/posts/1t7486xtsluj3mg4")
-ob = json.loads(r.text)
-objects = ob['data']['body']
-print(objects)
-objects1 = []
-for j in objects:
-    if j == "|":
-        break
-    objects1.append(j)
-objects2 = []
-ok = 0
-for j in objects:
-    if ok == 1:
-        objects2.append(j)
-    if j == "|":
-        ok = 1
-obj = np.empty((60,1), dtype="object")
-c = 0 
-for i in objects1:
-    if obj[c][0] == None and i != ' ':
-        obj[c][0] = i
-    else:
-        if i != ' ':
-            obj[c][0] = obj[c][0] + i
+def rateplayers():
+    r = requests.get("https://write.as/api/posts/1t7486xtsluj3mg4")
+    objects = json.loads(r.text)['data']['body']
+    objects1 = []
+    for j in objects:
+        if j == "|":
+            break
+        objects1.append(j)
+    obj = np.empty((60,1), dtype="object")
+    c = 0 
+    for i in objects1:
+        if obj[c][0] == None and i != ' ':
+            obj[c][0] = i
         else:
-            c = c + 1
+            if i != ' ':
+                obj[c][0] = obj[c][0] + i
+            else:
+                c +=1
 
-countrow = 0
-countcolumn = 0
-for i in range(len(obj)):
-    if countcolumn == 3:
-        countcolumn = 0
-        countrow = countrow + 1
-    if obj[i][0] == 'None':
-        rate[countrow][countcolumn] = None
-        countcolumn = countcolumn + 1
-    else:
-        if obj[i][0].isdigit() == True or (obj[i][0].isdigit() == False and '-' in obj[i][0]):
-            rate[countrow][countcolumn] = int(obj[i][0])
+    countrow = 0
+    countcolumn = 0
+    for i in range(len(obj)):
+        if countcolumn == 3:
+            countcolumn = 0
+            countrow += 1
+        if obj[i][0] == 'None':
+            rate[countrow][countcolumn] = None
             countcolumn = countcolumn + 1
         else:
-            rate[countrow][countcolumn] = obj[i][0]
-            countcolumn = countcolumn + 1
-
-obj = np.empty((80,1), dtype="object")
-c = 0 
-for i in objects2:
-    if obj[c][0] == None and i != ' ':
-        obj[c][0] = i
-    else:
-        if i != ' ':
-            obj[c][0] = obj[c][0] + i
+            if obj[i][0].isdigit() == True or (obj[i][0].isdigit() == False and '-' in obj[i][0]):
+                rate[countrow][countcolumn] = int(obj[i][0])
+                countcolumn += 1
+            else:
+                rate[countrow][countcolumn] = obj[i][0]
+                countcolumn +=1
+    objects1 = []
+    ok = 0
+    for j in objects:
+        if ok == 1:
+            objects1.append(j)
+        if j == "|":
+            ok = 1
+    obj = np.empty((80,1), dtype="object")
+    c = 0 
+    for i in objects1:
+        if obj[c][0] == None and i != ' ':
+            obj[c][0] = i
         else:
-            c = c + 1
-countrow = 0
-countcolumn = 0
-for i in range(len(obj)):
-    if countcolumn == 4:
-        countcolumn = 0
-        countrow = countrow + 1
-    if obj[i][0] == 'None':
-        rate2[countrow][countcolumn] = None
-        countcolumn = countcolumn + 1
-    else:
-        rate2[countrow][countcolumn] = int(obj[i][0])
-        countcolumn = countcolumn + 1
+            if i != ' ':
+                obj[c][0] = obj[c][0] + i
+            else:
+                c += 1
+    countrow = 0
+    countcolumn = 0
+    for i in range(len(obj)):
+        if countcolumn == 4:
+            countcolumn = 0
+            countrow = countrow + 1
+        if obj[i][0] == 'None':
+            rate2[countrow][countcolumn] = None
+            countcolumn = countcolumn + 1
+        else:
+            rate2[countrow][countcolumn] = int(obj[i][0])
+            countcolumn = countcolumn + 1
+rateplayers()
 print(rate)
 print(rate2)
 def basa_add():
@@ -206,7 +201,7 @@ def basa_add():
     b = ''
     for i in range(len(rate2)):
         b = b + str(rate2[i][0]) + " " + str(rate2[i][1]) + " " + str(rate2[i][2]) + " " + str(rate2[i][3]) + " "
-    bot.send_mess(462419708,a + "|" + b)
+    bot.send_mess(462419708,"{}|{}".format(a,b))
     return 
 def countElement(massive2d, text, countrow, countcolumn):
     countRW = 0
@@ -223,7 +218,7 @@ def countElement(massive2d, text, countrow, countcolumn):
             countCL = countCL + 1
     return countext
 
-def game():
+def game(chadid, players):
     rand = random.randint(1,3)
     players3 = np.empty((20,5), dtype="object")
     for p in range(len(players)):
@@ -542,19 +537,38 @@ def game():
             return
         else:
             raund()
-    
-
+def mytimer():
+    if len(players) >= 2:
+       chadid = chats[timechat[0]]
+       game(chadid, players)
+       chats[timechat[0] + 1] = 1
+       chats[timechat[0] + 2] = 0
+       timechat.remove(timechat[0])
+    else:
+       bot.send_mess(chats[timechat[0]], "Достатня кількість учасників не набралась, гру відмінено")
+       chats[timechat[0] + 1] = 1
+       chats[timechat[0] + 2] = 0
+       timechat.remove(timechat[0])
+def topplayer(r):
+    for p in range(len(rate)):
+        if rate[p][0] != None and rate[p][1] == bot.get_chat_id(bot.last_update()) :
+            if rate2[p][r] > c[0]:                  
+                c[0] = rate2[p][r]
+                j[0] = rate[p][0]
+            else:
+                if rate2[p][r] > c[1]:
+                    c[1] = rate2[p][r]
+                    j[1] = rate[p][0]
+                else:
+                    if rate2[p][r] > c[2]:
+                        c[2] = rate2[p][r]
+                        j[2] = rate[p][0]
+        if rate[p][0] == None:
+            break
+    print(c)
+    print(j)
 offset = None
 chats = []
-igra = "Гра Ігра Игра Game Грать Плей Играть Іграть play гра ігра игра game грать плей играть іграть play"
-off = "Богдан, завали єбало Соси cоси Закрий єбало Завали єбало Богдан, закрий єбало Богдан, єбало офф Єбало офф off Пішов Богдан, нахуй ашол Богдан, нахуй пішов нахуй Пашол нахуй Іди нах Богдан, іди нах Іди нахуй Богдан, іди нахуй Богдан, сосни Сосни Богдан, пососи Пососи"
-on = "Бодька Богдан Бодя Бодька ти тут? Богдан ти тут? Бодя ти тут? Бодька проснись Богдан проснись Бодя проснись Бодька, ти тут? Богдан, ти тут? Бодя, ти тут? Бодька, проснись Богдан, проснись Бодя, проснись "
-plys = "+ плюс Плюс го Го"
-lict = "List list лист Лист список Список ліст Ліст"
-statis = "Стат Стати Статы Статистика Stats стат стати статы статистика stats"
-ton = "Top top Топ топ"
-startt = "start Start Старт старт начать Начать"
-stopp = "Stop stop Стоп стоп"
 time = 0
 timechat = []
 while 1:
@@ -562,234 +576,193 @@ while 1:
     last_update = bot.last_update()
     if last_update is None:
         continue
+    print(last_update)
+    indx = 0
     last_update_id = last_update['update_id']
     r = random.randint(1,36)
     rb = random.randint(1,3)
-    if bot.get_chat_id(bot.last_update()) != chats:
-        chats.append(bot.get_chat_id(bot.last_update()))
+    if bot.get_chat_id(last_update) != chats:
+        chats.append(bot.get_chat_id(last_update))
         chats.append(1)
         chats.append(0)
-    indx = chats.index(bot.get_chat_id(bot.last_update()))
+    indx = chats.index(bot.get_chat_id(last_update))
     if chats[indx + 1] == 1:
-        if bot.get_message(bot.last_update()) in igra:
+        if bot.get_message(last_update) == "/game" or bot.get_message(last_update) == "/game@BogdanKarmanBot":
             chats[indx + 2] = 1
             chats[indx + 1] = 0
             timechat.append(indx)
-            def mytimer():
-                if len(players) >= 2:
-                   chadid = chats[timechat[0]]
-                   game()
-                   chats[timechat[0] + 1] = 1
-                   chats[timechat[0] + 2] = 0
-                   timechat.remove(timechat[0])
-                else:
-                   bot.send_mess(chats[timechat[0]], "Достатня кількість учасників не набралась, гру відмінено")
-                   chats[timechat[0] + 1] = 1
-                   chats[timechat[0] + 2] = 0
-                   timechat.remove(timechat[0])
             time = threading.Timer(7200.0, mytimer)
             time.start()
-            bot.send_mes(bot.get_chat_id(bot.last_update()), 'Почалася%20гра%20"Мер,%20Мєнти%20та%20Разбойніки".%0A%0AПравила%20гри:%0AМЕР(Мер%20може%20бути%20тільки%20один)%20повинен%20трахнути%20МЄНТІВ,%20МЄНТИ%20повинні%20трахнути%20РОЗБІЙНИКІВ,%20РОЗБІЙНИКИ%20повинні%20трахнути%20МЕРА.%20Кожен%20повинен%20зберегти%20своє%20очко.%20Хто%20зберіг%20своє%20очко%20-%20той%20виграв.%20Якщо%20кількість%20гравців%20буде%20більше%205,%20то%20мер%20отримує%20шанс%201%20раз%20воскреснути.%20Все%20відбувається%20рандомно.%20Ви%20можете%20тіки%20подивитись%20результати.%0A%0AГра%20автоматично%20начнеться%20або%20буде%20припинена%20через%202%20години!!!%0A%0AЩоб%20прийняти%20участь%20в%20грі%20відправте:%20{}%20.%0A%0AЩоб%20почати%20гру(коли%20наберуться%20учасники)%20відправте:%20"Старт"%20або%20"Start".%0A%0AЩоб%20закінчити%20гру:%20"Стоп"%20або%20"Stop".%0A%0A"list"%20-%20подивиться%20список%20учасників%0A%0A"Статистика"%20-%20подивиться%20статискику%0A%0A"Топ"%20-%20подивиться%20топ3.'.format('"Плюс"'))
-        if bot.get_username(bot.last_update()) == "@zagin177":
+            bot.send_mes(bot.get_chat_id(last_update), 'Почалася%20гра%20"Мер,%20Мєнти%20та%20Разбойніки".%0A%0AПравила%20гри:%0AМЕР(Мер%20може%20бути%20тільки%20один)%20повинен%20трахнути%20МЄНТІВ,%20МЄНТИ%20повинні%20трахнути%20РОЗБІЙНИКІВ,%20РОЗБІЙНИКИ%20повинні%20трахнути%20МЕРА.%20Кожен%20повинен%20зберегти%20своє%20очко.%20Хто%20зберіг%20своє%20очко%20-%20той%20виграв.%20Якщо%20кількість%20гравців%20буде%20більше%205,%20то%20мер%20отримує%20шанс%201%20раз%20воскреснути.%20Все%20відбувається%20рандомно.%20Ви%20можете%20тіки%20подивитись%20результати.%0A%0AГра%20автоматично%20начнеться%20або%20буде%20припинена%20через%202%20години!!!%0A%0AЩоб%20прийняти%20участь%20в%20грі%20відправте:%20{}%20.%0A%0AЩоб%20почати%20гру(коли%20наберуться%20учасники)%20відправте:%20/start%0A%0AЩоб%20закінчити%20гру:%20/stop%0A%0A/list%20-%20подивиться%20список%20учасників%0A%0A/statistic%20-%20подивиться%20статискику%0A%0A/top3%20-%20подивиться%20топ3.'.format('"Плюс"'))
+        if bot.get_username(last_update) == "@zagin177":
             if rb == 1:
-                bot.resend_mess(bot.get_chat_id(bot.last_update()),"+", bot.get_message_id(bot.last_update()))
+                bot.resend_mess(bot.get_chat_id(last_update),"+", bot.get_message_id(last_update))
             if rb == 2:
-                bot.resend_mess(bot.get_chat_id(bot.last_update()),"Согласен", bot.get_message_id(bot.last_update()))
+                bot.resend_mess(bot.get_chat_id(last_update),"Согласен", bot.get_message_id(last_update))
             if rb == 3:
-                bot.resend_mess(bot.get_chat_id(bot.last_update()),"Поддержую", bot.get_message_id(bot.last_update()))
-        if bot.get_username(bot.last_update()) == "@shputya":
+                bot.resend_mess(bot.get_chat_id(last_update),"Поддержую", bot.get_message_id(last_update))
+        if bot.get_username(last_update) == "@shputya":
             if r == 1 :
-                bot.resend_mess(bot.get_chat_id(bot.last_update()),"Шпецюк поїш гамна", bot.get_message_id(bot.last_update()))
+                bot.resend_mess(bot.get_chat_id(last_update),"Шпецюк поїш гамна", bot.get_message_id(last_update))
             if r == 2 :
-                bot.resend_mess(bot.get_chat_id(bot.last_update()),"Я єбав тебе в рот, Шпетюк", bot.get_message_id(bot.last_update()))
+                bot.resend_mess(bot.get_chat_id(last_update),"Я єбав тебе в рот, Шпетюк", bot.get_message_id(last_update))
             if r == 3 :
-                bot.resend_mess(bot.get_chat_id(bot.last_update()),"Шпетюк блять", bot.get_message_id(bot.last_update()))
+                bot.resend_mess(bot.get_chat_id(last_update),"Шпетюк блять", bot.get_message_id(last_update))
             if r == 4 :
-                bot.resend_mess(bot.get_chat_id(bot.last_update()),"продам тебе циганам", bot.get_message_id(bot.last_update()))
+                bot.resend_mess(bot.get_chat_id(last_update),"продам тебе циганам", bot.get_message_id(last_update))
             if r == 5 :
-                bot.resend_mess(bot.get_chat_id(bot.last_update()),"Шпетюк гавно своє їсть", bot.get_message_id(bot.last_update()))
+                bot.resend_mess(bot.get_chat_id(last_update),"Шпетюк гавно своє їсть", bot.get_message_id(last_update))
             if r == 6 :
-                bot.resend_mess(bot.get_chat_id(bot.last_update()),"в рот собі насри", bot.get_message_id(bot.last_update()))
+                bot.resend_mess(bot.get_chat_id(last_update),"в рот собі насри", bot.get_message_id(last_update))
             if r == 7 :
-                bot.resend_mess(bot.get_chat_id(bot.last_update()),"ти обісраний", bot.get_message_id(bot.last_update()))
+                bot.resend_mess(bot.get_chat_id(last_update),"ти обісраний", bot.get_message_id(last_update))
             if r == 8 :
-                bot.resend_mess(bot.get_chat_id(bot.last_update()),"Хай шпетюк отсосе", bot.get_message_id(bot.last_update()))
+                bot.resend_mess(bot.get_chat_id(last_update),"Хай шпетюк отсосе", bot.get_message_id(last_update))
             if r == 9 :
-                bot.resend_mess(bot.get_chat_id(bot.last_update()),"Шпецюк", bot.get_message_id(bot.last_update()))
-                bot.send_mess(bot.get_chat_id(bot.last_update()),"Ти блатний як двері")
+                bot.resend_mess(bot.get_chat_id(last_update),"Шпецюк", bot.get_message_id(last_update))
+                bot.send_mess(bot.get_chat_id(last_update),"Ти блатний як двері")
             if r == 10 :
-                bot.resend_mess(bot.get_chat_id(bot.last_update()),"а уїбать", bot.get_message_id(bot.last_update()))
+                bot.resend_mess(bot.get_chat_id(last_update),"а уїбать", bot.get_message_id(last_update))
             if r == 11 :
-                bot.send_voice(bot.get_chat_id(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/4/42/Voice1.ogg", bot.get_message_id(bot.last_update()))
+                bot.send_voice(bot.get_chat_id(last_update),"https://upload.wikimedia.org/wikipedia/commons/4/42/Voice1.ogg", bot.get_message_id(last_update))
             if r == 12 :
-                bot.send_voice(bot.get_chat_id(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/c/cb/Voice2.ogg", bot.get_message_id(bot.last_update()))
+                bot.send_voice(bot.get_chat_id(last_update),"https://upload.wikimedia.org/wikipedia/commons/c/cb/Voice2.ogg", bot.get_message_id(last_update))
             if r == 13 :
-                bot.send_voice(bot.get_chat_id(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/2/2e/Voice3.ogg", bot.get_message_id(bot.last_update()))
+                bot.send_voice(bot.get_chat_id(last_update),"https://upload.wikimedia.org/wikipedia/commons/2/2e/Voice3.ogg", bot.get_message_id(last_update))
             if r == 14 :
-                bot.send_voice(bot.get_chat_id(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/b/b0/Voice4.ogg", bot.get_message_id(bot.last_update()))
+                bot.send_voice(bot.get_chat_id(last_update),"https://upload.wikimedia.org/wikipedia/commons/b/b0/Voice4.ogg", bot.get_message_id(last_update))
             if r == 15 :
-                bot.resend_mess(bot.get_chat_id(bot.last_update()),"Шпитя ти овощ", bot.get_message_id(bot.last_update()))
+                bot.resend_mess(bot.get_chat_id(last_update),"Шпитя ти овощ", bot.get_message_id(last_update))
             if r == 16 :
-                bot.resend_mess(bot.get_chat_id(bot.last_update()),"Шпитя ти тупий", bot.get_message_id(bot.last_update()))
+                bot.resend_mess(bot.get_chat_id(last_update),"Шпитя ти тупий", bot.get_message_id(last_update))
             if r == 17 :
-                bot.resend_mess(bot.get_chat_id(bot.last_update()),"Ти дебіл шпитя", bot.get_message_id(bot.last_update()))
+                bot.resend_mess(bot.get_chat_id(last_update),"Ти дебіл шпитя", bot.get_message_id(last_update))
             if r == 18 :
-                bot.send_voice(bot.get_chat_id(bot.last_update()),"https://upload.wikimedia.org/wikipedia/commons/b/bf/Voice5.ogg", bot.get_message_id(bot.last_update()))
+                bot.send_voice(bot.get_chat_id(last_update),"https://upload.wikimedia.org/wikipedia/commons/b/bf/Voice5.ogg", bot.get_message_id(last_update))
             if r == 19 :                
-                bot.resend_mess(bot.get_chat_id(bot.last_update()),"Завали їбало", bot.get_message_id(bot.last_update()))
+                bot.resend_mess(bot.get_chat_id(last_update),"Завали їбало", bot.get_message_id(last_update))
             if r == 20 :
-                bot.resend_mess(bot.get_chat_id(bot.last_update()),"Пашол нахуй Шпитюк", bot.get_message_id(bot.last_update()))
+                bot.resend_mess(bot.get_chat_id(last_update),"Пашол нахуй Шпитюк", bot.get_message_id(last_update))
             if r == 21 :
-                bot.resend_mess(bot.get_chat_id(bot.last_update()),"Ти підарастіческа хуйня їбана", bot.get_message_id(bot.last_update()))
+                bot.resend_mess(bot.get_chat_id(last_update),"Ти підарастіческа хуйня їбана", bot.get_message_id(last_update))
             if r == 22 : 
-                bot.resend_mess(bot.get_chat_id(bot.last_update()),"Ти кріпак засраний", bot.get_message_id(bot.last_update()))
-                bot.send_mess(bot.get_chat_id(bot.last_update()),"Іди сіно кидай")
+                bot.resend_mess(bot.get_chat_id(last_update),"Ти кріпак засраний", bot.get_message_id(last_update))
+                bot.send_mess(bot.get_chat_id(last_update),"Іди сіно кидай")
             if r == 23 :
-                bot.resend_mess(bot.get_chat_id(bot.last_update()),"ти загноение  підзалупного міра", bot.get_message_id(bot.last_update()))
+                bot.resend_mess(bot.get_chat_id(last_update),"ти загноение  підзалупного міра", bot.get_message_id(last_update))
             if r == 24 :
-                bot.send_sticker(bot.get_chat_id(bot.last_update()),"CAACAgIAAxkBAAMLXk2JdD3e2ofsBDLlagIzUwaTHXoAAhkAA_z2jxuxgnHkHXK-oRgE", bot.get_message_id(bot.last_update()))              
+                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMLXk2JdD3e2ofsBDLlagIzUwaTHXoAAhkAA_z2jxuxgnHkHXK-oRgE", bot.get_message_id(last_update))
             if r == 25 :
-                bot.send_sticker(bot.get_chat_id(bot.last_update()),"CAACAgIAAxkBAAMMXk2KENg_--cBz-PQarldNjh5RZcAAh4AA_z2jxu3VCMC9M_xsRgE", bot.get_message_id(bot.last_update()))              
+                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMMXk2KENg_--cBz-PQarldNjh5RZcAAh4AA_z2jxu3VCMC9M_xsRgE", bot.get_message_id(last_update))
             if r == 26 :
-                bot.send_sticker(bot.get_chat_id(bot.last_update()),"CAACAgIAAxkBAAMNXk2KSCpnTJ_KdG3R-5_D5krV1jgAAhYAA_z2jxsapXncRh_8JBgE", bot.get_message_id(bot.last_update()))               
+                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMNXk2KSCpnTJ_KdG3R-5_D5krV1jgAAhYAA_z2jxsapXncRh_8JBgE", bot.get_message_id(last_update))
             if r == 27 :
-                bot.send_sticker(bot.get_chat_id(bot.last_update()),"CAACAgIAAxkBAAMOXk2KkQbgieGHmSSbC7yDZig5_eMAAhcAA_z2jxsfunL3I_azCBgE", bot.get_message_id(bot.last_update()))                
+                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMOXk2KkQbgieGHmSSbC7yDZig5_eMAAhcAA_z2jxsfunL3I_azCBgE", bot.get_message_id(last_update))
             if r == 28 :
-                bot.send_sticker(bot.get_chat_id(bot.last_update()),"CAACAgIAAxkBAAMPXk2K2S4x7TQNMNlApek7wtEvzE8AAhoAA_z2jxs18TpPKoBrkRgE", bot.get_message_id(bot.last_update()))                
+                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMPXk2K2S4x7TQNMNlApek7wtEvzE8AAhoAA_z2jxs18TpPKoBrkRgE", bot.get_message_id(last_update))
             if r == 29 :
-                bot.send_sticker(bot.get_chat_id(bot.last_update()),"CAACAgIAAxkBAAMQXk2LMFh_VyOv2MWnYfM1iWvxHcIAAiAAA_z2jxsr0peTWHBxFhgE", bot.get_message_id(bot.last_update()))                
+                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMQXk2LMFh_VyOv2MWnYfM1iWvxHcIAAiAAA_z2jxsr0peTWHBxFhgE", bot.get_message_id(last_update))
             if r == 30 :
-                bot.send_sticker(bot.get_chat_id(bot.last_update()),"CAACAgIAAxkBAAMRXk2MEdLmfm8Y2AOrAgABtwoTVqaXAAJeAQACzcBIGJ_GOFgleipFGAQ", bot.get_message_id(bot.last_update()))                
+                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMRXk2MEdLmfm8Y2AOrAgABtwoTVqaXAAJeAQACzcBIGJ_GOFgleipFGAQ", bot.get_message_id(last_update))
             if r == 31 :
-                bot.send_sticker(bot.get_chat_id(bot.last_update()),"CAACAgIAAxkBAAMSXk2MYj04L-zmPrWW3qYeD0QOtsMAAhwAA-b8Dxmrv56G5K6GqhgE", bot.get_message_id(bot.last_update()))               
+                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMSXk2MYj04L-zmPrWW3qYeD0QOtsMAAhwAA-b8Dxmrv56G5K6GqhgE", bot.get_message_id(last_update))
             if r == 32 :
-                bot.send_sticker(bot.get_chat_id(bot.last_update()),"CAACAgIAAxkBAAMTXk2MoukYFa1k5OyKHI0BhH4AAR8GAAIxAAPm_A8ZNUSF17VXQ_sYBA", bot.get_message_id(bot.last_update()))                
+                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMTXk2MoukYFa1k5OyKHI0BhH4AAR8GAAIxAAPm_A8ZNUSF17VXQ_sYBA", bot.get_message_id(last_update))
             if r == 33 :
-                bot.send_sticker(bot.get_chat_id(bot.last_update()),"CAACAgIAAxkBAAMUXk2M0vFtF97w6kWrwjLkvcrPfj8AAjQAA-b8Dxl0Kmt-bE6nvxgE", bot.get_message_id(bot.last_update()))                
+                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMUXk2M0vFtF97w6kWrwjLkvcrPfj8AAjQAA-b8Dxl0Kmt-bE6nvxgE", bot.get_message_id(last_update))
             if r == 34 :
-                bot.send_sticker(bot.get_chat_id(bot.last_update()),"CAACAgIAAxkBAAMVXk2NAAE8WeT9tKg-AaACyvYhjRq_AAI4AAPm_A8Zo8L_zAxh4NIYBA", bot.get_message_id(bot.last_update()))                
+                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMVXk2NAAE8WeT9tKg-AaACyvYhjRq_AAI4AAPm_A8Zo8L_zAxh4NIYBA", bot.get_message_id(last_update))
             if r == 35 :
-                bot.send_sticker(bot.get_chat_id(bot.last_update()),"CAACAgIAAxkBAAMWXk2NeiHTcue4AwrRBZ7nhpKu2lgAAvEAA_NWPxcqR0IBe-SHxhgE", bot.get_message_id(bot.last_update()))               
+                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMWXk2NeiHTcue4AwrRBZ7nhpKu2lgAAvEAA_NWPxcqR0IBe-SHxhgE", bot.get_message_id(last_update))
             if r == 36 :
-                bot.send_sticker(bot.get_chat_id(bot.last_update()),"CAACAgIAAxkBAAMXXk2N3kpBhcD3sZWhiHQrrReJOpkAAiIAA3lx3hbdu_UH5ZkpgxgE", bot.get_message_id(bot.last_update()))
-            
-        if bot.get_message(bot.last_update()) in off :
-            bot.send_mess(bot.get_chat_id(bot.last_update()),"Ок")
+                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMXXk2N3kpBhcD3sZWhiHQrrReJOpkAAiIAA3lx3hbdu_UH5ZkpgxgE", bot.get_message_id(last_update))
+    if chats[indx + 1] == 1 or chats[indx + 2] == 1:
+        if bot.get_message(last_update) == "/statistic" or bot.get_message(last_update) == "/statistic@BogdanKarmanBot":
+            flag = 0
+            for p in range(len(rate)):
+                if rate[p][0] != None and rate[p][0] == bot.get_username(last_update):
+                    r1=str(rate[p][0])
+                    r2=rate2[p][1]
+                    r3=rate2[p][2]
+                    r4=rate2[p][3]
+                    flag = 1
+                    bot.send_mes(bot.get_chat_id(last_update), "{}%20:%0AВиграв%20ігор%20-%20{}%0AКількість%20знищених%20ворожих%20анусів%20-%20{}%0AКількість%20разів%20коли%20втратив%20анальну%20дєвствєнность%20-%20{}".format(r1,r2,r3,r4))
+                    break
+            if flag == 0:
+                bot.resend_mess(bot.get_chat_id(last_update),"В тебе намеє статистики", bot.get_message_id(last_update))
+        if bot.get_message(last_update) == "/top3" or bot.get_message(last_update) == "/top3@BogdanKarmanBot":
+            c = [0,0,0]
+            j = [None, None, None]
+            topplayer(1)
+            bot.send_mes(bot.get_chat_id(last_update),'Топ%203%20побідітєлєй:%0A1.%20{}%20виграв%20{}%20раз(a).%0A2.%20{}%20виграв%20{}%20раз(a).%0A3.%20{}%20виграв%20{}%20раз(a).'.format(j[0],str(c[0]),j[1],str(c[1]),j[2],str(c[2])))
+            topplayer(2)
+            bot.send_mes(bot.get_chat_id(last_update),'Топ%203%20анальних%20винищувачів:%0A1.%20{}%20знищив%20{}%20анусів.%0A2.%20{}%20знищив%20{}%20анусів.%0A3.%20{}%20знищив%20{}%20анусів.'.format(j[0],str(c[0]),j[1],str(c[1]),j[2],str(c[2])))
+            topplayer(3)
+            bot.send_mes(bot.get_chat_id(last_update),'Три%20самі%20пасивні%20гея:%0A1.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).%0A2.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).%0A3.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).'.format(j[0],str(c[0]),j[1],str(c[1]),j[2],str(c[2])))     
+        if bot.get_message(last_update) == "/off" or bot.get_message(last_update) == "/off@BogdanKarmanBot":
+            bot.send_mess(bot.get_chat_id(last_update),"Вимушений відлучитись, іду срать")
             offset = None
             chats[indx + 1] = 0
     if chats[indx + 1] == 0 and chats[indx + 2] == 0:
-        if bot.get_message(bot.last_update()) in on :
-            bot.send_mess(bot.get_chat_id(bot.last_update()),"Де Шпецюк блять")
+        if bot.get_message(last_update) == "/on" or bot.get_message(last_update) == "/on@BogdanKarmanBot" :
+            bot.send_mess(bot.get_chat_id(last_update),"Я посрав, де Шпецюк блять")
             chats[indx + 1] = 1
-    if chats[indx + 2] == 1: 
-        if bot.get_message(bot.last_update()) in plys:
-            if bot.get_username(bot.last_update()) in players:
-                bot.send_mess(bot.get_chat_id(bot.last_update()), bot.get_username(bot.last_update()) + ", ти вже приймаєш участь в грі")
+    if chats[indx + 2] == 1:
+        players = []
+        plys = "+ плюс Плюс го Го"
+        if bot.get_message(last_update) in plys:
+            if bot.get_username(last_update) in players:
+                bot.send_mess(bot.get_chat_id(last_update), bot.get_username(last_update) + ", ти вже приймаєш участь в грі")
             else:
-                players.append(bot.get_username(bot.last_update()))
-                bot.send_mess(bot.get_chat_id(bot.last_update()), bot.get_username(bot.last_update()) + " бере участь в грі")
-            if bot.get_id(bot.last_update()) in rate:
-                if bot.get_username(bot.last_update()) in rate:
+                players.append(bot.get_username(last_update))
+                bot.send_mess(bot.get_chat_id(last_update), bot.get_username(last_update) + " бере участь в грі")
+            if bot.get_id(last_update) in rate:
+                if bot.get_username(last_update) in rate:
                     a = True
                 else:
                     for u in range(len(rate)):
-                        if rate[u][2] == bot.get_id(bot.last_update()):
-                            rate[u][0] = bot.get_username(bot.last_update())
+                        if rate[u][2] == bot.get_id(last_update):
+                            rate[u][0] = bot.get_username(last_update)
+                            break
             else:
                 for u in range(len(rate)):
                     if rate[u][0] == None:
-                        rate[u][0] = bot.get_username(bot.last_update())
-                        rate[u][2] = bot.get_id(bot.last_update())
-                        rate[u][1] = bot.get_chat_id(bot.last_update())
+                        rate[u][0] = bot.get_username(last_update)
+                        rate[u][2] = bot.get_id(last_update)
+                        rate[u][1] = bot.get_chat_id(last_update)
                         rate2[u][0] = u
                         rate2[u][1] = 0
                         rate2[u][2] = 0
                         rate2[u][3] = 0
                         break
             for li in range(len(rate)):
-                if rate[li][0] == bot.get_username(bot.last_update()):
-                    rate[li][1] = bot.get_chat_id(bot.last_update())
+                if rate[li][0] == bot.get_username(last_update):
+                    rate[li][1] = bot.get_chat_id(last_update)
+                    print(rate)
                     break
-        if bot.get_message(bot.last_update()) in lict:
+        if bot.get_message(last_update) == "/list" or bot.get_message(last_update) == "/list@BogdanKarmanBot":
             pl = None
             for s in range(len(players)):
                 if pl == None:
                     pl = '%0A'+ players[s]
                 else:
                     pl = pl + '%0A'+ players[s]
-            bot.send_mes(bot.get_chat_id(bot.last_update()), "Список%20гравців:{}".format(pl))
-        if bot.get_message(bot.last_update()) in statis:
-            for p in range(len(rate)):
-                if rate[p][0] != None and rate[p][1] == bot.get_chat_id(bot.last_update()) and rate[p][0] == bot.get_username(bot.last_update()):
-                    r1=str(rate[p][0])
-                    r2=rate2[p][1]
-                    r3=rate2[p][2]
-                    r4=rate2[p][3]
-                    bot.send_mes(bot.get_chat_id(bot.last_update()), "{}%20:%0AВиграв%20ігор%20-%20{}%0AКількість%20знищених%20ворожих%20анусів%20-%20{}%0AКількість%20разів%20коли%20втратив%20анальну%20дєвствєнность%20-%20{}".format(r1,r2,r3,r4))
-        if bot.get_message(bot.last_update()) in ton:
-            c = [0,0,0]
-            j = [None, None, None]
-            for p in range(len(rate)):
-                if rate[p][0] != None and rate[p][1] == bot.get_chat_id(bot.last_update()) :
-                    if rate2[p][1] > c[0]:                  
-                        c[0] = rate2[p][1]
-                        j[0] = rate[p][0]
-                    else:
-                        if rate2[p][1] > c[1]:
-                            c[1] = rate2[p][1]
-                            j[1] = rate[p][0]
-                        else:
-                            if rate2[p][1] > c[2]:
-                                c[2] = rate2[p][1]
-                                j[2] = rate[p][0]
-            bot.send_mes(bot.get_chat_id(bot.last_update()),'Топ%203%20побідітєлєй:%0A1.%20{}%20виграв%20{}%20раз(a).%0A2.%20{}%20виграв%20{}%20раз(a).%0A3.%20{}%20виграв%20{}%20раз(a).'.format(j[0],str(c[0]),j[1],str(c[1]),j[2],str(c[2])))
-            c = [0,0,0]
-            j = [None, None, None]
-            for p in range(len(rate)):
-                if rate[p][0] != None and rate[p][1] == bot.get_chat_id(bot.last_update()):
-                    if rate2[p][2] > c[0]:                  
-                        c[0] = rate2[p][2]
-                        j[0] = rate[p][0]
-                    else:
-                        if rate2[p][2] > c[1]:
-                            c[1] = rate2[p][2]
-                            j[1] = rate[p][0]
-                        else:
-                            if rate2[p][2] > c[2]:
-                                c[2] = rate2[p][2]
-                                j[2] = rate[p][0]
-            bot.send_mes(bot.get_chat_id(bot.last_update()),'Топ%203%20анальних%20винищувачів:%0A1.%20{}%20знищив%20{}%20анусів.%0A2.%20{}%20знищив%20{}%20анусів.%0A3.%20{}%20знищив%20{}%20анусів.'.format(j[0],str(c[0]),j[1],str(c[1]),j[2],str(c[2])))
-            c = [0,0,0]
-            j = [None, None, None]
-            for p in range(len(rate)):
-                if rate[p][0] != None and rate[p][1] == bot.get_chat_id(bot.last_update()):
-                    if rate2[p][3] > c[0]:                  
-                        c[0] = rate2[p][3]
-                        j[0] = rate[p][0]
-                    else:
-                        if rate2[p][3] > c[1]:
-                            c[1] = rate2[p][3]
-                            j[1] = rate[p][0]
-                        else:
-                            if rate2[p][3] > c[2]:
-                                c[2] = rate2[p][3]
-                                j[2] = rate[p][0]
-            bot.send_mes(bot.get_chat_id(bot.last_update()),'Три%20самі%20пасивні%20гея:%0A1.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).%0A2.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).%0A3.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).'.format(j[0],str(c[0]),j[1],str(c[1]),j[2],str(c[2])))
-            
-        if bot.get_message(bot.last_update()) in startt:
+            if pl != None:
+                bot.send_mes(bot.get_chat_id(last_update), "Список%20гравців:{}".format(pl))
+            else:
+                bot.send_mes(bot.get_chat_id(last_update), "Немає%20гравців")
+        if bot.get_message(last_update) == "/start" or bot.get_message(last_update) == "/start@BogdanKarmanBot":
            if len(players) >= 2:
-               chadid = bot.get_chat_id(bot.last_update())
-               game()
+               chadid = bot.get_chat_id(last_update)
+               game(chadid, players)
                time.cancel()
                timechat.remove(indx)
                chats[indx + 1] = 1
                chats[indx + 2] = 0
            else:
-               bot.resend_mess(bot.get_chat_id(bot.last_update()), "Мало гравців(Мінімум 2)", bot.get_message_id(bot.last_update()))
-
-
-        if bot.get_message(bot.last_update()) in stopp:
-            bot.send_mess(bot.get_chat_id(bot.last_update()), "Гру відмінено")
+               bot.resend_mess(bot.get_chat_id(last_update), "Мало гравців(Мінімум 2)", bot.get_message_id(last_update))
+        if bot.get_message(last_update) == "/stop" or bot.get_message(last_update) == "/stop@BogdanKarmanBot":
+            bot.send_mess(bot.get_chat_id(last_update), "Гру відмінено")
             players.clear()
             chats[indx + 1] = 1
             chats[indx + 2] = 0
