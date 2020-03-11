@@ -576,9 +576,10 @@ timechat = []
 while 1:
     bot.get_updates(offset)
     last_update = bot.last_update()
-    randomess = random.randint(0, 1000)
-    if randomess == 666:
+    randomess = random.randint(0, 500)
+    if randomess == 466:
         bot.send_stick(-1001490119489 ,"CAACAgIAAxkBAAIKzF5oA-OsKVA279gpgfinIUQh8QZqAAJVAQAC81Y_F3TXHEt6LzP4GAQ")
+        print("отправилось")
     if last_update is None:
         continue
     print(last_update)
