@@ -301,7 +301,7 @@ def game(chadid):
             if life == 4:
                 bot.send_mess(chadid, "{} {} в останній момент використав 'стан' і втік від {} {}".format(V1, victim, h2, hunter))
             if life == 5:
-                bot.send_mess(chadid, "{} {} в останній момент насрав в штани і мер {} {}".format(V1, victim, h1, hunter))
+                bot.send_mess(chadid, "{} {} в останній момент насрав в штани і {} {} вимушений був відступити".format(V1, victim, h1, hunter))
         def result():
             if players[p] in rate:
                 for h in range(len(rate)):
