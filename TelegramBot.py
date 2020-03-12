@@ -221,91 +221,53 @@ def countElement(massive2d, text, countrow, countcolumn):
         else:
             countCL = countCL + 1
     return countext
-
 def game(chadid):
-    rand = random.randint(1,3)
     players3 = np.empty((20,5), dtype="object")
     for p in range(len(players)):
         players3[p][0] = players[p]
     def storonu():
         for p in range(len(players)):
             players3[p][1] = None
-        rand = random.randint(1,3)
         countM = 0
         countPlr = []
         for p in range(len(players)):
             countPlr.append(p)
+        allReady = 0
         while 1:
-            allReady = 0
-            for p in range(len(players)):
-                if players3[p][1] != None:
-                    allReady = allReady + 1
             if allReady == len(players):
                 break
             randomPlayer = random.choice(countPlr)
             rand = random.randint(1,3)
-            if rand == 1:
-                if countElement(players3,"Мєнт", 20, 3) <= countElement(players3,"Разбойнік", 20, 3):
-                    players3[randomPlayer][1] = "Мєнт"
-                else:
-                    players3[randomPlayer][1] = "Разбойнік"
-            if rand == 2:
-                if countElement(players3,"Мєнт", 20, 3) >= countElement(players3,"Разбойнік", 20, 3):
-                    players3[randomPlayer][1] = "Разбойнік"
-                else:
-                    players3[randomPlayer][1] = "Мєнт"
+            def randRole():
+                if rand == 1:
+                    if countElement(players3,"Мєнт", 20, 3) <= countElement(players3,"Разбойнік", 20, 3):
+                        players3[randomPlayer][1] = "Мєнт"
+                    else:
+                        players3[randomPlayer][1] = "Разбойнік"
+                if rand == 2:
+                    if countElement(players3,"Мєнт", 20, 3) >= countElement(players3,"Разбойнік", 20, 3):
+                        players3[randomPlayer][1] = "Разбойнік"
+                    else:
+                        players3[randomPlayer][1] = "Мєнт"
+            randRole()
             if rand == 3:
                 if countM == 0:
                     players3[randomPlayer][1] = "Мер"
                     countM = countM + 1
                     players3[randomPlayer][4] = 1
                 else:
-                    rand2= random.randint(1,2)
-                    if rand2 == 1:
-                        if countElement(players3,"Мєнт", 20, 3) <= countElement(players3,"Разбойнік", 20, 3):
-                            players3[randomPlayer][1] = "Мєнт"
-                        else:
-                            players3[randomPlayer][1] = "Разбойнік"
-                    if rand2 == 2:
-                        if countElement(players3,"Мєнт", 20, 3) >= countElement(players3,"Разбойнік", 20, 3):
-                            players3[randomPlayer][1] = "Разбойнік"
-                        else:
-                            players3[randomPlayer][1] = "Мєнт"
+                    rand = random.randint(1,2)
+                    randRole()
             countPlr.remove(randomPlayer)
+            allReady += 1
     storonu()
-    bb = False
     cc = False
     while 1 :
         if len(players) != 2:
-            if len(players)%2 != 0:
-                if countElement(players3,"Мєнт", 20, 3) != countElement(players3,"Разбойнік", 20, 3):
-                    storonu()
-                    cc = False
-                else:
-                    bb = True
-                
-                if "Мер" in players3:
-                    cc = True
-                else:
-                    storonu()
-                    bb = False
-                if bb == True and cc == True:
-                   break
+            if "Мер" in players3:
+                break
             else:
-                if countElement(players3,"Мєнт", 20, 3) - 2 == countElement(players3,"Разбойнік", 20, 3) or countElement(players3,"Мєнт", 20, 3) == countElement(players3,"Разбойнік", 20, 3) - 2 :                
-                    storonu()
-                    cc = False
-                else:
-                    bb = True
-                
-                if "Мер" in players3:
-                    cc = True
-                else:
-                    storonu()
-                    bb = False
-                if bb == True and cc == True:
-                   break
-                
+                storonu()
         else:
             break
 
@@ -316,6 +278,41 @@ def game(chadid):
     for p in range(len(players)):
         countPlayer.append(p)
     def raund():
+        def win(hunter, victim, H1, h1, h2, V1, V2, v2):
+            rep = random.randint(1,5)
+            if rep == 1:
+                bot.send_mess(chadid, "{} {} знищив очко {} {}".format(H1, hunter, v2, victim))
+            if rep == 2:
+                bot.send_mess(chadid, "{} {} розтарабанив очко {} {}".format(H1, hunter, v2, victim))
+            if rep == 3:
+                bot.send_mess(chadid, "{} {} кінчив в штани коли його їбав {} {}".format(V1, victim, h1, hunter))
+            if rep == 4:
+                bot.send_mess(chadid, "{} {} спіткала анальна кара {} {}".format(V2, victim, h2, hunter))
+            if rep == 5:
+                bot.send_mess(chadid, "Ракета {} {} стрімко влетіла в чорну диру {} {}".format(h2, hunter, v2, victim))
+        def lose(hunter, victim, H1, h1, h2, H3, V1, v1, v2, V3):
+            life = random.randint(1,5)
+            if life == 1:
+                bot.send_mess(chadid, "{} {} промазав своїм пенісом і {} {} зірвався та втік".format(H1, hunter, v1, victim))
+            if life == 2:
+                bot.send_mess(chadid, "{} {} вдалося уникнути пеніса {} {}".format(V3, victim, h2, hunter))
+            if life == 3:
+                bot.send_mess(chadid, "{} {} не вдалося впіймати {} {}".format(H3, hunter, v2, victim))
+            if life == 4:
+                bot.send_mess(chadid, "{} {} в останній момент використав 'стан' і втік від {} {}".format(V1, victim, h2, hunter))
+            if life == 5:
+                bot.send_mess(chadid, "{} {} в останній момент насрав в штани і мер {} {}".format(V1, victim, h1, hunter))
+        def result():
+            if players[p] in rate:
+                for h in range(len(rate)):
+                    if rate[h][0] == players[p]:
+                        rate2[h][2] = rate2[h][2] + 1
+                        break
+            if players[i] in rate:
+                for h in range(len(rate)):
+                    if rate[h][0] == players[i]:
+                        rate2[h][3] = rate2[h][3] + 1
+                        break
         countPlayer2 = []
         for p in countPlayer:
             countPlayer2.append(p)
@@ -370,44 +367,15 @@ def game(chadid):
                             if players3[c][3] != 0 and players3[c][3] != None:
                                 players3[c][3] = players3[c][3] - 1
                         if die == 1:
-                            rep = random.randint(1,5)
-                            if rep == 1:
-                                bot.send_mess(chadid, "Мер " + players[p] + " знищив очко мєнта " + players[i])
-                            if rep == 2:
-                                bot.send_mess(chadid, "Мер " + players[p] + " розтарабанив очко мєнта " + players[i])
-                            if rep == 3:
-                                bot.send_mess(chadid, "Мєнт " + players[i] + " кінчив в штани коли його їбав мер " + players[p])
-                            if rep == 4:
-                                bot.send_mess(chadid, "Мєнта " + players[i] + " спіткала анальна кара мера " + players[p])
-                            if rep == 5:
-                                bot.send_mess(chadid, "Ракета мера " + players[p] + " стрімко влетіла в чорну диру мєнта " + players[i])
+                            win(players[p], players[i], "Мер", "мер", "мера", "Мєнт", "Мєнта", "мєнта")
                             players3[i][2] = "Died"
                             countPlayer.remove(i)
                             Police.remove(i)
                             if i in countPlayer2:
                                 countPlayer2.remove(i)
-                            if players[p] in rate:
-                                for h in range(len(rate)):
-                                    if rate[h][0] == players[p]:
-                                        rate2[h][2] = rate2[h][2] + 1
-                                        break
-                            if players[i] in rate:
-                                for h in range(len(rate)):
-                                    if rate[h][0] == players[i]:
-                                        rate2[h][3] = rate2[h][3] + 1
-                                        break
+                            result()
                         else:
-                            life = random.randint(1,5)
-                            if life == 1:
-                                bot.send_mess(chadid, "Мер " + players[p] + " промазав своїм пенісом і мєнт " + players[i] + " зірвався та втік")
-                            if life == 2:
-                                bot.send_mess(chadid, "Мєнту " + players[i] + " вдалося уникнути пеніса мера " + players[p])
-                            if life == 3:
-                                bot.send_mess(chadid, "Меру " + players[p] + " не вдалося піймати мєнта " + players[i])
-                            if life == 4:
-                                bot.send_mess(chadid, "Мєнт " + players[i] + " в останній момент використав 'стан' і втік від мера " + players[p])
-                            if life == 5:
-                                bot.send_mess(chadid, "Мєнт " + players[i] + " в останній момент насрав в штани і мер " + players[p]+ " змушений був відступити")
+                            lose(players[p], players[i], "Мер", "мер", "мера", "Меру", "Мєнт", "мєнт", "мєнта", "Мєнту")
                 if players3[p][1] == "Мєнт":
                     if players3[i][1] == "Разбойнік":
                         bot.send_mess(chadid, "Мєнт " + players[p] + " помітив разбойніка " + players[i])
@@ -419,45 +387,15 @@ def game(chadid):
                             if players3[c][3] != 0 and players3[c][3] != None:
                                 players3[c][3] = players3[c][3] - 1
                         if die == 1:
-                            rep = random.randint(1,5)
-                            if rep == 1:
-                                bot.send_mess(chadid, "Мєнт " + players[p] + " знищив очко разбойніка " + players[i])
-                            if rep == 2:
-                                bot.send_mess(chadid, "Мєнт " + players[p] + " розтарабанив очко разбойніка " + players[i])
-                            if rep == 3:
-                                bot.send_mess(chadid, "Разбойнік " + players[i] + " кінчив в штани коли його їбав мєнт " + players[p])
-                            if rep == 4:
-                                bot.send_mess(chadid, "Разбойніка " + players[i] + " спіткала анальна кара мєнта " + players[p])
-                            if rep == 5:
-                                bot.send_mess(chadid, "Ракета мєнта " + players[p] + " стрімко влетіла в чорну диру разбойніка " + players[i])
-                            
+                            win(players[p], players[i], "Мєнт", "мєнт", "мєнта", "Разбойнік", "Разбойніка", "разбойніка")
                             players3[i][2] = "Died"
                             countPlayer.remove(i)
                             Gangster.remove(i)
                             if i in countPlayer2:
                                 countPlayer2.remove(i)
-                            if players[p] in rate:
-                                for h in range(len(rate)):
-                                    if rate[h][0] == players[p]:
-                                        rate2[h][2] = rate2[h][2] + 1
-                                        break
-                            if players[i] in rate:
-                                for h in range(len(rate)):
-                                    if rate[h][0] == players[i]:
-                                        rate2[h][3] = rate2[h][3] + 1
-                                        break
+                            result()
                         else:
-                            life = random.randint(1,5)
-                            if life == 1:
-                                bot.send_mess(chadid, "Мєнт " + players[p] + " промазав своїм пенісом і разбойнік " + players[i] + " зірвався та втік")
-                            if life == 2:
-                                bot.send_mess(chadid, "Разбойніку " + players[i] + " вдалося уникнути пеніса мєнта " + players[p])
-                            if life == 3:
-                                bot.send_mess(chadid, "Мєнту " + players[p] + " не вдалося піймати разбойніка " + players[i])
-                            if life == 4:
-                                bot.send_mess(chadid, "Разбойнік " + players[i] + " в останній момент використав 'стан' і втік від мєнта " + players[p])
-                            if life == 5:
-                                bot.send_mess(chadid, "Разбойнік " + players[i] + " в останній момент насрав в штани і мєнт " + players[p] + " змушений був відступити")
+                            lose(players[p], players[i], "Мєнт", "мєнт", "мєнта", "Мєнту", "Разбойнік", "разбойнік", "разбойніка", "Разбойніку")
                 if players3[p][1] == "Разбойнік":
                     if players3[i][1] == "Мер":
                         bot.send_mess(chadid, "Разбойнік " + players[p] + " помітив мера " + players[i])
@@ -469,44 +407,15 @@ def game(chadid):
                             if players3[c][3] != 0 and players3[c][3] != None:
                                 players3[c][3] = players3[c][3] - 1
                         if die == 1:
-                            rep = random.randint(1,5)
-                            if rep == 1:
-                                bot.send_mess(chadid, "Разбойнік " + players[p] + " знищив очко мера " + players[i])
-                            if rep == 2:
-                                bot.send_mess(chadid, "Разбойнік " + players[p] + " розтарабанив очко мера " + players[i])
-                            if rep == 3:
-                                bot.send_mess(chadid, "Мер " + players[i] + " кінчив в штани коли його їбав разбойнік " + players[p])
-                            if rep == 4:
-                                bot.send_mess(chadid, "Мера " + players[i] + " спіткала анальна кара разбойніка " + players[p])
-                            if rep == 5:
-                                bot.send_mess(chadid, "Ракета разбойніка " + players[p] + " стрімко влетіла в чорну диру мера " + players[i])
+                            win(players[p], players[i], "Разбойнік", "разбойнік", "разбойніка", "Мер", "Мера", "мера")
                             players3[i][2] = "Died"
                             countPlayer.remove(i)
                             Mer.remove(i)
                             if i in countPlayer2:
                                 countPlayer2.remove(i)
-                            if players[p] in rate:
-                                for h in range(len(rate)):
-                                    if rate[h][0] == players[p]:
-                                        rate2[h][2] = rate2[h][2] + 1
-                                        break
-                            if players[i] in rate:
-                                for h in range(len(rate)):
-                                    if rate[h][0] == players[i]:
-                                        rate2[h][3] = rate2[h][3] + 1
-                                        break
+                            result()
                         else:
-                            life = random.randint(1,5)
-                            if life == 1:
-                                bot.send_mess(chadid, "Разбойнік " + players[p] + " промазав своїм пенісом і мер " + players[i] + " зірвався та втік")
-                            if life == 2:
-                                bot.send_mess(chadid, "Меру " + players[i] + " вдалося уникнути пеніса разбойніка " + players[p])
-                            if life == 3:
-                                bot.send_mess(chadid, "Разбойніку " + players[p] + " не вдалося піймати мера " + players[i])
-                            if life == 4:
-                                bot.send_mess(chadid, "Мер " + players[i] + " в останній момент використав 'стан' і втік від разбойніка " + players[p])
-                            if life == 5:
-                                bot.send_mess(chadid, "Мер " + players[i] + " в останній момент насрав в штани і разбойнік " + players[p] + " змушений був відступити")
+                            lose(players[p], players[i], "Разбойнік", "разбойнік", "разбойніка", "Разбойніку", "Мер", "мер", "мера", "Меру")
             if len(players) > 5:
                 for r in range(len(players)):
                     for c in range(3):
@@ -541,6 +450,7 @@ def game(chadid):
             return
         else:
             raund()
+
 def mytimer():
     if len(players) >= 2:
        chadid = chats[timechat[0]]
