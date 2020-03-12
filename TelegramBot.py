@@ -222,7 +222,7 @@ def countElement(massive2d, text, countrow, countcolumn):
             countCL = countCL + 1
     return countext
 
-def game(chadid, players):
+def game(chadid):
     rand = random.randint(1,3)
     players3 = np.empty((20,5), dtype="object")
     for p in range(len(players)):
@@ -544,7 +544,7 @@ def game(chadid, players):
 def mytimer():
     if len(players) >= 2:
        chadid = chats[timechat[0]]
-       game(chadid, players)
+       game(chadid)
        chats[timechat[0] + 1] = 1
        chats[timechat[0] + 2] = 0
        timechat.remove(timechat[0])
@@ -573,6 +573,7 @@ offset = None
 chats = []
 time = 0
 timechat = []
+players = []
 while 1:
     bot.get_updates(offset)
     last_update = bot.last_update()
@@ -718,7 +719,6 @@ while 1:
             bot.send_mess(bot.get_chat_id(last_update),"Я посрав, де Шпецюк блять")
             chats[indx + 1] = 1
     if chats[indx + 2] == 1:
-        players = []
         plys = "+ плюс Плюс го Го"
         if bot.get_message(last_update) in plys:
             if bot.get_username(last_update) in players:
@@ -763,7 +763,7 @@ while 1:
         if bot.get_message(last_update) == "/start" or bot.get_message(last_update) == "/start@BogdanKarmanBot":
            if len(players) >= 2:
                chadid = bot.get_chat_id(last_update)
-               game(chadid, players)
+               game(chadid)
                time.cancel()
                timechat.remove(indx)
                chats[indx + 1] = 1
