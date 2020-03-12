@@ -554,8 +554,6 @@ def mytimer():
        chats[timechat[0] + 2] = 0
        timechat.remove(timechat[0])
 def topplayer(r):
-    c = [0,0,0]
-    j = [None, None, None]
     for p in range(len(rate)):
         if rate[p][0] != None and rate[p][1] == bot.get_chat_id(bot.last_update()) :
             if rate2[p][r] > c[0]:                  
@@ -703,8 +701,12 @@ while 1:
             j = [None, None, None]
             topplayer(1)
             bot.send_mes(bot.get_chat_id(last_update),'Топ%203%20побідітєлєй:%0A1.%20{}%20виграв%20{}%20раз(a).%0A2.%20{}%20виграв%20{}%20раз(a).%0A3.%20{}%20виграв%20{}%20раз(a).'.format(j[0],str(c[0]),j[1],str(c[1]),j[2],str(c[2])))
+            c = [0,0,0]
+            j = [None, None, None]
             topplayer(2)
             bot.send_mes(bot.get_chat_id(last_update),'Топ%203%20анальних%20винищувачів:%0A1.%20{}%20знищив%20{}%20анусів.%0A2.%20{}%20знищив%20{}%20анусів.%0A3.%20{}%20знищив%20{}%20анусів.'.format(j[0],str(c[0]),j[1],str(c[1]),j[2],str(c[2])))
+            c = [0,0,0]
+            j = [None, None, None]
             topplayer(3)
             bot.send_mes(bot.get_chat_id(last_update),'Три%20самі%20пасивні%20гея:%0A1.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).%0A2.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).%0A3.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).'.format(j[0],str(c[0]),j[1],str(c[1]),j[2],str(c[2])))     
         if bot.get_message(last_update) == "/off" or bot.get_message(last_update) == "/off@BogdanKarmanBot":
