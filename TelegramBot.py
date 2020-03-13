@@ -128,7 +128,6 @@ class BogdanBot():
         params = {'chat_id': chat, 'from_chat_id': from_chat, 'message_id': mess}
         response = requests.post("https://api.telegram.org/bot1061329648:AAFzLR4YTveVjLFSZb6cGcy5ze2TZRw8fbU/" + 'forwardMessage', params)
         return response
-bot = BogdanBot()
 rate = np.empty((20,3), dtype="object")
 rate2 = np.empty((20,4), dtype="object")
 def rateplayers():
@@ -198,31 +197,31 @@ def rateplayers():
 rateplayers()
 print(rate)
 print(rate2)
-def basa_add():
-    a = ''
-    for i in range(len(rate)):
-        a = a + str(rate[i][0]) + " " + str(rate[i][1]) + " " + str(rate[i][2]) + " "
-    b = ''
-    for i in range(len(rate2)):
-        b = b + str(rate2[i][0]) + " " + str(rate2[i][1]) + " " + str(rate2[i][2]) + " " + str(rate2[i][3]) + " "
-    bot.send_mess(462419708,"{}|{}".format(a,b))
-    return 
-def countElement(massive2d, text, countrow, countcolumn):
-    countRW = 0
-    countCL = 0
-    countext = 0
-    for i in range(countrow * countcolumn):
-        if countCL == countcolumn:
-            countCL = 0
-            countRW = countRW + 1
-        if massive2d[countRW][countCL] == text:
-            countext = countext + 1
-            countCL = countCL + 1
-        else:
-            countCL = countCL + 1
-    return countext
 def game(chadid):
-    players3 = np.empty((20,5), dtype="object")
+    def basa_add():
+        a = ''
+        for i in range(len(rate)):
+            a = a + str(rate[i][0]) + " " + str(rate[i][1]) + " " + str(rate[i][2]) + " "
+        b = ''
+        for i in range(len(rate2)):
+            b = b + str(rate2[i][0]) + " " + str(rate2[i][1]) + " " + str(rate2[i][2]) + " " + str(rate2[i][3]) + " "
+        bot.send_mess(462419708,"{}|{}".format(a,b))
+        return 
+    def countElement(massive2d, text, countrow, countcolumn):
+        countRW = 0
+        countCL = 0
+        countext = 0
+        for i in range(countrow * countcolumn):
+            if countCL == countcolumn:
+                countCL = 0
+                countRW = countRW + 1
+            if massive2d[countRW][countCL] == text:
+                countext = countext + 1
+                countCL = countCL + 1
+            else:
+                countCL = countCL + 1
+        return countext
+    players3 = np.empty((20,4), dtype="object")
     for p in range(len(players)):
         players3[p][0] = players[p]
     def storonu():
@@ -254,7 +253,6 @@ def game(chadid):
                 if countM == 0:
                     players3[randomPlayer][1] = "Мер"
                     countM = countM + 1
-                    players3[randomPlayer][4] = 1
                 else:
                     rand = random.randint(1,2)
                     randRole()
@@ -270,38 +268,41 @@ def game(chadid):
                 storonu()
         else:
             break
-
+    message = ""
     for k in range(len(players)):
-        if players3[k][0] != None and players3[k][1] != None:
-            bot.send_mess(chadid, players3[k][0] + " - " + players3[k][1])
+        if players3[k][0] != None:
+            message += ("{}%20-%20{}".format(players3[k][0], players3[k][1]))
+    bot.sendmes(chadid, message)
     countPlayer = []
     for p in range(len(players)):
         countPlayer.append(p)
+    lifeMer = 1
+    message = ""
     def raund():
         def win(hunter, victim, H1, h1, h2, V1, V2, v2):
             rep = random.randint(1,5)
             if rep == 1:
-                bot.send_mess(chadid, "{} {} знищив очко {} {}".format(H1, hunter, v2, victim))
+                message += ("{}%20{}%20знищив%20очко%20{}%20{}%0A%0A".format(H1, hunter, v2, victim))
             if rep == 2:
-                bot.send_mess(chadid, "{} {} розтарабанив очко {} {}".format(H1, hunter, v2, victim))
+                message += ("{}%20{}%20розтарабанив%20очко%20{}%20{}%0A%0A".format(H1, hunter, v2, victim))
             if rep == 3:
-                bot.send_mess(chadid, "{} {} кінчив в штани коли його їбав {} {}".format(V1, victim, h1, hunter))
+                message += ("{}%20{}%20кінчив%20в%20штани%20коли%20його%20їбав%20{}%20{}%0A%0A".format(V1, victim, h1, hunter))
             if rep == 4:
-                bot.send_mess(chadid, "{} {} спіткала анальна кара {} {}".format(V2, victim, h2, hunter))
+                message += ("{}%20{}%20спіткала%20анальна%20кара%20{}%20{}%0A%0A".format(V2, victim, h2, hunter))
             if rep == 5:
-                bot.send_mess(chadid, "Ракета {} {} стрімко влетіла в чорну диру {} {}".format(h2, hunter, v2, victim))
+                message += ("Ракета%20{}%20{}%20стрімко%20влетіла%20в%20чорну%20диру%20{}%20{}%0A%0A".format(h2, hunter, v2, victim))
         def lose(hunter, victim, H1, h1, h2, H3, V1, v1, v2, V3):
             life = random.randint(1,5)
             if life == 1:
-                bot.send_mess(chadid, "{} {} промазав своїм пенісом і {} {} зірвався та втік".format(H1, hunter, v1, victim))
+                message += ("{}%20{}%20промазав%20своїм%20пенісом%20і%20{}%20{}%20зірвався%20та%20втік%0A%0A".format(H1, hunter, v1, victim))
             if life == 2:
-                bot.send_mess(chadid, "{} {} вдалося уникнути пеніса {} {}".format(V3, victim, h2, hunter))
+                message += ("{}%20{}%20вдалося%20уникнути%20пеніса%20{}%20{}%0A%0A".format(V3, victim, h2, hunter))
             if life == 3:
-                bot.send_mess(chadid, "{} {} не вдалося впіймати {} {}".format(H3, hunter, v2, victim))
+                message += ("{}%20{}%20не%20вдалося%20впіймати%20{}%20{}%0A%0A".format(H3, hunter, v2, victim))
             if life == 4:
-                bot.send_mess(chadid, "{} {} в останній момент використав 'стан' і втік від {} {}".format(V1, victim, h2, hunter))
+                message += ('{}%20{}%20в%20останній%20момент%20використав%20"стан"%20і%20втік%20від%20{}%20{}%0A%0A'.format(V1, victim, h2, hunter))
             if life == 5:
-                bot.send_mess(chadid, "{} {} в останній момент насрав в штани і {} {} вимушений був відступити".format(V1, victim, h1, hunter))
+                message += ("{}%20{}%20в%20останній%20момент%20насрав%20в%20штани%20і%20{}%20{}%20вимушений%20був%20відступити%0A%0A".format(V1, victim, h1, hunter))
         def result():
             if players[p] in rate:
                 for h in range(len(rate)):
@@ -358,7 +359,7 @@ def game(chadid):
 
                 if players3[p][1] == "Мер":
                     if players3[i][1] == "Мєнт":
-                        bot.send_mess(chadid, "Мер " + players[p] + " помітив мєнта " + players[i])
+                        message += ("Мер%20{}%20помітив мєнта%20{}%0A".format(players[p], players[i]))
                         die = random.randint(1,2)
                         if p in countPlayer2:
                             countPlayer2.remove(p)
@@ -378,7 +379,7 @@ def game(chadid):
                             lose(players[p], players[i], "Мер", "мер", "мера", "Меру", "Мєнт", "мєнт", "мєнта", "Мєнту")
                 if players3[p][1] == "Мєнт":
                     if players3[i][1] == "Разбойнік":
-                        bot.send_mess(chadid, "Мєнт " + players[p] + " помітив разбойніка " + players[i])
+                        message += ("Мєнт%20{}%20помітив разбойніка%20{}%0A".format(players[p], players[i]))
                         die = random.randint(1,2)
                         if p in countPlayer2:
                             countPlayer2.remove(p)
@@ -398,7 +399,7 @@ def game(chadid):
                             lose(players[p], players[i], "Мєнт", "мєнт", "мєнта", "Мєнту", "Разбойнік", "разбойнік", "разбойніка", "Разбойніку")
                 if players3[p][1] == "Разбойнік":
                     if players3[i][1] == "Мер":
-                        bot.send_mess(chadid, "Разбойнік " + players[p] + " помітив мера " + players[i])
+                        message += ("Разбойнік%20{}%20помітив мера%20{}%0A".format(players[p], players[i]))
                         die = random.randint(1,2)
                         if p in countPlayer2:
                             countPlayer2.remove(p)
@@ -417,17 +418,14 @@ def game(chadid):
                         else:
                             lose(players[p], players[i], "Разбойнік", "разбойнік", "разбойніка", "Разбойніку", "Мер", "мер", "мера", "Меру")
             if len(players) > 5:
+                rand = random.randint(1,2)
                 for r in range(len(players)):
                     for c in range(3):
-                        if players3[r][c] == "Мер":
-                            if players3[r][c+1] == "Died":
-                                if players3[r][4] == 1:
-                                    rand = random.randint(1,2)
-                                    if rand == 1:
-                                        players3[r][c+1] = None
-                                        bot.send_mess(chadid, "Мер " + players[r] + " платить за востановлєніє свого очка і повертається до гри")
-                                        countPlayer.append(r)
-                                        players3[r][4] = 0
+                        if players3[r][c] == "Мер" and players3[r][c+1] == "Died" and lifeMer == 1 and rand == 1:
+                            players3[r][c+1] = None
+                            message += ("Мер%20{}%20платить%20за%20востановлєніє%20свого%20очка%20і%20повертається%20до%20гри%0A%0A".format(players[r]))
+                            countPlayer.append(r)
+                            lifeMer = 0
             if countPlayer2 == None or len(cho) == 1 or len(countPlayer2) == 2:
                 break                           
     raund()
@@ -440,10 +438,12 @@ def game(chadid):
                             if rate[h][0] == players[p]:
                                 rate2[h][1] = rate2[h][1] + 1
                                 break
-                    
+            bot.sendmes(chadid, message)
+            message = ""
             for p in range(len(players)):
                 if players3[p][2] != "Died":
-                    bot.send_mess(chadid, players3[p][1] + " " + players[p] + " зберіг своє очко та виграв" )
+                    message += ("{}%20{}%20зберіг%20своє%20очко%20та%20виграв%0A".format(players3[p][1], players[p]))
+            bot.sendmes(chadid, message)
             players.clear()
             basa_add()
             top1 = topplayer(1)
@@ -467,28 +467,28 @@ def mytimer():
        chats[timechat[0] + 2] = 0
        timechat.remove(timechat[0])
 def topplayer(r):
-    c = [0,0,0]
-    j = [None, None, None]
+    c = [0,0,0,None, None, None]
     for p in range(len(rate)):
         if rate[p][0] != None and rate[p][1] == bot.get_chat_id(bot.last_update()) :
-            if rate2[p][r] > c[0]:                  
+            if rate2[p][r] > c[0]:
+                c[1] = c[0]
+                c[4] = c[3]
                 c[0] = rate2[p][r]
-                j[0] = rate[p][0]
+                c[3] = rate[p][0]
             else:
                 if rate2[p][r] > c[1]:
+                    c[2] = c[1]
+                    c[5] = c[4]
                     c[1] = rate2[p][r]
-                    j[1] = rate[p][0]
+                    c[4] = rate[p][0]
                 else:
                     if rate2[p][r] > c[2]:
                         c[2] = rate2[p][r]
-                        j[2] = rate[p][0]
+                        c[5] = rate[p][0]
         if rate[p][0] == None:
             break
-    k = c + j
-    return k
-top1 = topplayer(1)
-top2 = topplayer(2)
-top3 = topplayer(3)
+    return c
+bot = BogdanBot()
 offset = None
 chats = []
 time = 0
@@ -496,6 +496,7 @@ timechat = []
 players = []
 while 1:
     bot.get_updates(offset)
+    print(1)
     last_update = bot.last_update()
     randomess = random.randint(0, 500)
     if randomess == 466:
@@ -506,8 +507,6 @@ while 1:
     print(last_update)
     indx = 0
     last_update_id = last_update['update_id']
-    r = random.randint(1,36)
-    rb = random.randint(1,3)
     if bot.get_chat_id(last_update) != chats:
         chats.append(bot.get_chat_id(last_update))
         chats.append(1)
@@ -522,87 +521,29 @@ while 1:
             time.start()
             bot.send_mes(bot.get_chat_id(last_update), 'Почалася%20гра%20"Мер,%20Мєнти%20та%20Разбойніки".%0A%0AПравила%20гри:%0AМЕР(Мер%20може%20бути%20тільки%20один)%20повинен%20трахнути%20МЄНТІВ,%20МЄНТИ%20повинні%20трахнути%20РОЗБІЙНИКІВ,%20РОЗБІЙНИКИ%20повинні%20трахнути%20МЕРА.%20Кожен%20повинен%20зберегти%20своє%20очко.%20Хто%20зберіг%20своє%20очко%20-%20той%20виграв.%20Якщо%20кількість%20гравців%20буде%20більше%205,%20то%20мер%20отримує%20шанс%201%20раз%20воскреснути.%20Все%20відбувається%20рандомно.%20Ви%20можете%20тіки%20подивитись%20результати.%0A%0AГра%20автоматично%20начнеться%20або%20буде%20припинена%20через%202%20години!!!%0A%0AЩоб%20прийняти%20участь%20в%20грі%20відправте:%20{}%20.%0A%0AЩоб%20почати%20гру(коли%20наберуться%20учасники)%20відправте:%20/start%0A%0AЩоб%20закінчити%20гру:%20/stop%0A%0A/list%20-%20подивиться%20список%20учасників%0A%0A/statistic%20-%20подивиться%20статискику%0A%0A/top3%20-%20подивиться%20топ3.'.format('"Плюс"'))
         if bot.get_username(last_update) == "@zagin177":
-            if rb == 1:
-                bot.resend_mess(bot.get_chat_id(last_update),"+", bot.get_message_id(last_update))
-            if rb == 2:
-                bot.resend_mess(bot.get_chat_id(last_update),"Согласен", bot.get_message_id(last_update))
-            if rb == 3:
-                bot.resend_mess(bot.get_chat_id(last_update),"Поддержую", bot.get_message_id(last_update))
+            bogdan = ["+", "Согласен", "Поддержую"]
+            bot.resend_mess(bot.get_chat_id(last_update), random.choice(bogdan) ,bot.get_message_id(last_update))
         if bot.get_username(last_update) == "@shputya":
-            if r == 1 :
-                bot.resend_mess(bot.get_chat_id(last_update),"Шпецюк поїш гамна", bot.get_message_id(last_update))
-            if r == 2 :
-                bot.resend_mess(bot.get_chat_id(last_update),"Я єбав тебе в рот, Шпетюк", bot.get_message_id(last_update))
-            if r == 3 :
-                bot.resend_mess(bot.get_chat_id(last_update),"Шпетюк блять", bot.get_message_id(last_update))
-            if r == 4 :
-                bot.resend_mess(bot.get_chat_id(last_update),"продам тебе циганам", bot.get_message_id(last_update))
-            if r == 5 :
-                bot.resend_mess(bot.get_chat_id(last_update),"Шпетюк гавно своє їсть", bot.get_message_id(last_update))
-            if r == 6 :
-                bot.resend_mess(bot.get_chat_id(last_update),"в рот собі насри", bot.get_message_id(last_update))
-            if r == 7 :
-                bot.resend_mess(bot.get_chat_id(last_update),"ти обісраний", bot.get_message_id(last_update))
-            if r == 8 :
-                bot.resend_mess(bot.get_chat_id(last_update),"Хай шпетюк отсосе", bot.get_message_id(last_update))
-            if r == 9 :
-                bot.resend_mess(bot.get_chat_id(last_update),"Шпецюк", bot.get_message_id(last_update))
-                bot.send_mess(bot.get_chat_id(last_update),"Ти блатний як двері")
-            if r == 10 :
-                bot.resend_mess(bot.get_chat_id(last_update),"а уїбать", bot.get_message_id(last_update))
-            if r == 11 :
-                bot.send_voice(bot.get_chat_id(last_update),"https://upload.wikimedia.org/wikipedia/commons/4/42/Voice1.ogg", bot.get_message_id(last_update))
-            if r == 12 :
-                bot.send_voice(bot.get_chat_id(last_update),"https://upload.wikimedia.org/wikipedia/commons/c/cb/Voice2.ogg", bot.get_message_id(last_update))
-            if r == 13 :
-                bot.send_voice(bot.get_chat_id(last_update),"https://upload.wikimedia.org/wikipedia/commons/2/2e/Voice3.ogg", bot.get_message_id(last_update))
-            if r == 14 :
-                bot.send_voice(bot.get_chat_id(last_update),"https://upload.wikimedia.org/wikipedia/commons/b/b0/Voice4.ogg", bot.get_message_id(last_update))
-            if r == 15 :
-                bot.resend_mess(bot.get_chat_id(last_update),"Шпитя ти овощ", bot.get_message_id(last_update))
-            if r == 16 :
-                bot.resend_mess(bot.get_chat_id(last_update),"Шпитя ти тупий", bot.get_message_id(last_update))
-            if r == 17 :
-                bot.resend_mess(bot.get_chat_id(last_update),"Ти дебіл шпитя", bot.get_message_id(last_update))
-            if r == 18 :
-                bot.send_voice(bot.get_chat_id(last_update),"https://upload.wikimedia.org/wikipedia/commons/b/bf/Voice5.ogg", bot.get_message_id(last_update))
-            if r == 19 :                
-                bot.resend_mess(bot.get_chat_id(last_update),"Завали їбало", bot.get_message_id(last_update))
-            if r == 20 :
-                bot.resend_mess(bot.get_chat_id(last_update),"Пашол нахуй Шпитюк", bot.get_message_id(last_update))
-            if r == 21 :
-                bot.resend_mess(bot.get_chat_id(last_update),"Ти підарастіческа хуйня їбана", bot.get_message_id(last_update))
-            if r == 22 : 
-                bot.resend_mess(bot.get_chat_id(last_update),"Ти кріпак засраний", bot.get_message_id(last_update))
-                bot.send_mess(bot.get_chat_id(last_update),"Іди сіно кидай")
-            if r == 23 :
-                bot.resend_mess(bot.get_chat_id(last_update),"ти загноение  підзалупного міра", bot.get_message_id(last_update))
-            if r == 24 :
-                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMLXk2JdD3e2ofsBDLlagIzUwaTHXoAAhkAA_z2jxuxgnHkHXK-oRgE", bot.get_message_id(last_update))
-            if r == 25 :
-                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMMXk2KENg_--cBz-PQarldNjh5RZcAAh4AA_z2jxu3VCMC9M_xsRgE", bot.get_message_id(last_update))
-            if r == 26 :
-                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMNXk2KSCpnTJ_KdG3R-5_D5krV1jgAAhYAA_z2jxsapXncRh_8JBgE", bot.get_message_id(last_update))
-            if r == 27 :
-                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMOXk2KkQbgieGHmSSbC7yDZig5_eMAAhcAA_z2jxsfunL3I_azCBgE", bot.get_message_id(last_update))
-            if r == 28 :
-                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMPXk2K2S4x7TQNMNlApek7wtEvzE8AAhoAA_z2jxs18TpPKoBrkRgE", bot.get_message_id(last_update))
-            if r == 29 :
-                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMQXk2LMFh_VyOv2MWnYfM1iWvxHcIAAiAAA_z2jxsr0peTWHBxFhgE", bot.get_message_id(last_update))
-            if r == 30 :
-                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMRXk2MEdLmfm8Y2AOrAgABtwoTVqaXAAJeAQACzcBIGJ_GOFgleipFGAQ", bot.get_message_id(last_update))
-            if r == 31 :
-                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMSXk2MYj04L-zmPrWW3qYeD0QOtsMAAhwAA-b8Dxmrv56G5K6GqhgE", bot.get_message_id(last_update))
-            if r == 32 :
-                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMTXk2MoukYFa1k5OyKHI0BhH4AAR8GAAIxAAPm_A8ZNUSF17VXQ_sYBA", bot.get_message_id(last_update))
-            if r == 33 :
-                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMUXk2M0vFtF97w6kWrwjLkvcrPfj8AAjQAA-b8Dxl0Kmt-bE6nvxgE", bot.get_message_id(last_update))
-            if r == 34 :
-                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMVXk2NAAE8WeT9tKg-AaACyvYhjRq_AAI4AAPm_A8Zo8L_zAxh4NIYBA", bot.get_message_id(last_update))
-            if r == 35 :
-                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMWXk2NeiHTcue4AwrRBZ7nhpKu2lgAAvEAA_NWPxcqR0IBe-SHxhgE", bot.get_message_id(last_update))
-            if r == 36 :
-                bot.send_sticker(bot.get_chat_id(last_update),"CAACAgIAAxkBAAMXXk2N3kpBhcD3sZWhiHQrrReJOpkAAiIAA3lx3hbdu_UH5ZkpgxgE", bot.get_message_id(last_update))
+            shputya = ["Шпецюк поїш гамна", "Я єбав тебе в рот, Шпетюк", "Шпетюк блять","продам тебе циганам","Шпетюк гавно своє їсть","в рот собі насри",
+                       "ти обісраний", "Хай шпетюк отсосе", "Шпецюк, ти блатний як двері", "а уїбать", "Шпитя ти овощ", "Шпитя ти тупий", "Ти дебіл шпитя",
+                       "Завали їбало", "Пашол нахуй Шпетюк", "Ти підарастіческа хуйня їбана", "Ти кріпак засраний, іди сіно кидай", "ти загноение  підзалупного міра"]
+            shputyaVoice = ["https://upload.wikimedia.org/wikipedia/commons/4/42/Voice1.ogg", "https://upload.wikimedia.org/wikipedia/commons/c/cb/Voice2.ogg",
+                            "https://upload.wikimedia.org/wikipedia/commons/2/2e/Voice3.ogg", "https://upload.wikimedia.org/wikipedia/commons/b/b0/Voice4.ogg",
+                            "https://upload.wikimedia.org/wikipedia/commons/b/bf/Voice5.ogg"]
+            shputyaSticker = ["CAACAgIAAxkBAAMLXk2JdD3e2ofsBDLlagIzUwaTHXoAAhkAA_z2jxuxgnHkHXK-oRgE", "CAACAgIAAxkBAAMMXk2KENg_--cBz-PQarldNjh5RZcAAh4AA_z2jxu3VCMC9M_xsRgE",
+                              "CAACAgIAAxkBAAMNXk2KSCpnTJ_KdG3R-5_D5krV1jgAAhYAA_z2jxsapXncRh_8JBgE", "CAACAgIAAxkBAAMOXk2KkQbgieGHmSSbC7yDZig5_eMAAhcAA_z2jxsfunL3I_azCBgE",
+                              "CAACAgIAAxkBAAMPXk2K2S4x7TQNMNlApek7wtEvzE8AAhoAA_z2jxs18TpPKoBrkRgE", "CAACAgIAAxkBAAMQXk2LMFh_VyOv2MWnYfM1iWvxHcIAAiAAA_z2jxsr0peTWHBxFhgE",
+                              "CAACAgIAAxkBAAMRXk2MEdLmfm8Y2AOrAgABtwoTVqaXAAJeAQACzcBIGJ_GOFgleipFGAQ", "CAACAgIAAxkBAAMSXk2MYj04L-zmPrWW3qYeD0QOtsMAAhwAA-b8Dxmrv56G5K6GqhgE",
+                              "CAACAgIAAxkBAAMTXk2MoukYFa1k5OyKHI0BhH4AAR8GAAIxAAPm_A8ZNUSF17VXQ_sYBA", "CAACAgIAAxkBAAMUXk2M0vFtF97w6kWrwjLkvcrPfj8AAjQAA-b8Dxl0Kmt-bE6nvxgE",
+                              "CAACAgIAAxkBAAMVXk2NAAE8WeT9tKg-AaACyvYhjRq_AAI4AAPm_A8Zo8L_zAxh4NIYBA", "CAACAgIAAxkBAAMWXk2NeiHTcue4AwrRBZ7nhpKu2lgAAvEAA_NWPxcqR0IBe-SHxhgE",
+                              "CAACAgIAAxkBAAMXXk2N3kpBhcD3sZWhiHQrrReJOpkAAiIAA3lx3hbdu_UH5ZkpgxgE"]
+            rand = random.randint(1,3)
+            if rand == 1:
+                bot.resend_mess(bot.get_chat_id(last_update), random.choice(shputya) ,bot.get_message_id(last_update))
+            if rand == 2 :
+                bot.send_voice(bot.get_chat_id(last_update), random.choice(shputyaVoice), bot.get_message_id(last_update))
+            if rand == 3 :
+                bot.send_sticker(bot.get_chat_id(last_update), random.choice(shputyaSticker), bot.get_message_id(last_update))
     if chats[indx + 1] == 1 or chats[indx + 2] == 1:
         if bot.get_message(last_update) == "/statistic" or bot.get_message(last_update) == "/statistic@BogdanKarmanBot":
             flag = 0
@@ -617,6 +558,10 @@ while 1:
                     break
             if flag == 0:
                 bot.resend_mess(bot.get_chat_id(last_update),"В тебе намеє статистики", bot.get_message_id(last_update))
+        if bot.get_message(last_update) == "/top3" or bot.get_message(last_update) == "/top3@BogdanKarmanBot":
+            top1 = topplayer(1)
+            top2 = topplayer(2)
+            top3 = topplayer(3)
             bot.send_mes(bot.get_chat_id(last_update),'Топ%203%20побідітєлєй:%0A1.%20{}%20виграв%20{}%20раз(a).%0A2.%20{}%20виграв%20{}%20раз(a).%0A3.%20{}%20виграв%20{}%20раз(a).'.format(top1[3],str(top1[0]),top1[4],str(top1[1]),top1[5],str(top1[2])))
             bot.send_mes(bot.get_chat_id(last_update),'Топ%203%20анальних%20винищувачів:%0A1.%20{}%20знищив%20{}%20анусів.%0A2.%20{}%20знищив%20{}%20анусів.%0A3.%20{}%20знищив%20{}%20анусів.'.format(top2[3],str(top2[0]),top2[4],str(top2[1]),top2[5],str(top2[2])))
             bot.send_mes(bot.get_chat_id(last_update),'Три%20самі%20пасивні%20гея:%0A1.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).%0A2.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).%0A3.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).'.format(top3[3],str(top3[0]),top3[4],str(top3[1]),top3[5],str(top3[2])))     
@@ -660,14 +605,11 @@ while 1:
                     rate[li][1] = bot.get_chat_id(last_update)
                     break
         if bot.get_message(last_update) == "/list" or bot.get_message(last_update) == "/list@BogdanKarmanBot":
-            pl = None
+            pl = ""
             for s in range(len(players)):
-                if pl == None:
-                    pl = '%0A'+ players[s]
-                else:
-                    pl = pl + '%0A'+ players[s]
-            if pl != None:
-                bot.send_mes(bot.get_chat_id(last_update), "Список%20гравців:{}".format(pl))
+                pl += players[s] + '%0A'
+            if pl != "":
+                bot.send_mes(bot.get_chat_id(last_update), "Список%20гравців:%0A{}".format(pl))
             else:
                 bot.send_mes(bot.get_chat_id(last_update), "Немає%20гравців")
         if bot.get_message(last_update) == "/start" or bot.get_message(last_update) == "/start@BogdanKarmanBot":
