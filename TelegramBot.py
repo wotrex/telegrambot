@@ -106,15 +106,6 @@ class BogdanBot():
              else:
                  firstn = update['message']['from']['first_name']
                  return firstn
-  ##  def get_firstname(self, update):
-   ##      if 'message' in update:
-   ##          if 'first_name' in update['message']['from']:
-   ##             chat_id = update['message']['from']['first_name']
-   ##             return chat_id
-   ##      if 'edited_message' in update:
-   ##          if 'first_name' in ['edited_message']['from']:
-   ##             chat_id = update['edited_message']['from']['first_name']
-   ##             return chat_id
     def get_id(self, update):
          if 'message' in update:
              if 'id' in update['message']['from']:
@@ -124,10 +115,6 @@ class BogdanBot():
              if 'id' in update['edited_message']['from']:
                 chat_id = update['edited_message']['from']['id']
                 return chat_id
-  ##  def forward_mess(self, chat, from_chat, mess):  
-  ##      params = {'chat_id': chat, 'from_chat_id': from_chat, 'message_id': mess}
-  ##      response = requests.post("https://api.telegram.org/bot1061329648:AAFzLR4YTveVjLFSZb6cGcy5ze2TZRw8fbU/" + 'forwardMessage', params)
-  ##      return response
 rate = np.empty((20,3), dtype="object")
 rate2 = np.empty((20,4), dtype="object")
 bot = BogdanBot()
@@ -482,7 +469,7 @@ offset = None
 chats = []
 time = 0
 timechat = []
-players = ["bot","bot2","bot3","bot4","bot5"]
+players = []
 while 1:
     bot.get_updates(offset)
     last_update = bot.last_update()
