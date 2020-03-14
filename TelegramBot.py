@@ -272,7 +272,7 @@ def game(chadid):
     message = ""
     for k in range(len(players)):
         if players3[k][0] != None:
-            message += ("{}%20-%20{}".format(players3[k][0], players3[k][1]))
+            message += ("{}%20-%20{}%0A".format(players3[k][0], players3[k][1]))
     bot.send_mes(chadid, message)
     countPlayer = []
     for p in range(len(players)):
