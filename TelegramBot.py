@@ -130,6 +130,7 @@ class BogdanBot():
         return response
 rate = np.empty((20,3), dtype="object")
 rate2 = np.empty((20,4), dtype="object")
+bot = BogdanBot()
 def rateplayers():
     r = requests.get("https://write.as/api/posts/1t7486xtsluj3mg4")
     objects = json.loads(r.text)['data']['body']
@@ -488,7 +489,6 @@ def topplayer(r):
         if rate[p][0] == None:
             break
     return c
-bot = BogdanBot()
 offset = None
 chats = []
 time = 0
