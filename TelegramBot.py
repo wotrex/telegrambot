@@ -273,7 +273,7 @@ def game(chadid):
     for k in range(len(players)):
         if players3[k][0] != None:
             message += ("{}%20-%20{}".format(players3[k][0], players3[k][1]))
-    bot.sendmes(chadid, message)
+    bot.send_mes(chadid, message)
     countPlayer = []
     for p in range(len(players)):
         countPlayer.append(p)
@@ -439,12 +439,12 @@ def game(chadid):
                             if rate[h][0] == players[p]:
                                 rate2[h][1] = rate2[h][1] + 1
                                 break
-            bot.sendmes(chadid, message)
+            bot.send_mes(chadid, message)
             message = ""
             for p in range(len(players)):
                 if players3[p][2] != "Died":
                     message += ("{}%20{}%20зберіг%20своє%20очко%20та%20виграв%0A".format(players3[p][1], players[p]))
-            bot.sendmes(chadid, message)
+            bot.send_mes(chadid, message)
             players.clear()
             basa_add()
             top1 = topplayer(1)
