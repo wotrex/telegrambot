@@ -283,6 +283,7 @@ def game(chadid):
         nonlocal message
         def win(hunter, victim, H1, h1, h2, V1, V2, v2):
             rep = random.randint(1,5)
+            nonlocal message
             if rep == 1:
                 message += ("{}%20{}%20знищив%20очко%20{}%20{}%0A%0A".format(H1, hunter, v2, victim))
             if rep == 2:
@@ -295,6 +296,7 @@ def game(chadid):
                 message += ("Ракета%20{}%20{}%20стрімко%20влетіла%20в%20чорну%20диру%20{}%20{}%0A%0A".format(h2, hunter, v2, victim))
         def lose(hunter, victim, H1, h1, h2, H3, V1, v1, v2, V3):
             life = random.randint(1,5)
+            nonlocal message
             if life == 1:
                 message += ("{}%20{}%20промазав%20своїм%20пенісом%20і%20{}%20{}%20зірвався%20та%20втік%0A%0A".format(H1, hunter, v1, victim))
             if life == 2:
