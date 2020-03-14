@@ -208,20 +208,6 @@ def game(chadid):
             b = b + str(rate2[i][0]) + " " + str(rate2[i][1]) + " " + str(rate2[i][2]) + " " + str(rate2[i][3]) + " "
         bot.send_mess(462419708,"{}|{}".format(a,b))
         return 
-    def countElement(massive2d, text, countrow, countcolumn):
-        countRW = 0
-        countCL = 0
-        countext = 0
-        for i in range(countrow * countcolumn):
-            if countCL == countcolumn:
-                countCL = 0
-                countRW = countRW + 1
-            if massive2d[countRW][countCL] == text:
-                countext = countext + 1
-                countCL = countCL + 1
-            else:
-                countCL = countCL + 1
-        return countext
     players3 = np.empty((20,4), dtype="object")
     for p in range(len(players)):
         players3[p][0] = players[p]
@@ -240,12 +226,12 @@ def game(chadid):
             rand = random.randint(1,3)
             def randRole():
                 if rand == 1:
-                    if countElement(players3,"Мєнт", 20, 3) <= countElement(players3,"Разбойнік", 20, 3):
+                    if np.count_nonzero(players3 == "Мєнт") <= np.count_nonzero(players3 == "Разбойнік"):
                         players3[randomPlayer][1] = "Мєнт"
                     else:
                         players3[randomPlayer][1] = "Разбойнік"
                 if rand == 2:
-                    if countElement(players3,"Мєнт", 20, 3) >= countElement(players3,"Разбойнік", 20, 3):
+                    if np.count_nonzero(players3 == "Мєнт") >= np.count_nonzero(players3 == "Разбойнік"):
                         players3[randomPlayer][1] = "Разбойнік"
                     else:
                         players3[randomPlayer][1] = "Мєнт"
@@ -434,7 +420,7 @@ def game(chadid):
                 break                           
     raund()
     while 1:
-        if countElement(players3,"Died", 20, 3) >= (len(players) / 2) :
+        if np.count_nonzero(players3 == "Died") >= (len(players) / 2) :
             for p in range(len(players)):
                 if players[p] in rate:
                     if players3[p][2] != "Died":
