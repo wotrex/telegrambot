@@ -199,7 +199,6 @@ rateplayers()
 print(rate)
 print(rate2)
 def game(chadid):
-    global message
     def basa_add():
         a = ''
         for i in range(len(rate)):
@@ -279,8 +278,9 @@ def game(chadid):
     for p in range(len(players)):
         countPlayer.append(p)
     lifeMer = 1
-    message = ""
+    message.clear()
     def raund():
+        message = ""
         def win(hunter, victim, H1, h1, h2, V1, V2, v2):
             rep = random.randint(1,5)
             if rep == 1:
