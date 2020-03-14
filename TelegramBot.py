@@ -278,7 +278,7 @@ def game(chadid):
     for p in range(len(players)):
         countPlayer.append(p)
     lifeMer = 1
-    message = ""
+    global message = ""
     def raund():
         def win(hunter, victim, H1, h1, h2, V1, V2, v2):
             rep = random.randint(1,5)
