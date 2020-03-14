@@ -493,10 +493,9 @@ offset = None
 chats = []
 time = 0
 timechat = []
-players = []
+players = ["bot"]
 while 1:
     bot.get_updates(offset)
-    print(1)
     last_update = bot.last_update()
     randomess = random.randint(0, 500)
     if randomess == 466:
