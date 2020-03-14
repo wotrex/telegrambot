@@ -278,9 +278,8 @@ def game(chadid):
     for p in range(len(players)):
         countPlayer.append(p)
     lifeMer = 1
-    message.clear()
+    message = ""
     def raund():
-        message = ""
         def win(hunter, victim, H1, h1, h2, V1, V2, v2):
             rep = random.randint(1,5)
             if rep == 1:
@@ -361,7 +360,7 @@ def game(chadid):
 
                 if players3[p][1] == "Мер":
                     if players3[i][1] == "Мєнт":
-                        message += ("Мер%20{}%20помітив мєнта%20{}%0A".format(players[p], players[i]))
+                        global message += ("Мер%20{}%20помітив мєнта%20{}%0A".format(players[p], players[i]))
                         die = random.randint(1,2)
                         if p in countPlayer2:
                             countPlayer2.remove(p)
@@ -381,7 +380,7 @@ def game(chadid):
                             lose(players[p], players[i], "Мер", "мер", "мера", "Меру", "Мєнт", "мєнт", "мєнта", "Мєнту")
                 if players3[p][1] == "Мєнт":
                     if players3[i][1] == "Разбойнік":
-                        message += ("Мєнт%20{}%20помітив разбойніка%20{}%0A".format(players[p], players[i]))
+                        global message += ("Мєнт%20{}%20помітив разбойніка%20{}%0A".format(players[p], players[i]))
                         die = random.randint(1,2)
                         if p in countPlayer2:
                             countPlayer2.remove(p)
@@ -401,7 +400,7 @@ def game(chadid):
                             lose(players[p], players[i], "Мєнт", "мєнт", "мєнта", "Мєнту", "Разбойнік", "разбойнік", "разбойніка", "Разбойніку")
                 if players3[p][1] == "Разбойнік":
                     if players3[i][1] == "Мер":
-                        message += ("Разбойнік%20{}%20помітив мера%20{}%0A".format(players[p], players[i]))
+                        global message += ("Разбойнік%20{}%20помітив мера%20{}%0A".format(players[p], players[i]))
                         die = random.randint(1,2)
                         if p in countPlayer2:
                             countPlayer2.remove(p)
