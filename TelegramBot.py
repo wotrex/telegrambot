@@ -482,7 +482,7 @@ offset = None
 chats = []
 time = 0
 timechat = []
-players = ["bot"]
+players = ["bot","bot2","bot3","bot4"]
 while 1:
     bot.get_updates(offset)
     last_update = bot.last_update()
