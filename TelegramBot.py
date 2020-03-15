@@ -421,8 +421,6 @@ chats = []
 time = 0
 timechat = []
 players = np.zeros((0), dtype = [('name', object),('chatid', object)])
-players = np.insert(players, len(players),('bot1',-263658994), axis = 0)
-players = np.insert(players, len(players),('bot2',-263658994), axis = 0)
 while 1:
     bot.get_updates(offset)
     last_update = bot.last_update()
