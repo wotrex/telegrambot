@@ -409,6 +409,7 @@ def mytimer():
     else:
        bot.send_mess(chats[timechat[0]], "Достатня кількість учасників не набралась, гру відмінено")
        chats[timechat[0] + 1] = 1
+       players = players[np.where(players['chatid'] != chats[timechat[0]]]
        chats[timechat[0] + 2] = 0
        timechat.remove(timechat[0])
 def topplayer(r):
@@ -538,7 +539,7 @@ while 1:
                bot.resend_mess(bot.get_chat_id(last_update), "Мало гравців(Мінімум 2)", bot.get_message_id(last_update))
         if bot.get_message(last_update) == "/stop" or bot.get_message(last_update) == "/stop@BogdanKarmanBot":
             bot.send_mess(bot.get_chat_id(last_update), "Гру відмінено")
-            players.clear()
+            players = players[np.where(players['chatid'] != bot.get_chat_id(last_update))]
             chats[indx + 1] = 1
             chats[indx + 2] = 0
             time.cancel()
