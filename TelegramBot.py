@@ -158,7 +158,14 @@ while x != len(objects1):
     y += 4
 print(rate)
 print(rate2)
-def game(chadid):
+def game(chadid, players):
+    def update(token, id, **kwargs):
+        data = json.dumps(kwargs)
+        p = requests.post('https://write.as/api/posts' + "/%s" % id, data=data,
+            headers={"Authorization": "Token %s" % token,
+                    "Content-Type":"application/json"})
+        if p.status_code != 200:
+            return "Error in updatePost(): %s" % p.json()["error_msg"]
     def basa_add():
         a = ''
         for i in range(len(rate)):
@@ -166,7 +173,7 @@ def game(chadid):
         b = ''
         for i in range(len(rate2)):
             b = b + str(rate2[i][0]) + " " + str(rate2[i][1]) + " " + str(rate2[i][2]) + " " + str(rate2[i][3]) + " "
-        bot.send_mess(462419708,"{}|{}".format(a,b))
+        update('54e5b71b-8113-4381-4819-4b6e942e5b25', '1t7486xtsluj3mg4', body = ("{}|{}".format(a,b)))
         return 
     players3 = np.zeros((0), dtype = [('name', object),('role', object),('died', object),('count', int)])
     for p in range(len(players)):
@@ -251,16 +258,11 @@ def game(chadid):
             if life == 5:
                 message += ("{}%20{}%20в%20останній%20момент%20насрав%20в%20штани%20і%20{}%20{}%20вимушений%20був%20відступити%0A%0A".format(V1, victim, h1, hunter))
         def result():
-            if players[p] in rate[:][0]:
-                for h in range(len(rate)):
-                    if rate[h][0] == players[p]:
-                        rate2[h][2] = rate2[h][2] + 1
-                        break
-            if players[i] in rate[:][0]:
-                for h in range(len(rate)):
-                    if rate[h][0] == players[i]:
-                        rate2[h][3] = rate2[h][3] + 1
-                        break
+            for h in range(len(rate)):
+                if rate[h][0] == players[p] and rate[h][1] == str(chadid):
+                    rate2[h][2] = rate2[h][2] + 1
+                if rate[h][0] == players[i] and rate[h][1] == str(chadid):
+                    rate2[h][3] = rate2[h][3] + 1
         countPlayer2 = []
         for p in countPlayer:
             countPlayer2.append(p)
@@ -380,19 +382,17 @@ def game(chadid):
     while 1:
         if np.count_nonzero("Died" == players3['died']) >= (len(players) / 2) :
             for p in range(len(players)):
-                if players[p] in rate['name']:
-                    if players3[p][2] != "Died":
-                        for h in range(len(rate)):
-                            if rate[h][0] == players[p]:
-                                rate2[h][1] = rate2[h][1] + 1
-                                break
+                if players3[p][2] != "Died":
+                    for h in range(len(rate)):
+                        if rate[h][0] == players[p] and rate[h][1] == str(chadid):
+                            rate2[h][1] = rate2[h][1] + 1
+                            break
             bot.send_mes(chadid, message)
             message = ""
             for p in range(len(players)):
                 if players3[p][2] != "Died":
                     message += ("{}%20{}%20зберіг%20своє%20очко%20та%20виграв%0A".format(players3[p][1], players[p]))
             bot.send_mes(chadid, message)
-            players.clear()
             basa_add()
             break
             return
@@ -402,7 +402,7 @@ def game(chadid):
 def mytimer():
     if len(players) >= 2:
        chadid = chats[timechat[0]]
-       game(chadid)
+       game(chadid, players[players['chatid'] == chadid]['name'])
        chats[timechat[0] + 1] = 1
        chats[timechat[0] + 2] = 0
        timechat.remove(timechat[0])
@@ -414,20 +414,18 @@ def mytimer():
 def topplayer(r):
     b = np.sort(rate2[np.where(rate['chatid'] == bot.get_chat_id(last_update))], order = r)
     if len(b) < 3:
-        return 0, 0, 0, 'Никто', 'Никто','Никто'
+        return 0, 0, 0, 'Ніхто', 'Ніхто','Ніхто'
     return b[-1][r], b[-2][r], b[-3][r], rate[b[-1][0]][0], rate[b[-2][0]][0], rate[b[-3][0]][0]
 offset = None
 chats = []
 time = 0
 timechat = []
-players = ['bot1','bot2','bot3']
+players = np.zeros((0), dtype = [('name', object),('chatid', object)])
+players = np.insert(players, len(players),('bot1',-263658994), axis = 0)
+players = np.insert(players, len(players),('bot2',-263658994), axis = 0)
 while 1:
     bot.get_updates(offset)
     last_update = bot.last_update()
-    randomess = random.randint(0, 500)
-    if randomess == 466:
-        bot.send_stick(-1001490119489 ,"CAACAgIAAxkBAAIKzF5oA-OsKVA279gpgfinIUQh8QZqAAJVAQAC81Y_F3TXHEt6LzP4GAQ")
-        print("отправилось")
     if last_update is None:
         continue
     print(last_update)
@@ -474,13 +472,9 @@ while 1:
         if bot.get_message(last_update) == "/statistic" or bot.get_message(last_update) == "/statistic@BogdanKarmanBot":
             flag = 0
             for p in range(len(rate)):
-                if rate[p][0] != None and rate[p][0] == bot.get_username(last_update):
-                    r1=str(rate[p][0])
-                    r2=rate2[p][1]
-                    r3=rate2[p][2]
-                    r4=rate2[p][3]
+                if rate[p][0] == bot.get_username(last_update) and rate[p][1] == str(bot.get_chat_id(last_update)):
                     flag = 1
-                    bot.send_mes(bot.get_chat_id(last_update), "{}%20:%0AВиграв%20ігор%20-%20{}%0AКількість%20знищених%20ворожих%20анусів%20-%20{}%0AКількість%20разів%20коли%20втратив%20анальну%20дєвствєнность%20-%20{}".format(r1,r2,r3,r4))
+                    bot.send_mes(bot.get_chat_id(last_update), "{}%20:%0AВиграв%20ігор%20-%20{}%0AКількість%20знищених%20ворожих%20анусів%20-%20{}%0AКількість%20разів%20коли%20втратив%20анальну%20дєвствєнность%20-%20{}".format(str(rate[p][0]),rate2[p][1],rate2[p][2],rate2[p][3]))
                     break
             if flag == 0:
                 bot.resend_mess(bot.get_chat_id(last_update),"В тебе намеє статистики", bot.get_message_id(last_update))
@@ -492,6 +486,9 @@ while 1:
             bot.send_mes(bot.get_chat_id(last_update),'Топ%203%20анальних%20винищувачів:%0A1.%20{}%20знищив%20{}%20анусів.%0A2.%20{}%20знищив%20{}%20анусів.%0A3.%20{}%20знищив%20{}%20анусів.'.format(top2[3],str(top2[0]),top2[4],str(top2[1]),top2[5],str(top2[2])))
             bot.send_mes(bot.get_chat_id(last_update),'Три%20самі%20пасивні%20гея:%0A1.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).%0A2.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).%0A3.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).'.format(top3[3],str(top3[0]),top3[4],str(top3[1]),top3[5],str(top3[2])))     
         if bot.get_message(last_update) == "/off" or bot.get_message(last_update) == "/off@BogdanKarmanBot":
+            if chats[indx + 2] == 1:
+                time.cancel()
+                timechat.remove(indx)
             bot.send_mess(bot.get_chat_id(last_update),"Вимушений відлучитись, іду срать")
             offset = None
             chats[indx + 1] = 0
@@ -503,30 +500,30 @@ while 1:
     if chats[indx + 2] == 1:
         plys = "+ плюс Плюс го Го"
         if bot.get_message(last_update) in plys:
-            if bot.get_username(last_update) in players:
+            co = 0
+            for li in range(len(rate)):
+                if rate[li][2] == bot.get_id(last_update) and rate[li][1] == str(bot.get_chat_id(last_update)):
+                    co = 1
+                    break
+            if co == 0:
+                rate = np.insert(rate, len(rate),(bot.get_username(last_update), str(bot.get_chat_id(last_update)),bot.get_id(last_update)), axis = 0)
+                rate2 = np.insert(rate2, len(rate2),(len(rate2),0,0,0), axis = 0)
+            if bot.get_username(last_update) in players['name']:
                 bot.send_mess(bot.get_chat_id(last_update), bot.get_username(last_update) + ", ти вже приймаєш участь в грі")
             else:
-                players.append(bot.get_username(last_update))
+                players = np.insert(players, len(players),(bot.get_username(last_update),bot.get_chat_id(last_update)), axis = 0)
                 bot.send_mess(bot.get_chat_id(last_update), bot.get_username(last_update) + " бере участь в грі")
-            if bot.get_id(last_update) in rate[:][2]:
+            if bot.get_id(last_update) in rate['id']:
                 if bot.get_username(last_update) in rate[:][0]:
                     a = True
                 else:
                     for u in range(len(rate)):
                         if rate[u][2] == bot.get_id(last_update):
                             rate[u][0] = bot.get_username(last_update)
-                            break
-            else:
-                rate = np.insert(rate, len(rate),(bot.get_username(last_update), bot.get_chat_id(last_update),bot.get_id(last_update)), axis = 0)
-                rate2 = np.insert(rate2, len(rate2),(len(rate2),0,0,0), axis = 0)
-            for li in range(len(rate)):
-                if rate[li][0] == bot.get_username(last_update):
-                    rate[li][1] = bot.get_chat_id(last_update)
-                    break
         if bot.get_message(last_update) == "/list" or bot.get_message(last_update) == "/list@BogdanKarmanBot":
             pl = ""
             for s in range(len(players)):
-                pl += players[s] + '%0A'
+                pl += players[s]['name'] + '%0A'
             if pl != "":
                 bot.send_mes(bot.get_chat_id(last_update), "Список%20гравців:%0A{}".format(pl))
             else:
@@ -534,7 +531,7 @@ while 1:
         if bot.get_message(last_update) == "/start" or bot.get_message(last_update) == "/start@BogdanKarmanBot":
            if len(players) >= 2:
                chadid = bot.get_chat_id(last_update)
-               game(chadid)
+               game(chadid, players[players['chatid'] == chadid]['name'])
                time.cancel()
                timechat.remove(indx)
                chats[indx + 1] = 1
