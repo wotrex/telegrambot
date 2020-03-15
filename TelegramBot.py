@@ -174,7 +174,6 @@ def game(chadid):
     def storonu():
         for p in range(len(players)):
             players3[p][1] = None
-        countM = 0
         countPlr = []
         for p in range(len(players)):
             countPlr.append(p)
@@ -186,27 +185,25 @@ def game(chadid):
             rand = random.randint(1,3)
             def randRole():
                 if rand == 1:
-                    if np.count_nonzero("Мєнт" in players3[:][1]) <= np.count_nonzero("Разбойнік" in players3[:][1]):
+                    if np.count_nonzero("Мєнт" == players3['role']) <= np.count_nonzero("Разбойнік" == players3['role']):
                         players3[randomPlayer][1] = "Мєнт"
                     else:
                         players3[randomPlayer][1] = "Разбойнік"
                 if rand == 2:
-                    if np.count_nonzero("Мєнт" in players3[:][1]) >= np.count_nonzero("Разбойнік" in players3[:][1]):
+                    if np.count_nonzero("Мєнт" == players3['role']) >= np.count_nonzero("Разбойнік" == players3['role']):
                         players3[randomPlayer][1] = "Разбойнік"
                     else:
                         players3[randomPlayer][1] = "Мєнт"
             randRole()
             if rand == 3:
-                if countM == 0:
+                if np.count_nonzero("Мер" == players3['role']) == 0:
                     players3[randomPlayer][1] = "Мер"
-                    countM = countM + 1
                 else:
                     rand = random.randint(1,2)
                     randRole()
             countPlr.remove(randomPlayer)
             allReady += 1
     storonu()
-    cc = False
     while 1 :
         if len(players) != 2:
             if "Мер" in players3[:][1]:
@@ -381,9 +378,9 @@ def game(chadid):
                 break                           
     raund()
     while 1:
-        if np.count_nonzero("Died" in players3[:][2]) >= (len(players) / 2) :
+        if np.count_nonzero("Died" == players3['died']) >= (len(players) / 2) :
             for p in range(len(players)):
-                if players[p] in rate:
+                if players[p] in rate['name']:
                     if players3[p][2] != "Died":
                         for h in range(len(rate)):
                             if rate[h][0] == players[p]:
@@ -397,9 +394,6 @@ def game(chadid):
             bot.send_mes(chadid, message)
             players.clear()
             basa_add()
-            top1 = topplayer(1)
-            top2 = topplayer(2)
-            top3 = topplayer(3)
             break
             return
         else:
@@ -417,14 +411,16 @@ def mytimer():
        chats[timechat[0] + 1] = 1
        chats[timechat[0] + 2] = 0
        timechat.remove(timechat[0])
-def topplayer(r, number):
-    b = np.sort(rate2, order = r)
-    return b[-1][number], b[-2][number], b[-3][number], rate[b[-1][0]][0], rate[b[-2][0]][0], rate[b[-3][0]][0]
+def topplayer(r):
+    b = np.sort(rate2[np.where(rate['chatid'] == bot.get_chat_id(last_update))], order = r)
+    if len(b) < 3:
+        return 0, 0, 0, 'Никто', 'Никто','Никто'
+    return b[-1][r], b[-2][r], b[-3][r], rate[b[-1][0]][0], rate[b[-2][0]][0], rate[b[-3][0]][0]
 offset = None
 chats = []
 time = 0
 timechat = []
-players = ['bot1','bot2','bot3','bot4','bot5','bot6']
+players = ['bot1','bot2','bot3']
 while 1:
     bot.get_updates(offset)
     last_update = bot.last_update()
@@ -489,9 +485,9 @@ while 1:
             if flag == 0:
                 bot.resend_mess(bot.get_chat_id(last_update),"В тебе намеє статистики", bot.get_message_id(last_update))
         if bot.get_message(last_update) == "/top3" or bot.get_message(last_update) == "/top3@BogdanKarmanBot":
-            top1 = topplayer('wins',1)
-            top2 = topplayer('kills',2)
-            top3 = topplayer('losing',3)
+            top1 = topplayer('wins')
+            top2 = topplayer('kills')
+            top3 = topplayer('losing')
             bot.send_mes(bot.get_chat_id(last_update),'Топ%203%20побідітєлєй:%0A1.%20{}%20виграв%20{}%20раз(a).%0A2.%20{}%20виграв%20{}%20раз(a).%0A3.%20{}%20виграв%20{}%20раз(a).'.format(top1[3],str(top1[0]),top1[4],str(top1[1]),top1[5],str(top1[2])))
             bot.send_mes(bot.get_chat_id(last_update),'Топ%203%20анальних%20винищувачів:%0A1.%20{}%20знищив%20{}%20анусів.%0A2.%20{}%20знищив%20{}%20анусів.%0A3.%20{}%20знищив%20{}%20анусів.'.format(top2[3],str(top2[0]),top2[4],str(top2[1]),top2[5],str(top2[2])))
             bot.send_mes(bot.get_chat_id(last_update),'Три%20самі%20пасивні%20гея:%0A1.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).%0A2.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).%0A3.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).'.format(top3[3],str(top3[0]),top3[4],str(top3[1]),top3[5],str(top3[2])))     
@@ -499,6 +495,7 @@ while 1:
             bot.send_mess(bot.get_chat_id(last_update),"Вимушений відлучитись, іду срать")
             offset = None
             chats[indx + 1] = 0
+            chats[indx + 2] = 0
     if chats[indx + 1] == 0 and chats[indx + 2] == 0:
         if bot.get_message(last_update) == "/on" or bot.get_message(last_update) == "/on@BogdanKarmanBot" :
             bot.send_mess(bot.get_chat_id(last_update),"Я посрав, де Шпецюк блять")
