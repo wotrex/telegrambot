@@ -409,7 +409,7 @@ def mytimer():
     else:
        bot.send_mess(chats[timechat[0]], "Достатня кількість учасників не набралась, гру відмінено")
        chats[timechat[0] + 1] = 1
-       players = players[np.where(players['chatid'] != chats[timechat[0]]]
+       players = players[np.where(players['chatid'] != chats[timechat[0]])]
        chats[timechat[0] + 2] = 0
        timechat.remove(timechat[0])
 def topplayer(r):
