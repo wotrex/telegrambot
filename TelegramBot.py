@@ -413,7 +413,7 @@ def mytimer():
        chats[timechat[0] + 2] = 0
        timechat.remove(timechat[0])
 def topplayer(r):
-    b = np.sort(rate2[np.where(rate['chatid'] == bot.get_chat_id(last_update))], order = r)
+    b = np.sort(rate2[np.where(rate['chatid'] == str(bot.get_chat_id(last_update)))], order = r)
     if len(b) < 3:
         return 0, 0, 0, 'Ніхто', 'Ніхто','Ніхто'
     return b[-1][r], b[-2][r], b[-3][r], rate[b[-1][0]][0], rate[b[-2][0]][0], rate[b[-3][0]][0]
