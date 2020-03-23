@@ -400,6 +400,7 @@ def game(chadid, players):
             raund()
 
 def mytimer():
+    global players
     if len(players) >= 2:
        chadid = chats[timechat[0]]
        game(chadid, players[players['chatid'] == chadid]['name'])
