@@ -404,6 +404,7 @@ def mytimer():
     if len(players) >= 2:
        chadid = chats[timechat[0]]
        game(chadid, players[players['chatid'] == chadid]['name'])
+       players = players[np.where(players['chatid'] != bot.get_chat_id(last_update))]
        chats[timechat[0] + 1] = 1
        chats[timechat[0] + 2] = 0
        timechat.remove(timechat[0])
@@ -534,6 +535,7 @@ while 1:
                game(chadid, players[players['chatid'] == chadid]['name'])
                time.cancel()
                timechat.remove(indx)
+               players = players[np.where(players['chatid'] != bot.get_chat_id(last_update))]
                chats[indx + 1] = 1
                chats[indx + 2] = 0
            else:
