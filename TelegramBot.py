@@ -443,6 +443,8 @@ while 1:
             bot.send_mess(bot.get_chat_id(last_update),'Шпитя, ти чого не на парі?')
         if randomMes == 99:
             bot.send_mess(bot.get_chat_id(last_update),'Шпитя, де лаби?')
+        if randomMes == 70:
+            bot.send_mess(bot.get_chat_id(last_update),'Шпитя, ти скоро будеш отчислений')
         if bot.get_message(last_update) == "/game" or bot.get_message(last_update) == "/game@BogdanKarmanBot":
             chats[indx + 2] = 1
             chats[indx + 1] = 0
