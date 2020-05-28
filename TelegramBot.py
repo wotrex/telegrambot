@@ -448,6 +448,8 @@ while 1:
         if bot.get_username(last_update) == "@zagin177":
             bogdan = ["+", "Согласен", "Поддержую"]
         ##    bot.resend_mess(bot.get_chat_id(last_update), random.choice(bogdan) ,bot.get_message_id(last_update))
+        if bot.get_username(last_update) == "@FlipSyde_423":
+            bot.send_voice(bot.get_chat_id(last_update), "https://upload.wikimedia.org/wikipedia/commons/a/a7/Memes.ogg", bot.get_message_id(last_update))
         if bot.get_username(last_update) == "@shputya":
             shputya = ["Шпецюк поїш гамна", "Я єбав тебе в рот, Шпетюк", "Шпитя, шо за флешка?","Шпетюк блять","продам тебе циганам","це декан так сказав?","Шпетюк гавно своє їсть","в рот собі насри",
                        "ти обісраний", "Хай шпетюк отсосе", "Шпецюк, ти блатний як двері", "а уїбать", "Шпитя ти овощ", "Шпитя ти тупий", "Ти дебіл шпитя",
