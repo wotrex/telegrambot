@@ -146,7 +146,7 @@ def getLastMatch(idchat, last_match, matchStats):
             break
     firstBloodPlayer = None
     for n in range(10):
-        if matchStats['players'][n]['kills_log'] is None:
+        if matchStats['players'][n]['kills_log'] is None or not matchStats['players'][n]['kills_log']:
             break
         if int(firstBloodTime) + 1 == int(matchStats['players'][n]['kills_log'][0]['time']):
             if (matchStats['players'][n]['name']) is None:
