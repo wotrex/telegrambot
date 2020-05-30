@@ -216,19 +216,19 @@ while 1:
         match_now = last_match[0]['match_id']
     if last_update is None:         
         continue
-    last_update_id = last_update['update_id']
-    if bot.get_message(last_update) == "/enableNews":
+    last_update_id = last_updatbot.get_message(last_update) == "/enablenews"e['update_id']
+    if bot.get_message(last_update) == "/enablenews" or bot.get_message(last_update) == "/enablenews@dotaCyberGameBot":
         if bot.get_chat_id(last_update) in members:
             pass
         else:
             bot.send_mess(bot.get_chat_id(last_update),'Авто рассылка включена')
             members.append(bot.get_chat_id(last_update))
             updateList(members)
-    if bot.get_message(last_update) == "/disableNews":
+    if bot.get_message(last_update) == "/disablenews" or bot.get_message(last_update) == "/disablenews@dotaCyberGameBot":
         if bot.get_chat_id(last_update) in members:
             bot.send_mess(bot.get_chat_id(last_update),'Авто рассылка выключена')
             del members[members.index(bot.get_chat_id(last_update))]
             updateList(members)
-    if bot.get_message(last_update) == "/lastMatchStats" or bot.get_message(last_update) == "/AllLastMatchStats":
+    if bot.get_message(last_update) == "/lastmatchstats" or bot.get_message(last_update) == "/lastmatchstats@dotaCyberGameBot" or bot.get_message(last_update) == "/alllastmatchstats" or bot.get_message(last_update) == "/alllastmatchstats@dotaCyberGameBot":
         getLastMatch(bot.get_chat_id(last_update), last_match,matchStats)
     offset = last_update_id + 1
