@@ -218,7 +218,9 @@ while 1:
         continue
     last_update_id = last_update['update_id']
     if bot.get_message(last_update) == "/enableNews":
-        if bot.get_chat_id(last_update) != members:
+        if bot.get_chat_id(last_update) in members:
+            pass
+        else:
             bot.send_mess(bot.get_chat_id(last_update),'Авто рассылка включена')
             members.append(bot.get_chat_id(last_update))
             updateList(members)
