@@ -3,15 +3,15 @@ import json
 
 class ESportBot():
     def __init__(self):
-        self.u = "https://api.telegram.org/bot1105108305:AAEhW5-hfSAxtypvGEelbCk11DNvLXcBXPc/getUpdates"      ##Ccылочка из которой получаем инфу
+        self.u = "https://api.telegram.org/bot1105108305:AAEhW5-hfSAxtypvGEelbCk11DNvLXcBXPc/getUpdates"      
 
-    def get_updates(self,offset=None, timeout=30):                ##Получаем все сообщения которые видит бот
+    def get_updates(self,offset=None, timeout=30):                
         params = {'timeout': timeout, 'offset': offset}
         self.url = requests.get(self.u, params)
         jsonresponse = json.loads(self.url.text)
         return jsonresponse
 
-    def last_update(self):                                          ##Получаем последнее сообщение
+    def last_update(self):                                          
         if 'result' in self.get_updates():
             results = self.get_updates()['result']
             if len(results) > 0:
@@ -24,7 +24,7 @@ class ESportBot():
             last_update = None
             return last_update
     
-    def get_chat_id(self,update):                         ##Получить ид чата из последнего сообщения
+    def get_chat_id(self,update):                         
         if 'message' in update:
             chat_id = update['message']['chat']['id']
             return chat_id
@@ -35,31 +35,15 @@ class ESportBot():
             return chat_id
         else:
             return None
-    def send_mess(self, chat, text):                 ##Отправить сообщение
+    def send_mess(self, chat, text):                 
         params = {'chat_id': chat, 'text': text}
         response = requests.post("https://api.telegram.org/bot1105108305:AAEhW5-hfSAxtypvGEelbCk11DNvLXcBXPc/" + 'sendMessage', params)
         return response
     
-    def resend_mess(self, chat, text, reply):  
-        params = {'chat_id': chat, 'text': text, 'reply_to_message_id': reply}        ##Ответить на сообщение
-        response = requests.post("https://api.telegram.org/bot1105108305:AAEhW5-hfSAxtypvGEelbCk11DNvLXcBXPc/" + 'sendMessage', params)
-        return response
-    def send_mes(self, chat, text):                                   ##Также отправить сообщение, но если в сообщении много текста, пробелов и абзацов
+    def send_mes(self, chat, text): 
         response = requests.post("https://api.telegram.org/bot1105108305:AAEhW5-hfSAxtypvGEelbCk11DNvLXcBXPc/sendMessage?chat_id={}&text={}".format(chat, text))
         return response
-    def send_voice(self, chat, voice, reply):                              ##Отправить голосовое сообщение
-        params = {'chat_id': chat, 'voice': voice , 'reply_to_message_id': reply}
-        response = requests.post("https://api.telegram.org/bot1105108305:AAEhW5-hfSAxtypvGEelbCk11DNvLXcBXPc/" + 'sendVoice', params)
-        return response
-    def send_sticker(self, chat, sticker, reply):                                ##Отпрвить ответом стикер
-        params = {'chat_id': chat, 'sticker': sticker , 'reply_to_message_id': reply}   
-        response = requests.post("https://api.telegram.org/bot1105108305:AAEhW5-hfSAxtypvGEelbCk11DNvLXcBXPc/" + 'sendSticker', params)
-        return response
-    def send_stick(self, chat, sticker):                            ##Просто отправить стикер
-        params = {'chat_id': chat, 'sticker': sticker}
-        response = requests.post("https://api.telegram.org/bot1105108305:AAEhW5-hfSAxtypvGEelbCk11DNvLXcBXPc/" + 'sendSticker', params)
-        return response
-    def get_message(self,update):              ##Получить текст из последнего сообщения
+    def get_message(self,update):              
         if 'message' in update:
             if 'text' in update['message']:
                 chat_id = update['message']['text']
@@ -81,39 +65,6 @@ class ESportBot():
         else:
             no = "non"
             return no
-    def get_message_id(self,update):                    ##Получить ид сообщения
-        if 'message' in update:
-            chat_id = update['message']['message_id']
-            return chat_id
-        if 'edited_message' in update:
-            chat_id = update['edited_message']['message_id']
-            return chat_id
-    def get_username(self, update):                       ##Получить имя того кто отправил сообщение
-         if 'message' in update:
-             if 'username' in update['message']['from']:
-                chat_id = update['message']['from']['username']
-                name = '@'+ chat_id
-                return name
-             else:
-                 firstn = update['message']['from']['first_name']
-                 return firstn
-         if 'edited_message' in update:
-             if 'username' in update['edited_message']['from']:
-                chat_id = update['edited_message']['from']['username']
-                name = '@'+ chat_id
-                return name
-             else:
-                 firstn = update['message']['from']['first_name']
-                 return firstn
-    def get_id(self, update):               ##Получить ид того кто отправил сообщение
-         if 'message' in update:
-             if 'id' in update['message']['from']:
-                chat_id = update['message']['from']['id']
-                return chat_id
-         if 'edited_message' in update:
-             if 'id' in update['edited_message']['from']:
-                chat_id = update['edited_message']['from']['id']
-                return chat_id
 def getMatch(matchid):
     match = requests.get("https://api.opendota.com/api/matches/{}?api_key=19674c39-adc9-4622-8af5-7050103d6964".format(matchid))
     jsonresp = json.loads(match.text)
@@ -170,7 +121,29 @@ def getLastMatch(idchat, last_match, matchStats):
         winner = radiant_team
     else:
         winner = dire_team
-    bot.send_mes(idchat, "\u2b50\u2b50\u2b50Лига:%20{}\u2b50\u2b50\u2b50%0A{}%20против%20{}%0AСилы%20Света:%20{}.%20Счёт:%20{}.%0AСилы%20Тьмы:%20{}.%20Счёт:%20{}.%0AПобедили:%20{}%0AПродолжительность:%20{}%20мин.%0A%0A{}:%0AИгрок%20-%20Герой%20-%20Убийства%20-%20Помощь%20-%20Смерти%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A%0A{}:%0AИгрок%20-%20Герой%20-%20Убийства%20-%20Помощь%20-%20Смерти%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}".format(league_name,radiant_team,dire_team,radiant_team,radiant_score,dire_team,dire_score,winner,str(round(duration)),radiant_team,radiant_players[0],radiant_players[1],radiant_players[2],radiant_players[3],radiant_players[4],
+    firstBloodTime = matchStats['first_blood_time']
+    multi_kills = ''
+    for n in range(10):
+        if matchStats['players'][n]['multi_kills'] is None:
+            break
+        if '5' in matchStats['players'][n]['multi_kills']:
+            multi_kills = matchStats['players'][n]['name'] + " совершил RAMPAGE " + str(matchStats['players'][n]['multi_kills']['5']) + " раз(а)"
+            break
+        elif '4' in matchStats['players'][n]['multi_kills']:
+            multi_kills = matchStats['players'][n]['name'] + " убил четырёх подряд " + str(matchStats['players'][n]['multi_kills']['4']) + " раз(а)"
+            break
+        elif '3' in matchStats['players'][n]['multi_kills']:
+            multi_kills = matchStats['players'][n]['name'] + " совершил тройное убийство " + str(matchStats['players'][n]['multi_kills']['3']) + " раз(а)"
+            break
+    firstBloodPlayer = None
+    print(firstBloodTime)
+    for n in range(10):
+        if matchStats['players'][n]['kills_log'] is None:
+            break
+        if int(firstBloodTime) + 1 == int(matchStats['players'][n]['kills_log'][0]['time']):
+            firstBloodPlayer = matchStats['players'][n]['name']
+            break
+    bot.send_mes(idchat, "\u2b50\u2b50\u2b50Лига:%20{}\u2b50\u2b50\u2b50%0A{}%20против%20{}%0AСилы%20Света:%20{}.%20Счёт:%20{}.%0AСилы%20Тьмы:%20{}.%20Счёт:%20{}.%0AПобедили:%20{}%0AПродолжительность:%20{}%20мин.%0A%0A{}:%0AИгрок%20-%20Герой%20-%20Убийства%20-%20Помощь%20-%20Смерти%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A%0A{}:%0AИгрок%20-%20Герой%20-%20Убийства%20-%20Помощь%20-%20Смерти%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A%0A{}%20совершил%20первое%20убийство%20на%20{}%20минуте%0A{}".format(league_name,radiant_team,dire_team,radiant_team,radiant_score,dire_team,dire_score,winner,str(round(duration)),radiant_team,radiant_players[0],radiant_players[1],radiant_players[2],radiant_players[3],radiant_players[4],
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     radiant_players[5],radiant_players[6],radiant_players[7],radiant_players[8],radiant_players[9],
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     radiant_players[10],radiant_players[11],radiant_players[12],radiant_players[13],radiant_players[14],
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     radiant_players[15],radiant_players[16],radiant_players[17],radiant_players[18],radiant_players[19],
@@ -179,10 +152,26 @@ def getLastMatch(idchat, last_match, matchStats):
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     dire_players[5],dire_players[6],dire_players[7],dire_players[8],dire_players[9],
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     dire_players[10],dire_players[11],dire_players[12],dire_players[13],dire_players[14],
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     dire_players[15],dire_players[16],dire_players[17],dire_players[18],dire_players[19],
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    dire_players[20],dire_players[21],dire_players[22],dire_players[23],dire_players[24]))
-##    if bot.get_message(idchat) == "/AllLastMatchStats":
-##        firstBloodTime = matchStats['first_blood_time']
-    print('yes')
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   dire_players[20],dire_players[21],dire_players[22],dire_players[23],dire_players[24],firstBloodPlayer,str(round(firstBloodTime/60)),str(multi_kills)))
+    if idchat in benchmarksen:
+        benchmarks = []
+        for n in range(10):
+            benchmarks.append(round((matchStats['players'][n]['benchmarks']['gold_per_min']['pct'])*100,2))
+            benchmarks.append(round((matchStats['players'][n]['benchmarks']['xp_per_min']['pct'])*100,2))
+            benchmarks.append(round((matchStats['players'][n]['benchmarks']['kills_per_min']['pct'])*100,2))
+            benchmarks.append(round((matchStats['players'][n]['benchmarks']['last_hits_per_min']['pct'])*100,2))
+            benchmarks.append(round((matchStats['players'][n]['benchmarks']['hero_damage_per_min']['pct'])*100,2))
+        bot.send_mes(idchat, "Benchmarks%0A%0A{}:%0AИгрок%20-%20золото%20в%20минуту%20-%20опыт%20в%20минуту%20-%20убийства%20в%20минуту%20-%20добитые%20крипы%20в%20минуту%20-%20урон%20по%20героям%20в%20минуту%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A%0A{}:%0AИгрок%20-%20золото%20в%20минуту%20-%20опыт%20в%20минуту%20-%20убийства%20в%20минуту%20-%20добитые%20крипы%20в%20минуту%20-%20урон%20по%20героям%20в%20минуту%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}".format(radiant_team,radiant_players[0],benchmarks[0],benchmarks[1],benchmarks[2],benchmarks[3],benchmarks[4],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      radiant_players[5],benchmarks[5],benchmarks[6],benchmarks[7],benchmarks[8],benchmarks[9],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      radiant_players[10],benchmarks[10],benchmarks[11],benchmarks[12],benchmarks[13],benchmarks[14],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      radiant_players[15],benchmarks[15],benchmarks[16],benchmarks[17],benchmarks[18],benchmarks[19],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      radiant_players[20],benchmarks[20],benchmarks[21],benchmarks[22],benchmarks[23],benchmarks[24],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      dire_team,dire_players[0],benchmarks[25],benchmarks[26],benchmarks[27],benchmarks[28],benchmarks[29],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      dire_players[5],benchmarks[30],benchmarks[31],benchmarks[32],benchmarks[33],benchmarks[34],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      dire_players[10],benchmarks[35],benchmarks[36],benchmarks[37],benchmarks[38],benchmarks[39],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      dire_players[15],benchmarks[40],benchmarks[41],benchmarks[42],benchmarks[43],benchmarks[44],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      dire_players[20],benchmarks[45],benchmarks[46],benchmarks[47],benchmarks[48],benchmarks[49]))
+    return
 def update(token, id, **kwargs):
     data = json.dumps(kwargs)
     p = requests.post('https://write.as/api/posts' + "/%s" % id, data=data,
@@ -195,10 +184,17 @@ def updateList(members):
     for k in members:
         b += str(k) + ','
     update('54e5b71b-8113-4381-4819-4b6e942e5b25', '3s53eqfuvys0y85q', body = (b))
+def updateBench(benchmarksen):
+    b = ''
+    for k in benchmarksen:
+        b += str(k) + ','
+    update('54e5b71b-8113-4381-4819-4b6e942e5b25', 'jyczvrmj2uye292l', body = (b))
 heroes = json.loads(requests.get("https://api.opendota.com/api/heroes?api_key=19674c39-adc9-4622-8af5-7050103d6964").text)
 r = requests.get("https://write.as/api/posts/3s53eqfuvys0y85q")
+rb = requests.get("https://write.as/api/posts/jyczvrmj2uye292l")
 objects = json.loads(r.text)['data']['body']
 members = []
+benchmarksen = []
 k = ''
 for o in objects:
     if o != ',':
@@ -206,10 +202,17 @@ for o in objects:
     else:
         members.append(int(k))
         k = ''
+objects = json.loads(rb.text)['data']['body']
+for o in objects:
+    if o != ',':
+        k +=str(o)
+    else:
+        benchmarksen.append(int(k))
+        k = ''
 bot = ESportBot()          
 offset = None
+print(getMatch(getProMatch()[0]['match_id'])['players'][1]['benchmarks'])
 match_now = 0
-print(members)
 while 1:
     print(1)
     bot.get_updates(offset)     
@@ -230,11 +233,22 @@ while 1:
             bot.send_mess(bot.get_chat_id(last_update),'Авто рассылка включена')
             members.append(bot.get_chat_id(last_update))
             updateList(members)
+    if bot.get_message(last_update) == "/enablebm" or bot.get_message(last_update) == "/enablebm@dotaCyberGameBot":
+        if bot.get_chat_id(last_update) in benchmarksen:
+            pass
+        else:
+            bot.send_mess(bot.get_chat_id(last_update),'Benchmarks включены')
+            benchmarksen.append(bot.get_chat_id(last_update))
+            updateBench(benchmarksen)
+    if bot.get_message(last_update) == "/disablebm" or bot.get_message(last_update) == "/disablebm@dotaCyberGameBot":
+        if bot.get_chat_id(last_update) in benchmarksen:
+            bot.send_mess(bot.get_chat_id(last_update),'Benchmarks выключены')
+            del benchmarksen[benchmarksen.index(bot.get_chat_id(last_update))]
+            updateBench(benchmarksen)
     if bot.get_message(last_update) == "/disablenews" or bot.get_message(last_update) == "/disablenews@dotaCyberGameBot":
         if bot.get_chat_id(last_update) in members:
             bot.send_mess(bot.get_chat_id(last_update),'Авто рассылка выключена')
             del members[members.index(bot.get_chat_id(last_update))]
-            print(members)
             updateList(members)
     if bot.get_message(last_update) == "/lastmatchstats" or bot.get_message(last_update) == "/lastmatchstats@dotaCyberGameBot" or bot.get_message(last_update) == "/alllastmatchstats" or bot.get_message(last_update) == "/alllastmatchstats@dotaCyberGameBot":
         getLastMatch(bot.get_chat_id(last_update), last_match,matchStats)
