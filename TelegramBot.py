@@ -204,6 +204,7 @@ for o in objects:
 bot = ESportBot()          
 offset = None
 match_now = 0
+print(members)
 while 1:
     print(1)
     bot.get_updates(offset)     
@@ -228,6 +229,7 @@ while 1:
         if bot.get_chat_id(last_update) in members:
             bot.send_mess(bot.get_chat_id(last_update),'Авто рассылка выключена')
             del members[members.index(bot.get_chat_id(last_update))]
+            print(members)
             updateList(members)
     if bot.get_message(last_update) == "/lastmatchstats" or bot.get_message(last_update) == "/lastmatchstats@dotaCyberGameBot" or bot.get_message(last_update) == "/alllastmatchstats" or bot.get_message(last_update) == "/alllastmatchstats@dotaCyberGameBot":
         getLastMatch(bot.get_chat_id(last_update), last_match,matchStats)
