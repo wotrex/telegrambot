@@ -216,7 +216,7 @@ while 1:
         match_now = last_match[0]['match_id']
     if last_update is None:         
         continue
-    last_update_id = last_updatbot.get_message(last_update) == "/enablenews"e['update_id']
+    last_update_id = last_update['update_id']
     if bot.get_message(last_update) == "/enablenews" or bot.get_message(last_update) == "/enablenews@dotaCyberGameBot":
         if bot.get_chat_id(last_update) in members:
             pass
