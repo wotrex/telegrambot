@@ -199,10 +199,10 @@ def updateBench(benchmarksen):
     b = ''
     for k in benchmarksen:
         b += str(k) + ','
-    update('54e5b71b-8113-4381-4819-4b6e942e5b25', 'jyczvrmj2uye292l', body = (b))
+    update('54e5b71b-8113-4381-4819-4b6e942e5b25', 'otvkp38orjdkzgyw', body = (b))
 heroes = json.loads(requests.get("https://api.opendota.com/api/heroes?api_key=19674c39-adc9-4622-8af5-7050103d6964").text)
 r = requests.get("https://write.as/api/posts/3s53eqfuvys0y85q")
-rb = requests.get("https://write.as/api/posts/jyczvrmj2uye292l")
+rb = requests.get("https://write.as/api/posts/otvkp38orjdkzgyw")
 objects = json.loads(r.text)['data']['body']
 members = []
 benchmarksen = []
