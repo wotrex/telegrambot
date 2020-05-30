@@ -127,21 +127,32 @@ def getLastMatch(idchat, last_match, matchStats):
         if matchStats['players'][n]['multi_kills'] is None:
             break
         if '5' in matchStats['players'][n]['multi_kills']:
-            multi_kills = matchStats['players'][n]['name'] + " совершил RAMPAGE " + str(matchStats['players'][n]['multi_kills']['5']) + " раз(а)"
+            if (matchStats['players'][n]['name']) is None:
+                multi_kills = matchStats['players'][n]['personaname'] + " совершил RAMPAGE " + str(matchStats['players'][n]['multi_kills']['5']) + " раз(а)"
+            else:
+                multi_kills = matchStats['players'][n]['name'] + " совершил RAMPAGE " + str(matchStats['players'][n]['multi_kills']['5']) + " раз(а)"
             break
         elif '4' in matchStats['players'][n]['multi_kills']:
-            multi_kills = matchStats['players'][n]['name'] + " убил четырёх подряд " + str(matchStats['players'][n]['multi_kills']['4']) + " раз(а)"
+            if (matchStats['players'][n]['name']) is None:
+                multi_kills = matchStats['players'][n]['personaname'] + " убил четырёх подряд " + str(matchStats['players'][n]['multi_kills']['4']) + " раз(а)"
+            else:
+                multi_kills = matchStats['players'][n]['name'] + " убил четырёх подряд " + str(matchStats['players'][n]['multi_kills']['4']) + " раз(а)"
             break
         elif '3' in matchStats['players'][n]['multi_kills']:
-            multi_kills = matchStats['players'][n]['name'] + " совершил тройное убийство " + str(matchStats['players'][n]['multi_kills']['3']) + " раз(а)"
+            if (matchStats['players'][n]['name']) is None:
+                multi_kills = matchStats['players'][n]['personaname'] + " совершил тройное убийство " + str(matchStats['players'][n]['multi_kills']['3']) + " раз(а)"
+            else:
+                multi_kills = matchStats['players'][n]['name'] + " совершил тройное убийство " + str(matchStats['players'][n]['multi_kills']['3']) + " раз(а)"
             break
     firstBloodPlayer = None
-    print(firstBloodTime)
     for n in range(10):
         if matchStats['players'][n]['kills_log'] is None:
             break
         if int(firstBloodTime) + 1 == int(matchStats['players'][n]['kills_log'][0]['time']):
-            firstBloodPlayer = matchStats['players'][n]['name']
+            if (matchStats['players'][n]['name']) is None:
+                firstBloodPlayer = matchStats['players'][n]['personaname']
+            else:
+                firstBloodPlayer = matchStats['players'][n]['name']
             break
     bot.send_mes(idchat, "\u2b50\u2b50\u2b50Лига:%20{}\u2b50\u2b50\u2b50%0A{}%20против%20{}%0AСилы%20Света:%20{}.%20Счёт:%20{}.%0AСилы%20Тьмы:%20{}.%20Счёт:%20{}.%0AПобедили:%20{}%0AПродолжительность:%20{}%20мин.%0A%0A{}:%0AИгрок%20-%20Герой%20-%20Убийства%20-%20Помощь%20-%20Смерти%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A%0A{}:%0AИгрок%20-%20Герой%20-%20Убийства%20-%20Помощь%20-%20Смерти%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A{}%20-%20{}%20-%20{}%20-%20{}%20-%20{}%0A%0A{}%20совершил%20первое%20убийство%20на%20{}%20минуте%0A{}".format(league_name,radiant_team,dire_team,radiant_team,radiant_score,dire_team,dire_score,winner,str(round(duration)),radiant_team,radiant_players[0],radiant_players[1],radiant_players[2],radiant_players[3],radiant_players[4],
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     radiant_players[5],radiant_players[6],radiant_players[7],radiant_players[8],radiant_players[9],
@@ -211,10 +222,8 @@ for o in objects:
         k = ''
 bot = ESportBot()          
 offset = None
-print(getMatch(getProMatch()[0]['match_id'])['players'][1]['benchmarks'])
 match_now = 0
 while 1:
-    print(1)
     bot.get_updates(offset)     
     last_update = bot.last_update()
     last_match = getProMatch()
