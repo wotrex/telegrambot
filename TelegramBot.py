@@ -219,10 +219,12 @@ while 1:
     last_update_id = last_update['update_id']
     if bot.get_message(last_update) == "/enableNews":
         if bot.get_chat_id(last_update) != members:
+            bot.send_mess(bot.get_chat_id(last_update),'Авто рассылка включена')
             members.append(bot.get_chat_id(last_update))
             updateList(members)
     if bot.get_message(last_update) == "/disableNews":
         if bot.get_chat_id(last_update) in members:
+            bot.send_mess(bot.get_chat_id(last_update),'Авто рассылка выключена')
             del members[members.index(bot.get_chat_id(last_update))]
             updateList(members)
     if bot.get_message(last_update) == "/lastMatchStats" or bot.get_message(last_update) == "/AllLastMatchStats":
