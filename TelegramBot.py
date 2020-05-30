@@ -122,8 +122,13 @@ def getProMatch():
     match = requests.get("https://api.opendota.com/api/proMatches?api_key=19674c39-adc9-4622-8af5-7050103d6964")
     jsonresp = json.loads(match.text)
     return jsonresp
+leagues = ['RED STAR CUP','World E-sports Legendary League','Oceanic Esports Dota League','中国DOTA2职业联赛','ESL One Birmingham 2020 Online powered by Intel']
 def getLastMatch(idchat, last_match, matchStats):
     league_name = matchStats['league']['name']
+    if league_name in leagues:
+        pass
+    else:
+        return
     radiant_team = "Noname"
     try:
         radiant_team = matchStats['radiant_team']['name']
