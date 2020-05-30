@@ -199,7 +199,7 @@ for o in objects:
     if o != ',':
         k +=str(o)
     else:
-        members.append(k)
+        members.append(int(k))
         k = ''
 bot = ESportBot()          
 offset = None
