@@ -140,7 +140,7 @@ def getLastMatch(idchat, last_match, matchStats):
             break
         elif '3' in matchStats['players'][n]['multi_kills']:
             if (matchStats['players'][n]['name']) is None:
-                multi_kills = matchStats['players'][n]['personaname'] + " совершил тройное убийство " + str(matchStats['players'][n]['multi_kills']['3']) + " раз(а)"
+                multi_kills = str(matchStats['players'][n]['personaname']) + " совершил тройное убийство " + str(matchStats['players'][n]['multi_kills']['3']) + " раз(а)"
             else:
                 multi_kills = matchStats['players'][n]['name'] + " совершил тройное убийство " + str(matchStats['players'][n]['multi_kills']['3']) + " раз(а)"
             break
