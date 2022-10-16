@@ -1,7 +1,7 @@
 certifi==2019.11.28
 chardet==3.0.4
 idna==2.8
-numpy==1.18.1
+numpy==1.23.0
 pyTelegramBotAPI==3.6.7
 requests==2.22.0
 six==1.14.0
