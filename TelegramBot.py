@@ -451,9 +451,10 @@ while 1:
         if bot.get_username(last_update) == "@Missgestal":
             bot.send_voice(bot.get_chat_id(last_update), "https://upload.wikimedia.org/wikipedia/commons/a/a7/Memes.ogg", bot.get_message_id(last_update))
         if bot.get_username(last_update) == "@handsome_qitfis" or bot.get_username(last_update) == "@Missgestalt" or bot.get_username(last_update) == "@nagevias":
-            shputya = ["Шпецюк поїш гамна", "Я єбав тебе в рот, Шпетюк", "Шпитя, шо за флешка?","Шпетюк блять","продам тебе циганам","це декан так сказав?","Шпетюк гавно своє їсть","в рот собі насри",
-                       "ти обісраний", "Хай шпетюк отсосе", "Шпецюк, ти блатний як двері", "а уїбать", "Шпитя ти овощ", "Шпитя ти тупий", "Ти дебіл шпитя",
-                       "Завали їбало", "Пашол нахуй Шпетюк", "Ти підарастіческа хуйня їбана", "Ти кріпак засраний, іди сіно кидай", "ти загноение  підзалупного міра"]
+            shputya = ["Коля поїш гамна", "Я єбав тебе в рот, Коля", "Коля дебіл, шо за флешка?","Коля блять","продам тебе циганам","це декан так сказав?","Коля гавно своє їсть","в рот собі насри",
+                       "ти обісраний", "Хай коля отсосе", "Коля, ти блатний як двері", "а уїбать", "Коля ти овощ", "Коля ти тупий", "Ти дебіл коля",
+                       "Завали їбало", "Пашол нахуй Коля", "Ти підарастіческа хуйня їбана", "Ти кріпак засраний, іди сіно кидай", "ти загноение  підзалупного міра", "Шкода що такого божества в японській міфології не було, чи звідки там Колі беруться", "Ти став схожим не на Колю,  а на людину", "Коля слішком скіловий, я не можу", 
+                       "Коля слабоумний"]
             shputyaVoice = ["https://upload.wikimedia.org/wikipedia/commons/4/42/Voice1.ogg", "https://upload.wikimedia.org/wikipedia/commons/c/cb/Voice2.ogg",
                             "https://upload.wikimedia.org/wikipedia/commons/2/2e/Voice3.ogg", "https://upload.wikimedia.org/wikipedia/commons/b/b0/Voice4.ogg",
                             "https://upload.wikimedia.org/wikipedia/commons/b/bf/Voice5.ogg"]
