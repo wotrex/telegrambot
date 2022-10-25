@@ -448,7 +448,7 @@ while 1:
         if bot.get_username(last_update) == "@wotrex":
             bogdan = ["+", "Согласен", "Поддержую"]
         ##    bot.resend_mess(bot.get_chat_id(last_update), random.choice(bogdan) ,bot.get_message_id(last_update))
-        if bot.get_username(last_update) == "@Missgestal":
+        if bot.get_username(last_update) == "@Shadow_999":
             bot.send_voice(bot.get_chat_id(last_update), "https://upload.wikimedia.org/wikipedia/commons/a/a7/Memes.ogg", bot.get_message_id(last_update))
         if bot.get_username(last_update) == "@handsome_qitfis" or bot.get_username(last_update) == "@Missgestalt" or bot.get_username(last_update) == "@nagevias":
             shputya = ["Коля поїш гамна", "Я єбав тебе в рот, Коля", "Коля дебіл, шо за флешка?","Коля блять","продам тебе циганам","це декан так сказав?","Коля гавно своє їсть","в рот собі насри",
