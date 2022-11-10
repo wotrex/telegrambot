@@ -506,15 +506,15 @@ while 1:
         plys = ["+","плюс","Плюс","го","Го","go","Go"]
         game_add_res = None
         frasi_minus = ["Шо самий умний?", "В жопу свій мінус засунь", "ти довбойоб?", "мінуси тільки підари ставлять", "ще раз мінус поставиш - я приїду і виїбу тебе в очко"]
-        for i in range(len(message)):
-            if message[i-1] == "-":
+        for i in range(len(bot.get_message(last_update))):
+            if bot.get_message(last_update)[i-1] == "-":
                 bot.resend_mess(bot.get_chat_id(last_update), random.choice(frasi_minus) ,bot.get_message_id(last_update))
-            if message[i-1] in plys or (message[i-1] + message[i]) in plys:
-                game_add_res = message[i-1]
+            if bot.get_message(last_update)[i-1] in plys or (bot.get_message(last_update)[i-1] + bot.get_message(last_update)[i]) in plys:
+                game_add_res = bot.get_message(last_update)[i-1]
                 break
-            if i+2 < len(message):
-                if (message[i-1] + message[i] + message[i+1] + message[i+2]) in plys:
-                    game_add_res = message[i-1]
+            if i+2 < len(bot.get_message(last_update)):
+                if (bot.get_message(last_update)[i-1] + bot.get_message(last_update)[i] + bot.get_message(last_update)[i+1] + bot.get_message(last_update)[i+2]) in plys:
+                    game_add_res = bot.get_message(last_update)[i-1]
                     break    
         if game_add_res != None:
             co = 0
