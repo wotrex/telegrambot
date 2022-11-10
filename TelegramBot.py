@@ -390,7 +390,7 @@ def game(chadid, players):
                                         if len(Mer) != 0:
                                             avtoritet_changable -= 1
                                             message = message[:-3]
-                                            message += "Авторитет%20мера%20падає%0A%0A"
+                                            message += ("Авторитет%20мера%20падає%0A%0A")
                                         if i in countPlayer2:
                                             countPlayer2.remove(i)
                                         result()
@@ -404,7 +404,7 @@ def game(chadid, players):
                                     if len(Mer) != 0:
                                         avtoritet_changable -= 1
                                         message = message[:-3]
-                                        message += "Авторитет%20мера%20падає%0A%0A"
+                                        message += ("Авторитет%20мера%20падає%0A%0A")
                                     if i in countPlayer2:
                                         countPlayer2.remove(i)
                                     result()
