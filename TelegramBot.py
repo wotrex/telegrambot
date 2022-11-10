@@ -237,7 +237,7 @@ def game(chadid, players):
     message = ""
     def raund():
         nonlocal message
-       def win(hunter, victim, H1, h1, h2, V1, V2, v2, win_g, win_m):
+      def win(hunter, victim, H1, h1, h2, V1, V2, v2, win_g, win_m):
             rep = random.randint(1,5)
             nonlocal message
             if rep == 1:
@@ -274,6 +274,7 @@ def game(chadid, players):
                 for l in Gangster:
                     message += ("{}%20{}%20отримав%20{}$%0A".format(players3[l][1], players3[l][0], players3[l][4]))
                 message += "%0A"
+        
         def lose(hunter, victim, H1, h1, h2, H3, V1, v1, v2, V3):
             life = random.randint(1,5)
             nonlocal message
