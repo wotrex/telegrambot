@@ -237,7 +237,7 @@ def game(chadid, players):
     message = ""
     def raund():
         nonlocal message
-      def win(hunter, victim, H1, h1, h2, V1, V2, v2, win_g, win_m):
+        def win(hunter, victim, H1, h1, h2, V1, V2, v2, win_g, win_m):
             rep = random.randint(1,5)
             nonlocal message
             if rep == 1:
