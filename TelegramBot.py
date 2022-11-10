@@ -251,7 +251,7 @@ def game(chadid, players):
             if rep == 5:
                 message += ("Ракета%20{}%20{}%20стрімко%20влетіла%20в%20чорну%20диру%20{}%20{}%0A%0A".format(h2, hunter, v2, victim))
             if win_m:
-                message += ("{}%20{}%20потрапив%20в%20анальне%20рабство%20%до20{}%20{}%0A".format(V1, victim, h2, hunter))
+                message += ("{}%20{}%20потрапив%20в%20анальне%20рабство%20до%20{}%20{}%0A".format(V1, victim, h2, hunter))
                 message += ("Анальні%20раби%20{}%20{}:%20".format(h2, hunter))
                 for k in rabstvo:
                     message += ("{},%20".format(k))
