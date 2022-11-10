@@ -117,7 +117,7 @@ class BogdanBot():
                 return chat_id
 bot = BogdanBot()
 rate = np.zeros((0), dtype = [('name', object),('chatid', object),('id', int)])
-rate2 = np.zeros((0), dtype = [('id', int),('wins', int),('kills', int),('losing', int)])
+rate2 = np.zeros((0), dtype = [('id', int),('wins', int),('kills', int),('losing', int), ('money', int)])
 r = requests.get("https://write.as/api/posts/1t7486xtsluj3mg4")
 objects = json.loads(r.text)['data']['body']
 objects1 = []
@@ -172,7 +172,7 @@ def game(chadid, players):
             a = a + str(rate[i][0]) + " " + str(rate[i][1]) + " " + str(rate[i][2]) + " "
         b = ''
         for i in range(len(rate2)):
-            b = b + str(rate2[i][0]) + " " + str(rate2[i][1]) + " " + str(rate2[i][2]) + " " + str(rate2[i][3]) + " "
+            b = b + str(rate2[i][0]) + " " + str(rate2[i][1]) + " " + str(rate2[i][2]) + " " + str(rate2[i][3]) + " "+ str(rate2[i][4]) + " "
         update('54e5b71b-8113-4381-4819-4b6e942e5b25', '1t7486xtsluj3mg4', body = ("{}|{}".format(a,b)))
         return 
     players3 = np.zeros((0), dtype = [('name', object),('role', object),('died', object),('count', int)])
@@ -228,10 +228,16 @@ def game(chadid, players):
     for p in range(len(players)):
         countPlayer.append(p)
     lifeMer = 1
+    rabstvo = []
+    avtoritet = 0
+    for l in countPlayer:
+        if players3[l][1] == "Разбойнік":
+            avtoritet += 1
+    avtoritet_changable = avtoritet + 1
     message = ""
     def raund():
         nonlocal message
-        def win(hunter, victim, H1, h1, h2, V1, V2, v2):
+       def win(hunter, victim, H1, h1, h2, V1, V2, v2, win_g, win_m):
             rep = random.randint(1,5)
             nonlocal message
             if rep == 1:
@@ -244,6 +250,30 @@ def game(chadid, players):
                 message += ("{}%20{}%20спіткала%20анальна%20кара%20{}%20{}%0A%0A".format(V2, victim, h2, hunter))
             if rep == 5:
                 message += ("Ракета%20{}%20{}%20стрімко%20влетіла%20в%20чорну%20диру%20{}%20{}%0A%0A".format(h2, hunter, v2, victim))
+            if win_m:
+                message += ("{}%20{}%20потрапив%20в%20анальне%20рабство%20%до20{}%20{}%0A".format(V1, victim, h2, hunter))
+                message += ("Анальні%20раби%20{}%20{}:%20".format(h2, hunter))
+                for k in rabstvo:
+                    message += ("{},%20".format(k))
+                message = message[:-4]
+                message += "%0A%0A"
+            if win_g:
+                money = []
+                potential_money = [5000, 10000, 15000, 20000, 25000, 30000, 40000, 50000, 75000, 100000]
+                for l in range(len(Gangster)):
+                    money.append(random.choice(potential_money))
+                numb = 0
+                players3[p][4] += max(money)
+                max_money = max(money)
+                money.remove(max(money))
+                for l in Gangster:
+                    if players3[l][0] != players3[p][0]:
+                        players3[l][4] += money[numb]
+                        numb += 1
+                message += ("{}%20{}%20залутав%20з%20мера%20{}$.%20Гроші%20розділені%20між%20разбойніками%0A".format(H1, hunter, str(sum(money)+max_money)))
+                for l in Gangster:
+                    message += ("{}%20{}%20отримав%20{}$%0A".format(players3[l][1], players3[l][0], players3[l][4]))
+                message += "%0A"
         def lose(hunter, victim, H1, h1, h2, H3, V1, v1, v2, V3):
             life = random.randint(1,5)
             nonlocal message
@@ -303,6 +333,7 @@ def game(chadid, players):
             if choice2 == 3 :
                 i = random.choice(Gangster)
             timer = timer - 1
+            nonlocal avtoritet_changable
             if (choice != choice2 and (players3[p][3] == None or players3[p][3] == 0)) or timer == 0:
                 timer = 20
 
@@ -317,13 +348,19 @@ def game(chadid, players):
                             if players3[c][3] != 0 and players3[c][3] != None:
                                 players3[c][3] = players3[c][3] - 1
                         if die == 1:
-                            win(players[p], players[i], "Мер", "мер", "мера", "Мєнт", "Мєнта", "мєнта")
-                            players3[i][2] = "Died"
-                            countPlayer.remove(i)
-                            Police.remove(i)
-                            if i in countPlayer2:
-                                countPlayer2.remove(i)
-                            result()
+                            rand = random.randint(1,avtoritet)
+                            rand2 = random.randint(1,avtoritet_changable)
+                            if rand <= rand2:
+                                rabstvo.append(players3[i][0])
+                                win(players[p], players[i], "Мер", "мер", "мера", "Мєнт", "Мєнта", "мєнта", False, True)
+                                players3[i][2] = "Died"
+                                countPlayer.remove(i)
+                                Police.remove(i)
+                                if i in countPlayer2:
+                                    countPlayer2.remove(i)
+                                result()
+                            else:
+                                message += ("Меру%20{}%20не%20вистачило%20авторитета%20скористатися%20очком%20мєнта%20{}%0A%0A".format(players[p], players[i]))
                         else:
                             lose(players[p], players[i], "Мер", "мер", "мера", "Меру", "Мєнт", "мєнт", "мєнта", "Мєнту")
                 if players3[p][1] == "Мєнт":
@@ -337,13 +374,51 @@ def game(chadid, players):
                             if players3[c][3] != 0 and players3[c][3] != None:
                                 players3[c][3] = players3[c][3] - 1
                         if die == 1:
-                            win(players[p], players[i], "Мєнт", "мєнт", "мєнта", "Разбойнік", "Разбойніка", "разбойніка")
-                            players3[i][2] = "Died"
-                            countPlayer.remove(i)
-                            Gangster.remove(i)
-                            if i in countPlayer2:
-                                countPlayer2.remove(i)
-                            result()
+                            if players3[i][4] != 0:
+                                potential_money = [1000, 5000, 10000, 15000, 20000, 25000, 30000, 40000, 50000, 75000]
+                                rands = random.choice(potential_money)
+                                if rands < players3[i][4]:
+                                    players3[i][4] -= rands
+                                    message += ("Разбойнік%20{}%20виплатив%20взятку%20мєнту%20{}%20в%20розмірі%20{}$%0A".format(players[i], players[p], rands))
+                                    rands2 = random.randint(1,10)
+                                    if rands2 == 1:
+                                        message += ("Мєнт%20{}%20наїбав%20разбойніка%20{}%20і%20виїбав%20його%20в%20сраку%0A%0A".format(players[p], players[i]))
+                                        players3[i][2] = "Died"
+                                        countPlayer.remove(i)
+                                        Gangster.remove(i)
+                                        if len(Mer) != 0:
+                                            avtoritet_changable -= 1
+                                            message = message[:-3]
+                                            message += "Авторитет%20мера%20падає%0A%0A"
+                                        if i in countPlayer2:
+                                            countPlayer2.remove(i)
+                                        result()
+                                    else:
+                                        message +="%0A"
+                                else:
+                                    message += ("Разбойніку%20{}%20не%20вистачило%20коштів%20на%20взятку%20мєнту%20{},%20тому%20його%20спіткала%20анальна%20кара.%20Розмір%20взятки%20{}$%0A%0A".format(players[i], players[p], rands))
+                                    players3[i][2] = "Died"
+                                    countPlayer.remove(i)
+                                    Gangster.remove(i)
+                                    if len(Mer) != 0:
+                                        avtoritet_changable -= 1
+                                        message = message[:-3]
+                                        message += "Авторитет%20мера%20падає%0A%0A"
+                                    if i in countPlayer2:
+                                        countPlayer2.remove(i)
+                                    result()
+                            else:
+                                win(players[p], players[i], "Мєнт", "мєнт", "мєнта", "Разбойнік", "Разбойніка", "разбойніка", False, False)
+                                if len(Mer) != 0:
+                                    message = message[:-3]
+                                    message += ("Авторитет%20мера%20падає%0A%0A")
+                                    avtoritet_changable -= 1
+                                players3[i][2] = "Died"
+                                countPlayer.remove(i)
+                                Gangster.remove(i)
+                                if i in countPlayer2:
+                                    countPlayer2.remove(i)
+                                result()
                         else:
                             lose(players[p], players[i], "Мєнт", "мєнт", "мєнта", "Мєнту", "Разбойнік", "разбойнік", "разбойніка", "Разбойніку")
                 if players3[p][1] == "Разбойнік":
@@ -357,13 +432,17 @@ def game(chadid, players):
                             if players3[c][3] != 0 and players3[c][3] != None:
                                 players3[c][3] = players3[c][3] - 1
                         if die == 1:
-                            win(players[p], players[i], "Разбойнік", "разбойнік", "разбойніка", "Мер", "Мера", "мера")
-                            players3[i][2] = "Died"
-                            countPlayer.remove(i)
-                            Mer.remove(i)
-                            if i in countPlayer2:
-                                countPlayer2.remove(i)
-                            result()
+                            if len(rabstvo) != 0:
+                                message += ("Мер%20{}%20переодягнувся%20в%20мєнта%20і%20втік.%20Замість%20нього%20разбойнік%20{}%20трахнув%20раба%20{}%0A%0A".format(players[i],players[p],rabstvo[0]))
+                                rabstvo.remove(rabstvo[0])
+                            else:
+                                players3[i][2] = "Died"
+                                win(players[p], players[i], "Разбойнік", "разбойнік", "разбойніка", "Мер", "Мера", "мера", True, False)
+                                countPlayer.remove(i)
+                                Mer.remove(i)
+                                if i in countPlayer2:
+                                    countPlayer2.remove(i)
+                                result()
                         else:
                             lose(players[p], players[i], "Разбойнік", "разбойнік", "разбойніка", "Разбойніку", "Мер", "мер", "мера", "Меру")
             if len(players) > 5:
@@ -387,12 +466,22 @@ def game(chadid, players):
                     for h in range(len(rate)):
                         if rate[h][0] == players[p] and rate[h][1] == str(chadid):
                             rate2[h][1] = rate2[h][1] + 1
+                            if players3[p][1] == "Разбойнік":
+                                rate2[h][4] = rate2[h][4] + players3[p][4]
                             break
             bot.send_mes(chadid, message)
             message = ""
             for p in range(len(players)):
                 if players3[p][2] != "Died":
-                    message += ("{}%20{}%20зберіг%20своє%20очко%20та%20виграв%0A".format(players3[p][1], players[p]))
+                    if players3[p][1] == "Разбойнік" and players3[p][4] != 0:
+                        message += ("{}%20{}%20зберіг%20своє%20очко%20та%20{}$%0A".format(players3[p][1], players[p], players3[p][4]))
+                    else:
+                        message += ("{}%20{}%20зберіг%20своє%20очко%20та%20виграв%0A".format(players3[p][1], players[p]))
+                        if players3[p][1] == "Мер" and len(rabstvo) != 0:
+                            for j in rabstvo:
+                                message += ("{},%20".format(j))
+                            message = message[:-4]
+                            message += ("%20залишилися(залишився)%20в%20рабстві%20мера%20{}%0A".format(players[p]))
             bot.send_mes(chadid, message)
             basa_add()
             break
