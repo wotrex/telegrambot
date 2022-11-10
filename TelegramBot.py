@@ -455,7 +455,7 @@ while 1:
             shputya = ["Коля поїш гамна", "Я єбав тебе в рот, Коля", "Коля дебіл, шо за флешка?","Коля блять","продам тебе циганам","це декан так сказав?","Коля гавно своє їсть","в рот собі насри",
                        "ти обісраний", "Хай коля отсосе", "Коля, ти блатний як двері", "а уїбать", "Коля ти овощ", "Коля ти тупий", "Ти дебіл коля",
                        "Завали їбало", "Пашол нахуй Коля", "Ти підарастіческа хуйня їбана", "Ти кріпак засраний, іди сіно кидай", "ти загноение  підзалупного міра", "Шкода що такого божества в японській міфології не було, чи звідки там Колі беруться", "Ти став схожим не на Колю,  а на людину", "Коля слішком скіловий, я не можу", 
-                       "Коля слабоумний"]
+                       "Коля слабоумний", "Коля хуєблядска піздопройобіна"]
             shputyaVoice = ["https://upload.wikimedia.org/wikipedia/commons/4/42/Voice1.ogg", "https://upload.wikimedia.org/wikipedia/commons/c/cb/Voice2.ogg",
                             "https://upload.wikimedia.org/wikipedia/commons/2/2e/Voice3.ogg", "https://upload.wikimedia.org/wikipedia/commons/b/b0/Voice4.ogg",
                             "https://upload.wikimedia.org/wikipedia/commons/b/bf/Voice5.ogg"]
@@ -503,8 +503,20 @@ while 1:
             bot.send_mess(bot.get_chat_id(last_update),"Я посрав, де Шпецюк блять")
             chats[indx + 1] = 1
     if chats[indx + 2] == 1:
-        plys = "+ плюс Плюс го Го"
-        if bot.get_message(last_update) in plys:
+        plys = ["+","плюс","Плюс","го","Го","go","Go"]
+        game_add_res = None
+        frasi_minus = ["Шо самий умний?", "В жопу свій мінус засунь", "ти довбойоб?", "мінуси тільки підари ставлять", "ще раз мінус поставиш - я приїду і виїбу тебе в очко"]
+        for i in range(len(message)):
+            if message[i-1] == "-":
+                bot.resend_mess(bot.get_chat_id(last_update), random.choice(frasi_minus) ,bot.get_message_id(last_update))
+            if message[i-1] in plys or (message[i-1] + message[i]) in plys:
+                game_add_res = message[i-1]
+                break
+            if i+2 < len(message):
+                if (message[i-1] + message[i] + message[i+1] + message[i+2]) in plys:
+                    game_add_res = message[i-1]
+                    break    
+        if game_add_res != None:
             co = 0
             for li in range(len(rate)):
                 if rate[li][2] == bot.get_id(last_update) and rate[li][1] == str(bot.get_chat_id(last_update)):
