@@ -175,9 +175,9 @@ def game(chadid, players):
             b = b + str(rate2[i][0]) + " " + str(rate2[i][1]) + " " + str(rate2[i][2]) + " " + str(rate2[i][3]) + " "+ str(rate2[i][4]) + " "
         update('54e5b71b-8113-4381-4819-4b6e942e5b25', '1t7486xtsluj3mg4', body = ("{}|{}".format(a,b)))
         return 
-    players3 = np.zeros((0), dtype = [('name', object),('role', object),('died', object),('count', int)])
+    players3 = np.zeros((0), dtype = [('name', object),('role', object),('died', object),('count', int), ('money', int)])
     for p in range(len(players)):
-        players3 = np.insert(players3, len(players3),(players[p],None,None,0), axis = 0)
+        players3 = np.insert(players3, len(players3),(players[p],None,None,0,0), axis = 0)
     def storonu():
         for p in range(len(players)):
             players3[p][1] = None
