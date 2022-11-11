@@ -272,7 +272,7 @@ def game(chadid, players):
                         numb += 1
                 message += ("{}%20{}%20залутав%20з%20мера%20{}$.%20Гроші%20розділені%20між%20разбойніками%0A".format(H1, hunter, str(sum(money)+max_money)))
                 for l in Gangster:
-                    message += ("{}%20{}%20отримав%20{}$%0A".format(players3[l][1], players3[l][0], players3[l][4]))
+                    message += ("{}%20{}%20тепер%20має%20{}$%0A".format(players3[l][1], players3[l][0], players3[l][4]))
                 message += "%0A"
         
         def lose(hunter, victim, H1, h1, h2, H3, V1, v1, v2, V3):
@@ -376,7 +376,9 @@ def game(chadid, players):
                                 players3[c][3] = players3[c][3] - 1
                         if die == 1:
                             if players3[i][4] != 0:
-                                potential_money = [1000, 5000, 10000, 15000, 20000, 25000, 30000, 40000, 50000, 75000]
+                                potential_money = [1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,5000,5000,5000,5000,5000,5000,5000,5000,
+                                                   10000,10000,10000,10000,10000,10000,10000,15000,15000,15000,15000,15000,15000,20000,20000,20000,20000,20000, 
+                                                   25000,25000,25000,25000, 30000,30000,30000, 40000, 40000, 50000, 75000]
                                 rands = random.choice(potential_money)
                                 if rands < players3[i][4]:
                                     players3[i][4] -= rands
@@ -569,7 +571,7 @@ while 1:
             for p in range(len(rate)):
                 if rate[p][0] == bot.get_username(last_update) and rate[p][1] == str(bot.get_chat_id(last_update)):
                     flag = 1
-                    bot.send_mes(bot.get_chat_id(last_update), "{}%20:%0AВиграв%20ігор%20-%20{}%0AКількість%20знищених%20ворожих%20анусів%20-%20{}%0AКількість%20разів%20коли%20втратив%20анальну%20дєвствєнность%20-%20{}".format(str(rate[p][0]),rate2[p][1],rate2[p][2],rate2[p][3]))
+                    bot.send_mes(bot.get_chat_id(last_update), "{}%20:%0AВиграв%20ігор%20-%20{}%0AКількість%20знищених%20ворожих%20анусів%20-%20{}%0AКількість%20разів%20коли%20втратив%20анальну%20дєвствєнность%20-%20{}%0AЗагальна%20кількість%20виграних%20грошей%20-%20{}$".format(str(rate[p][0]),rate2[p][1],rate2[p][2],rate2[p][3],rate2[p][4]))
                     break
             if flag == 0:
                 bot.resend_mess(bot.get_chat_id(last_update),"В тебе намеє статистики", bot.get_message_id(last_update))
