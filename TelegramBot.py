@@ -448,7 +448,7 @@ def game(chadid, players):
                                 result()
                         else:
                             lose(players[p], players[i], "Разбойнік", "разбойнік", "разбойніка", "Разбойніку", "Мер", "мер", "мера", "Меру")
-            if len(players) => 5:
+            if len(players) > 4:
                 nonlocal lifeMer
                 ## rand = random.randint(1,2)
                 rand = 1
