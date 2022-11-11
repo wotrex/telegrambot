@@ -510,8 +510,8 @@ def mytimer():
 def topplayer(r):
     b = np.sort(rate2[np.where(rate['chatid'] == str(bot.get_chat_id(last_update)))], order = r)
     if len(b) < 3:
-        return 0, 0, 0, 'Ніхто', 'Ніхто','Ніхто'
-    return b[-1][r], b[-2][r], b[-3][r], rate[b[-1][0]][0], rate[b[-2][0]][0], rate[b[-3][0]][0]
+        return 0, 0, 0, 0, 'Ніхто', 'Ніхто','Ніхто', 'Ніхто'
+    return b[-1][r], b[-2][r], b[-3][r], b[-4][r], rate[b[-1][0]][0], rate[b[-2][0]][0], rate[b[-3][0]][0], rate[b[-4][0]][0]
 offset = None
 chats = []
 time = 0
@@ -579,9 +579,11 @@ while 1:
             top1 = topplayer('wins')
             top2 = topplayer('kills')
             top3 = topplayer('losing')
+            top4 = topplayer('money')
             bot.send_mes(bot.get_chat_id(last_update),'Топ%203%20побідітєлєй:%0A1.%20{}%20виграв%20{}%20раз(a).%0A2.%20{}%20виграв%20{}%20раз(a).%0A3.%20{}%20виграв%20{}%20раз(a).'.format(top1[3],str(top1[0]),top1[4],str(top1[1]),top1[5],str(top1[2])))
             bot.send_mes(bot.get_chat_id(last_update),'Топ%203%20анальних%20винищувачів:%0A1.%20{}%20знищив%20{}%20анусів.%0A2.%20{}%20знищив%20{}%20анусів.%0A3.%20{}%20знищив%20{}%20анусів.'.format(top2[3],str(top2[0]),top2[4],str(top2[1]),top2[5],str(top2[2])))
             bot.send_mes(bot.get_chat_id(last_update),'Три%20самі%20пасивні%20гея:%0A1.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).%0A2.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).%0A3.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).'.format(top3[3],str(top3[0]),top3[4],str(top3[1]),top3[5],str(top3[2])))     
+            bot.send_mes(bot.get_chat_id(last_update),'Топ%203%20магната:%0A1.%20{}%20-%20{}$%20%0A2%20{}%20-%20{}$%20%0A3%20{}%20-%20{}$%20'.format(top4[3],str(top4[0]),top4[4],str(top4[1]),top4[5],str(top4[2])))
         if bot.get_message(last_update) == "/off" or bot.get_message(last_update) == "/off@BogdanKarmanBot":
             if chats[indx + 2] == 1:
                 time.cancel()
