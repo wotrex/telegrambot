@@ -583,7 +583,7 @@ while 1:
             bot.send_mes(bot.get_chat_id(last_update),'Топ%203%20побідітєлєй:%0A1.%20{}%20виграв%20{}%20раз(a).%0A2.%20{}%20виграв%20{}%20раз(a).%0A3.%20{}%20виграв%20{}%20раз(a).'.format(top1[3],str(top1[0]),top1[4],str(top1[1]),top1[5],str(top1[2])))
             bot.send_mes(bot.get_chat_id(last_update),'Топ%203%20анальних%20винищувачів:%0A1.%20{}%20знищив%20{}%20анусів.%0A2.%20{}%20знищив%20{}%20анусів.%0A3.%20{}%20знищив%20{}%20анусів.'.format(top2[3],str(top2[0]),top2[4],str(top2[1]),top2[5],str(top2[2])))
             bot.send_mes(bot.get_chat_id(last_update),'Три%20самі%20пасивні%20гея:%0A1.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).%0A2.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).%0A3.%20{}%20втратив%20анальну%20дєвствєнность%20{}%20раз(a).'.format(top3[3],str(top3[0]),top3[4],str(top3[1]),top3[5],str(top3[2])))     
-            bot.send_mes(bot.get_chat_id(last_update),'Топ%203%20магната:%0A1.%20{}%20-%20{}$%20%0A2%20{}%20-%20{}$%20%0A3%20{}%20-%20{}$%20'.format(top4[3],str(top4[0]),top4[4],str(top4[1]),top4[5],str(top4[2])))
+            bot.send_mes(bot.get_chat_id(last_update),'Топ%203%20магната:%0A1.%20{}%20-%20{}$%20%0A2.%20{}%20-%20{}$%20%0A3.%20{}%20-%20{}$%20'.format(top4[3],str(top4[0]),top4[4],str(top4[1]),top4[5],str(top4[2])))
         if bot.get_message(last_update) == "/off" or bot.get_message(last_update) == "/off@BogdanKarmanBot":
             if chats[indx + 2] == 1:
                 time.cancel()
