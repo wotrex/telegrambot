@@ -154,7 +154,7 @@ y = 0
 while x != len(objects1):
     rate = np.insert(rate, len(rate),(objects1[x],objects1[x+1],objects1[x+2]), axis = 0)
     x += 3
-    rate2 = np.insert(rate2, len(rate2),(objects2[y],objects2[y+1],objects2[y+2],objects2[y+3], 0), axis = 0)
+    rate2 = np.insert(rate2, len(rate2),(objects2[y],objects2[y+1],objects2[y+2],objects2[y+3], objects2[y+4]), axis = 0)
     y += 4
 print(rate)
 print(rate2)
