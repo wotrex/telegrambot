@@ -638,7 +638,7 @@ while 1:
             if pl != "":
                 bot.send_mes(bot.get_chat_id(last_update), "Список%20гравців:%0A{}".format(pl))
             else:
-                bot.send_mes(bot.get_chat_id(last_update), "Немає%20гравців")
+                bot.send_mes(bot.get_chat_id(last_update), "Немає%20гравців...")
         if bot.get_message(last_update) == "/start" or bot.get_message(last_update) == "/start@BogdanKarmanBot":
            if len(players) >= 2:
                chadid = bot.get_chat_id(last_update)
